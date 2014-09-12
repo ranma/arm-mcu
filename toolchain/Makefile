@@ -45,7 +45,7 @@ BINUTILURL	= $(BINUTILSERVER)/`basename $(BINUTILDIST)`
 BINUTILSRC	= binutils-$(BINUTILVER)
 BINUTILBLD	= build/binutils-$(BINUTILVER)
 
-GCCVER		= 4.8.2
+GCCVER		= 4.9.1
 GCCSERVER	= http://ftp.gnu.org/pub/gnu/gcc/gcc-$(GCCVER)
 GCCDIST		= $(TEMP)/gcc-$(GCCVER).tar.bz2
 GCCURL		= $(GCCSERVER)/`basename $(GCCDIST)`
@@ -63,9 +63,9 @@ LIBMPDFURL	= $(NEWLIBSERVER)/libm.pdf
 LIBCPDF		= $(TEMP)/libc.pdf
 LIBMPDF		= $(TEMP)/libm.pdf
 
-GDBVER		= 7.7
+GDBVER		= 7.8
 GDBSERVER	= http://ftp.gnu.org/gnu/gdb
-GDBDIST		= $(TEMP)/gdb-$(GDBVER).tar.bz2
+GDBDIST		= $(TEMP)/gdb-$(GDBVER).tar.gz
 GDBURL		= $(GDBSERVER)/`basename $(GDBDIST)`
 GDBSRC		= gdb-$(GDBVER)
 GDBBLD		= build/gdb-$(GDBVER)
@@ -109,7 +109,7 @@ source.done: $(BINUTILDIST) $(GCCDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIB
 	if [ -f multilibs.$(ABI).patch ]; then cd $(GCCSRC) ; patch -b -p0 <../multilibs.$(ABI).patch ; fi
 	$(TAR) xzf $(NEWLIBDIST)
 	ln -s "../$(NEWLIBSRC)/newlib" $(GCCSRC)/newlib
-	$(TAR) xjf $(GDBDIST)
+	$(TAR) xzf $(GDBDIST)
 	touch $@
 
 ################################################################################
