@@ -3,7 +3,6 @@
 // $Id: gpiopins.c 3111 2011-10-06 13:27:38Z svn $
 
 // Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
-// All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:

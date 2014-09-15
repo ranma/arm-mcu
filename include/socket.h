@@ -9,7 +9,6 @@
 // $Id$
 
 // Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
-// All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
