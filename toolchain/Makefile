@@ -80,8 +80,9 @@ PACKAGENAME	= $(PKGNAME)-$(VERSION).tgz
 TAR		= gtar
 endif
 
+OSNAME		= debian7
 PKGARCH		= `dpkg --print-architecture`
-PKGDIR		= $(PKGNAME)-$(VERSION)-debian7-$(PKGARCH)
+PKGDIR		= $(PKGNAME)-$(VERSION)-$(OSNAME)-$(PKGARCH)
 PKGFILE		= $(PKGDIR).deb
 
 default: readme.done

@@ -33,10 +33,11 @@ OPENOCD_DIST	= $(TEMP)/$(OPENOCD_TARBALL)
 OPENOCD_SERVER	= http://sourceforge.net/projects/openocd/files/openocd/$(OPENOCD_VER)
 OPENOCD_URL	= $(OPENOCD_SERVER)/$(OPENOCD_TARBALL)
 
+OSNAME		= debian7
 PKGNAME		= $(OPENOCD_NAME)
 PKGVERSION	= $(OPENOCD_VER)
 PKGARCH		= `dpkg --print-architecture`
-PKGDIR		= $(PKGNAME)-$(PKGVERSION)-debian7-$(PKGARCH)
+PKGDIR		= $(PKGNAME)-$(PKGVERSION)-$(OSNAME)-$(PKGARCH)
 PKGFILE		= $(PKGDIR).deb
 
 default: compile.done

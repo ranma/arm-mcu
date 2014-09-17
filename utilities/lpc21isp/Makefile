@@ -28,10 +28,11 @@ LPC21ISP_DIR	= lpc21isp.src
 LPC21ISP_VER	= $(shell awk '/define VERSION_STR/ { print $$3 }' $(LPC21ISP_DIR)/lpc21isp.c)
 LPC21ISP_PROG	= $(LPC21ISP_NAME)
 
+OSNAME		= debian7
 PKGNAME		= $(LPC21ISP_NAME)
 PKGVERSION	= $(LPC21ISP_VER)
 PKGARCH		= `dpkg --print-architecture`
-PKGDIR		= $(PKGNAME)-$(PKGVERSION)-debian7-$(PKGARCH)
+PKGDIR		= $(PKGNAME)-$(PKGVERSION)-$(OSNAME)-$(PKGARCH)
 PKGFILE		= $(PKGDIR).deb
 
 CC		= $(CROSS_COMPILE)gcc
