@@ -23,15 +23,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-ABI		?= eabi
-ifeq ($(ABI), elf)
-TARGETNAME	= arm-elf
-PKGNAME		= arm-elf-tools
-GCCEXTRACONFIG	+= --enable-obsolete
-else
 TARGETNAME	= arm-none-eabi
 PKGNAME		= arm-mcu-tools
-endif
 INSTBASE	= $(shell pwd)/$(PKGNAME)
 
 FIND		= find
@@ -106,7 +99,7 @@ download: $(BINUTILDIST) $(GCCDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPD
 source.done: $(BINUTILDIST) $(GCCDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPDF)
 	$(TAR) xjf $(BINUTILDIST)
 	$(TAR) xjf $(GCCDIST)
-	if [ -f multilibs.$(ABI).patch ]; then cd $(GCCSRC) ; patch -b -p0 <../multilibs.$(ABI).patch ; fi
+	if [ -f multilibs.patch ]; then cd $(GCCSRC) ; patch -b -p0 <../multilibs.patch ; fi
 	$(TAR) xzf $(NEWLIBDIST)
 	ln -s "../$(NEWLIBSRC)/newlib" $(GCCSRC)/newlib
 	$(TAR) xzf $(GDBDIST)

@@ -1,5 +1,5 @@
 --- gcc/config/arm/t-arm-elf.orig	2013-01-10 21:38:27.000000000 +0100
-+++ gcc/config/arm/t-arm-elf	2014-09-16 11:32:35.541389596 +0200
++++ gcc/config/arm/t-arm-elf	2014-09-17 12:37:16.461949801 +0200
 @@ -16,75 +16,31 @@
  # along with GCC; see the file COPYING3.  If not see
  # <http://www.gnu.org/licenses/>.
@@ -93,8 +93,8 @@
 +MULTILIB_DIRNAMES     += float-abi-hard fpuv4-sp-d16
 +MULTILIB_EXCEPTIONS   += mfloat* marm/mfloat* mthumb/mfloat*
 +MULTILIB_EXCEPTIONS   += mfpu* marm/mfpu* mthumb/mfpu*
-+MULTILIB_EXCEPTIONS   += mthumb/march=armv6-m*mfloat*
-+MULTILIB_EXCEPTIONS   += mthumb/march=armv7-m*mfloat*
-+MULTILIB_EXCEPTIONS   += mthumb/march=armv6-m*mfpu*
-+MULTILIB_EXCEPTIONS   += mthumb/march=armv7-m*mfpu*
-+MULTILIB_EXCEPTIONS   += mthumb/march=armv7e-m*mfpu*
++MULTILIB_EXCEPTIONS   += mthumb/march=armv6-m/mfloat*
++MULTILIB_EXCEPTIONS   += mthumb/march=armv7-m/mfloat*
++MULTILIB_EXCEPTIONS   += mthumb/march=armv6-m/mfpu*
++MULTILIB_EXCEPTIONS   += mthumb/march=armv7-m/mfpu*
++MULTILIB_EXCEPTIONS   += mthumb/march=armv7e-m/mfpu*
