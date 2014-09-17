@@ -156,6 +156,8 @@ News
        [13]MINI-M4-STM32.
      * 24 December 2013 -- Upgraded to binutils 2.24, gcc 4.8.2, newlib
        2.1.0, and gdb 7.6.2. Merry Christmas!
+     * 17 September 2014 -- Upgraded to gcc 4.8.3 and gdb 7.8. Dropped
+       support for arm-elf toolchains. Cleaned up the multilibs patch.
 
 Git Repository
 
