@@ -31,7 +31,9 @@
 #include <leds.h>
 #include <serial.h>
 #include <usb_serial.h>
+
 #include <LPC17xx.h>
+#include <system_LPC17xx.h>
 
 #ifdef CONIO_STDIO
 #include <conio.h>
