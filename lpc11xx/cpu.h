@@ -34,8 +34,9 @@
 #include <serial.h>
 #include <timer.h>
 #include <spi.h>
-#include <usb_serial.h>
+
 #include <LPC11xx.h>
+#include <system_LPC11xx.h>
 
 #ifdef CONIO_STDIO
 #include <conio.h>
