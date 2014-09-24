@@ -159,6 +159,8 @@ News
      * 17 September 2014 -- Upgraded to gcc 4.8.3 and gdb 7.8. Dropped
        support for arm-elf toolchains. Cleaned up the multilibs patch.
 
+     * 24 September 2014 -- Upgraded FreeRTOS to 8.1.2. Removed LWIP.
+
 Git Repository
 
    The source code is hosted on [14]SourceForge at
