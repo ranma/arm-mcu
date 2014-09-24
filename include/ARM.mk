@@ -132,7 +132,7 @@ include $(COMMON_DIR)/common.mk
 # Support for FreeRTOS
 
 ifeq ($(WITH_FREERTOS), yes)
-FREERTOS_DIR	= $(ARMSRC)/FreeRTOS/Cortex-M3
+FREERTOS_DIR	= $(ARMSRC)/FreeRTOS
 include $(FREERTOS_DIR)/FreeRTOS.mk
 endif
 

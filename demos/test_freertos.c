@@ -120,21 +120,21 @@ int main(void)
 
 // Create a couple of tasks
 
-  if (xTaskCreate(putsTaskFunction, (signed char *) "task1", 512, NULL, 1, &task1) != pdPASS)
+  if (xTaskCreate(putsTaskFunction, "task1", 512, NULL, 1, &task1) != pdPASS)
   {
     puts("ERROR: xTaskCreate() for task1 failed!");
     fflush(stdout);
     assert(false);
   }
 
-  if (xTaskCreate(putsTaskFunction, (signed char *) "task2", 512, NULL, 1, &task2) != pdPASS)
+  if (xTaskCreate(putsTaskFunction, "task2", 512, NULL, 1, &task2) != pdPASS)
   {
     puts("ERROR: xTaskCreate() for task2 failed!");
     fflush(stdout);
     assert(false);
   }
 
-  if (xTaskCreate(LEDTaskFunction, (signed char *) "task3", 256, NULL, 1, &task3) != pdPASS)
+  if (xTaskCreate(LEDTaskFunction, "task3", 256, NULL, 1, &task3) != pdPASS)
   {
     puts("ERROR: xTaskCreate() for task3 failed!");
     fflush(stdout);
