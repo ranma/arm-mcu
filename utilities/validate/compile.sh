@@ -114,8 +114,6 @@ make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
 
@@ -136,8 +134,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 unset CONSOLEFLAGS
@@ -162,8 +158,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 unset CONSOLEFLAGS
@@ -211,8 +205,6 @@ make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
 
@@ -234,8 +226,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -279,8 +269,6 @@ make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
 
@@ -302,8 +290,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -344,8 +330,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -386,8 +370,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -430,8 +412,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -474,8 +454,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -512,8 +490,6 @@ cd ${ARMSRC}/demos
 make test_objects.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -558,8 +534,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_spi.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_wiznet.bin clean WITH_WIZNET=yes WITH_W5200=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
@@ -607,8 +581,6 @@ make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
 
@@ -630,8 +602,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -675,8 +645,6 @@ make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
 
@@ -698,8 +666,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -743,8 +709,6 @@ make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
 
@@ -766,8 +730,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
@@ -813,8 +775,6 @@ make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
 
@@ -839,8 +799,6 @@ make test_rand.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_stdio.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 ##########################################################################
 
@@ -856,6 +814,4 @@ cd ${ARMSRC}/demos
 make test_objects.bin clean
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 make test_rand.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_systick.bin clean WITH_LWIP=yes
 if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
