@@ -1,6 +1,6 @@
 # Makefile for building LPC21ISP RPM package
 
-# $Id: Makefile 2963 2011-08-02 17:06:09Z svn $
+# $Id$
 
 # Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
 #

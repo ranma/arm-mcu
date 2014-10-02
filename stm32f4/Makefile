@@ -1,6 +1,6 @@
 # Make processor dependent startup and libraries
 
-# $Id: Makefile 2983 2011-08-31 11:51:13Z svn $
+# $Id$
 
 # Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
 #
