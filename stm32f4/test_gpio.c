@@ -1,6 +1,6 @@
 /* Simple bit twiddler test program */
 
-// $Id: test_gpio.c 3199 2011-10-18 11:28:12Z svn $
+// $Id$
 
 // Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
 //
@@ -22,7 +22,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-static const char revision[] = "$Id: test_gpio.c 3199 2011-10-18 11:28:12Z svn $";
+static const char revision[] = "$Id$";
 
 #include <cpu.h>
 

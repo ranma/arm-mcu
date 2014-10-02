@@ -4,7 +4,7 @@
 /*                                                                            */
 /******************************************************************************/
 
-// $Id: serial.c 3206 2011-10-19 13:12:40Z svn $
+// $Id$
 
 // Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
 //
@@ -26,7 +26,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-static const char revision[] = "$Id: serial.c 3206 2011-10-19 13:12:40Z svn $";
+static const char revision[] = "$Id$";
 
 #include <stdlib.h>
 #include <string.h>

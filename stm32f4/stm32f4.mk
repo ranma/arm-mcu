@@ -1,6 +1,6 @@
 # STM32F4 family make definitions
 
-# $Id: stm32.mk 3236 2011-11-03 11:31:27Z svn $
+# $Id$
 
 # Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
 #

@@ -1,6 +1,6 @@
 /* Abstract bitwise GPIO services */
 
-// $Id: gpiopins.h 3110 2011-10-06 13:25:49Z svn $
+// $Id$
 
 // Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
 //

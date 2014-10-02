@@ -1,6 +1,6 @@
 /* Initialize CPU core */
 
-// $Id: cpu.c 3016 2011-09-19 10:44:24Z svn $
+// $Id$
 
 // Copyright (C)2013-2014, Philip Munts, President, Munts AM Corp.
 //
@@ -22,7 +22,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-static const char revision[] = "$Id: cpu.c 3016 2011-09-19 10:44:24Z svn $";
+static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
