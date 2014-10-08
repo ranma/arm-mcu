@@ -167,4 +167,3 @@ include $(MCUDIR)/$(MCUFAMILY).mk
 
 # Include optional subordinate makefiles
 
-sinclude $(HOME)/src/include/subversion.mk
