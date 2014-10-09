@@ -164,6 +164,3 @@ include $(ARMSRC)/include/stlink.mk
 # Include MCU dependent makefile
 
 include $(MCUDIR)/$(MCUFAMILY).mk
-
-# Include optional subordinate makefiles
-
