@@ -65,6 +65,8 @@ static int pwm_timer_init(unsigned timer, unsigned frequency)
   return 0;
 }
 
+// Initialize PWM channel
+
 int pwm_init(unsigned channel, unsigned frequency)
 {
   errno_r = 0;
@@ -143,6 +145,8 @@ int pwm_init(unsigned channel, unsigned frequency)
   return 0;
 }
 
+// Set PWM output duty cycle, 16 bit resolution (0-65535)
+
 int pwm_set(unsigned channel, uint32_t value)
 {
   errno_r = 0;
@@ -177,8 +181,6 @@ int pwm_set(unsigned channel, uint32_t value)
       LPC_TMR32B0->MR2 = LPC_TMR32B0->MR3 - 1ULL*LPC_TMR32B0->MR3*value/65536;
       break;
 
-    // MR3 is used for setting the PWM period
-
     case 4 :	// CT32B1_MAT0 on P1.1
       LPC_TMR32B1->MR0 = LPC_TMR32B1->MR3 - 1ULL*LPC_TMR32B1->MR3*value/65536;
       break;
@@ -191,7 +193,81 @@ int pwm_set(unsigned channel, uint32_t value)
       LPC_TMR32B1->MR2 = LPC_TMR32B1->MR3 - 1ULL*LPC_TMR32B1->MR3*value/65536;
       break;
 
-    // MR3 is used for setting the PWM period
+    default :
+      errno_r = ENODEV;
+      return -1;
+  }
+
+  return 0;
+}
+
+// Set RC servo motor position, 1 clock resolution, -24000 to +24000 (1.0 to 2.0 ms)
+
+#define POSITION_MIN	48000
+#define POSITION_ZERO	72000
+#define POSITION_MAX	96000
+
+int servo_set(unsigned channel, int position)
+{
+  errno_r = 0;
+
+// Validate parameters
+
+#ifdef RASPBERRYPI_LPC1114
+  if ((channel < 4) || (channel > 6))
+  {
+    errno_r = ENODEV;
+    return -1;
+  }
+#endif
+
+  position += POSITION_ZERO;
+
+  if ((position < POSITION_MIN) || (position > POSITION_MAX))
+  {
+    errno_r = EINVAL;
+    return -1;
+  }
+
+// PWM frequency must be 50 Hz for RC servo motors!
+
+  if ((channel >= 0) && (channel <= 2) && (LPC_TMR32B0->MR3 != SystemCoreClock/50))
+  {
+    errno_r = EINVAL;
+    return -1;
+  }
+
+  if ((channel >= 4) && (channel <= 6) && (LPC_TMR32B1->MR3 != SystemCoreClock/50))
+  {
+    errno_r = EINVAL;
+    return -1;
+  }
+
+  switch (channel)
+  {
+    case 0 :	// CT32B0_MAT0 on P1.6
+      LPC_TMR32B0->MR0 = LPC_TMR32B0->MR3 - position;
+      break;
+
+    case 1 :	// CT32B1_MAT1 on P1.7
+      LPC_TMR32B0->MR1 = LPC_TMR32B0->MR3 - position;
+      break;
+
+    case 2 :	// CT32B2_MAT2 on P0.1
+      LPC_TMR32B0->MR2 = LPC_TMR32B0->MR3 - position;
+      break;
+
+    case 4 :	// CT32B1_MAT0 on P1.1
+      LPC_TMR32B1->MR0 = LPC_TMR32B1->MR3 - position;
+      break;
+
+    case 5 :	// CT32B1_MAT1 on P1.2
+      LPC_TMR32B1->MR1 = LPC_TMR32B1->MR3 - position;
+      break;
+
+    case 6 :	// CT32B1_MAT2 on P1.3
+      LPC_TMR32B1->MR2 = LPC_TMR32B1->MR3 - position;
+      break;
 
     default :
       errno_r = ENODEV;
