@@ -26,7 +26,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 OPENOCD_NAME	= openocd
-OPENOCD_VER	= 0.7.0
+OPENOCD_VER	= 0.8.0
 OPENOCD_SRC	= $(OPENOCD_NAME)-$(OPENOCD_VER)
 OPENOCD_TARBALL	= $(OPENOCD_SRC).tar.gz
 OPENOCD_DIST	= $(TEMP)/$(OPENOCD_TARBALL)
@@ -56,10 +56,7 @@ source.done: $(OPENOCD_DIST)
 # Compile OpenOCD
 
 compile.done: source.done
-	cd $(OPENOCD_SRC) ; ./configure --prefix=/usr/local --enable-ft2232_libftdi	\
-	--enable-usb_blaster_libftdi --enable-presto_libftdi --enable-usbprog		\
-	--enable-jlink --enable-vsllink --enable-rlink --enable-ulink			\
-	--enable-arm-jtag-ew --enable-buspirate --enable-stlink --enable-opendous	\
+	cd $(OPENOCD_SRC) ; ./configure --prefix=/usr/local --enable-ftdi --enable-legacy-ft2232_libftdi --enable-buspirate
 	$(EXTRACONFIG)
 	$(MAKE) -C $(OPENOCD_SRC)
 	$(MAKE) -C $(OPENOCD_SRC) docs
