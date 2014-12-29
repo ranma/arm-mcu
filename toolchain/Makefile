@@ -31,21 +31,21 @@ FIND		= find
 TAR		= tar
 TEMP		= /tmp
 
-BINUTILVER	= 2.24
+BINUTILVER	= 2.25
 BINUTILSERVER	= http://ftp.gnu.org/pub/gnu/binutils
 BINUTILDIST	= $(TEMP)/binutils-$(BINUTILVER).tar.bz2
 BINUTILURL	= $(BINUTILSERVER)/`basename $(BINUTILDIST)`
 BINUTILSRC	= binutils-$(BINUTILVER)
 BINUTILBLD	= build/binutils-$(BINUTILVER)
 
-GCCVER		= 4.8.3
+GCCVER		= 4.8.4
 GCCSERVER	= http://ftp.gnu.org/pub/gnu/gcc/gcc-$(GCCVER)
 GCCDIST		= $(TEMP)/gcc-$(GCCVER).tar.bz2
 GCCURL		= $(GCCSERVER)/`basename $(GCCDIST)`
 GCCSRC		= gcc-$(GCCVER)
 GCCBLD		= build/gcc-$(GCCVER)
 
-NEWLIBVER	= 2.1.0
+NEWLIBVER	= 2.2.0
 NEWLIBSERVER	= http://mirrors.kernel.org/sources.redhat.com/newlib
 NEWLIBDIST	= $(TEMP)/newlib-$(NEWLIBVER).tar.gz
 NEWLIBURL	= $(NEWLIBSERVER)/`basename $(NEWLIBDIST)`
@@ -56,7 +56,7 @@ LIBMPDFURL	= $(NEWLIBSERVER)/libm.pdf
 LIBCPDF		= $(TEMP)/libc.pdf
 LIBMPDF		= $(TEMP)/libm.pdf
 
-GDBVER		= 7.8
+GDBVER		= 7.8.1
 GDBSERVER	= http://ftp.gnu.org/gnu/gdb
 GDBDIST		= $(TEMP)/gdb-$(GDBVER).tar.gz
 GDBURL		= $(GDBSERVER)/`basename $(GDBDIST)`
@@ -129,13 +129,13 @@ binutils.done: source.done
 
 $(GCCDIST):
 	wget -nv -P $(TEMP) $(GCCURL)
-
+ 
 # Compile gcc
 
 gcc.done: binutils.done
 	rm -rf $(GCCBLD)
 	mkdir -p $(GCCBLD)
-	cd $(GCCBLD) && ../../$(GCCSRC)/configure --prefix=$(INSTBASE) --target=$(TARGETNAME) --with-march=armv4t --with-float=soft --enable-interwork --enable-multilib --enable-lto --disable-nls --disable-shared --disable-werror --enable-languages=c,c++ --disable-libssp --disable-libgomp --with-newlib --disable-libgloss --disable-newlib-supplied-syscalls --with-system-zlib $(GCCEXTRACONFIG)
+	cd $(GCCBLD) && ../../$(GCCSRC)/configure --prefix=$(INSTBASE) --target=$(TARGETNAME) --with-march=armv4t --with-float=soft --enable-interwork --enable-multilib --enable-lto --disable-nls --disable-shared --disable-werror --enable-languages=c,c++ --disable-libssp --disable-libgomp --with-newlib --disable-newlib-libgloss --disable-newlib-supplied-syscalls --disable-mb --disable-newlib-wide-orient --disable-newlib-multithread --disable-newlib-iconv --enable-newlib-global-atexit --enable-newlib-reent-small --enable-newlib-nano-malloc --enable-newlib-nano-formatted-io --with-system-zlib $(GCCEXTRACONFIG)
 	export PATH=$$PATH':'$(INSTBASE)/bin && $(MAKE) $(MAKEJOBS) -C $(GCCBLD)
 	export PATH=$$PATH':'$(INSTBASE)/bin && $(MAKE) -C $(GCCBLD) install
 	touch gcc.done
