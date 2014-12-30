@@ -27,14 +27,20 @@ STLINKSRC	= stlink
 STLINKFLASH	= stlink-flash
 STLINKGDB	= stlink-gdbserver
 
-FAKEROOT	= fakeroot
 LIBUSBCFLAGS	= -DLIBUSB_CALL='' $(shell pkg-config --cflags libusb-1.0)
 INSTALLDIR	= /usr/local/bin
 
-OSNAME		= debian7
 PKGNAME		= texane-stlink
 PKGVERSION	= $(shell awk '/PACKAGE_VERSION=/ { print substr($$1, 18, length($$1)-18); }' $(STLINKSRC)/configure)
+ifeq ($(shell uname), Darwin)
+OSNAME		= MacOS
+PKGARCH		= $(shell dpkg --print-installation-architecture)
+SED		= sed -i ''
+else
+OSNAME		= debian7
 PKGARCH		= $(shell dpkg --print-architecture)
+SED		= sed -i
+endif
 PKGDIR		= $(PKGNAME)-$(PKGVERSION)-$(OSNAME)-$(PKGARCH)
 PKGFILE		= $(PKGDIR).deb
 
@@ -70,13 +76,18 @@ uninstall:
 deb: $(STLINKFLASH)
 	mkdir -p					$(PKGDIR)/DEBIAN
 	install -cm 0644 control.template		$(PKGDIR)/DEBIAN/control
-	sed -i'' 's/@@ARCH@@/$(PKGARCH)/g'		$(PKGDIR)/DEBIAN/control
-	sed -i'' 's/@@NAME@@/$(PKGNAME)/g'		$(PKGDIR)/DEBIAN/control
-	sed -i'' 's/@@VERSION@@/$(PKGVERSION)/g'	$(PKGDIR)/DEBIAN/control
+	$(SED) 's/@@ARCH@@/$(PKGARCH)/g'		$(PKGDIR)/DEBIAN/control
+	$(SED) 's/@@NAME@@/$(PKGNAME)/g'		$(PKGDIR)/DEBIAN/control
+	$(SED) 's/@@VERSION@@/$(PKGVERSION)/g'		$(PKGDIR)/DEBIAN/control
 	mkdir -p					$(PKGDIR)/$(INSTALLDIR)
 	install -csm 0555 $(STLINKFLASH)		$(PKGDIR)/$(INSTALLDIR)
 	install -csm 0555 $(STLINKGDB)			$(PKGDIR)/$(INSTALLDIR)
-	$(FAKEROOT) dpkg-deb --build $(PKGDIR)
+ifeq ($(shell uname), Darwin)
+	chown -R 0:0 $(PKGDIR)
+	dpkg-deb --build $(PKGDIR)
+else
+	fakeroot dpkg-deb --build $(PKGDIR)
+endif
 
 # Clean out working files
 
