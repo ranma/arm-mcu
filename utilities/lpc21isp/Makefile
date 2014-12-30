@@ -25,7 +25,7 @@
 LPC21ISP_NAME	= lpc21isp
 LPC21ISP_URL	= http://github.com/capiman/lpc21isp.git
 LPC21ISP_DIR	= lpc21isp.src
-LPC21ISP_VER	= $(shell awk '/define VERSION_STR/ { print $$3 }' $(LPC21ISP_DIR)/lpc21isp.c)
+LPC21ISP_VER	= $(shell awk '/define VERSION_STR/ { print substr($$3, 2, length($$3)-2); }' $(LPC21ISP_DIR)/lpc21isp.c)
 LPC21ISP_PROG	= $(LPC21ISP_NAME)
 
 CC		= $(CROSS_COMPILE)gcc
@@ -50,7 +50,6 @@ $(LPC21ISP_DIR):
 # Compile lpc21isp
 
 $(LPC21ISP_PROG): $(LPC21ISP_DIR)
-	echo VERSION is $(LPC21ISP_VER)
 	$(MAKE) -C $(LPC21ISP_DIR) CC=$(CC) CFLAGS=$(CFLAGS)
 	cp $(LPC21ISP_DIR)/$(LPC21ISP_PROG) $(LPC21ISP_PROG)
 
