@@ -24,10 +24,6 @@
 
 static const char revision[] = "$Id$";
 
-#ifdef CONIO_STDIO
-#error This program cannot use the lightweight console I/O library
-#endif
-
 #ifndef WIZNET
 #error You must define WIZNET to compile this application
 #endif
