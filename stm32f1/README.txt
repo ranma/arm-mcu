@@ -30,12 +30,6 @@ Other Devices
 
    stm32f1xxxx.ld The RAM and ROM sizes must match the device.
 
-Notes
-
-   The limited amount of RAM available in the STM32F100RB on the STM32
-   Value Line Discovery board requires using the conio facility instead of
-   stdio, so -DCONIO_STDIO is defined in stm32f1.mk.
-
 Test Platform
 
    This framework is validated on the [2]Olimex STM32-P103, [3]Olimex

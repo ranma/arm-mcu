@@ -23,12 +23,6 @@ Other Devices
 
    lpc11xxxx.ld The RAM size may need be changed.
 
-Notes
-
-   The limited amount of RAM available in these devices requires using the
-   conio I/O facility instead of stdio, so -DCONIO_STDIO is defined in
-   lpc11xx.mk.
-
 Test Platform
 
    This framework is validated on the [4]Raspberry Pi LPC1114 I/O
