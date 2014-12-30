@@ -31,10 +31,6 @@
 #include <serial.h>
 #include <at91lib/AT91SAM7S.h>
 
-#ifdef CONIO_STDIO
-#include <conio.h>
-#endif
-
 #define DEFAULT_CPU_FREQ	0
 
 _BEGIN_STD_C

@@ -32,10 +32,6 @@
 #include <serial.h>
 #include <LPC23xx.h>
 
-#ifdef CONIO_STDIO
-#include <conio.h>
-#endif
-
 #define DEFAULT_CPU_FREQ	0
 
 _BEGIN_STD_C

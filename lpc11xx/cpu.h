@@ -38,10 +38,6 @@
 #include <LPC11xx.h>
 #include <system_LPC11xx.h>
 
-#ifdef CONIO_STDIO
-#include <conio.h>
-#endif
-
 #define DEFAULT_CPU_FREQ	0
 
 // The following constants _should_ be defined in LPC11xx.h
