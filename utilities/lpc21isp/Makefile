@@ -30,10 +30,10 @@ LPC21ISP_PROG	= $(LPC21ISP_NAME)
 
 CC		= $(CROSS_COMPILE)gcc
 CFLAGS		= -Wall
+FAKEROOT	= fakeroot
+INSTALLDIR	= /usr/local/bin
 
-INSTALLDIR	?= /usr/local/bin
-
-OSNAME		?= debian7
+OSNAME		= debian7
 PKGNAME		= $(LPC21ISP_NAME)
 PKGVERSION	= $(LPC21ISP_VER)
 PKGARCH		= `dpkg --print-architecture`
@@ -88,7 +88,7 @@ deb: fakeroot
 	sed -i'' s/@@NAME@@/$(PKGNAME)/g		$(PKGDIR)/DEBIAN/control
 	sed -i'' s/@@VERSION@@/$(PKGVERSION)/g		$(PKGDIR)/DEBIAN/control
 	cp -R -P -p fakeroot/* $(PKGDIR)
-	dpkg-deb --build $(PKGDIR)
+	fakeroot dpkg-deb --build $(PKGDIR)
 
 # Clean out working files
 
