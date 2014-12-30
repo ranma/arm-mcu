@@ -24,14 +24,21 @@
 
 STLINKURL	= http://github.com/texane/stlink.git
 STLINKSRC	= stlink
-STLINKGDB	= stlink-gdbserver
 STLINKFLASH	= stlink-flash
+STLINKGDB	= stlink-gdbserver
 
-LIBUSBCFLAGS	?= -DLIBUSB_CALL='' $(shell pkg-config --cflags libusb-1.0)
+FAKEROOT	= fakeroot
+LIBUSBCFLAGS	= -DLIBUSB_CALL='' $(shell pkg-config --cflags libusb-1.0)
+INSTALLDIR	= /usr/local/bin
 
-INSTALLDIR	?= /usr/local/bin
+OSNAME		= debian7
+PKGNAME		= texane-stlink
+PKGVERSION	= $(shell awk '/PACKAGE_VERSION=/ { print substr($$1, 18, length($$1)-18); }' $(STLINKSRC)/configure)
+PKGARCH		= $(shell dpkg --print-architecture)
+PKGDIR		= $(PKGNAME)-$(PKGVERSION)-$(OSNAME)-$(PKGARCH)
+PKGFILE		= $(PKGDIR).deb
 
-default: $(STLINKGDB)
+default: $(STLINKFLASH)
 
 # Download stlink-gdbserver source distribution
 
@@ -41,28 +48,40 @@ $(STLINKSRC):
 
 # Compile stlink-gdbserver
 
-$(STLINKGDB): $(STLINKSRC)
+$(STLINKFLASH): $(STLINKSRC)
 	$(MAKE) -C $(STLINKSRC)
-	cp $(STLINKSRC)/st-util				$(STLINKGDB)
 	cp $(STLINKSRC)/st-flash			$(STLINKFLASH)
+	cp $(STLINKSRC)/st-util				$(STLINKGDB)
 
-# Install stlink-gdbserver
+# Install programs
 
-install:
-	install -csm 0555 $(STLINKGDB)			$(INSTALLDIR)
+install: $(STLINKFLASH)
 	install -csm 0555 $(STLINKFLASH)		$(INSTALLDIR)
+	install -csm 0555 $(STLINKGDB)			$(INSTALLDIR)
 
-# Uninstall stlink-gdbserver
+# Uninstall programs
 
 uninstall:
 	-rm $(INSTALLDIR)/$(STLINKGDB)
 	-rm $(INSTALLDIR)/$(STLINKFLASH)
 
+# Create Debian package file
+
+deb: $(STLINKFLASH)
+	mkdir -p					$(PKGDIR)/DEBIAN
+	install -cm 0644 control.template		$(PKGDIR)/DEBIAN/control
+	sed -i'' 's/@@ARCH@@/$(PKGARCH)/g'		$(PKGDIR)/DEBIAN/control
+	sed -i'' 's/@@NAME@@/$(PKGNAME)/g'		$(PKGDIR)/DEBIAN/control
+	sed -i'' 's/@@VERSION@@/$(PKGVERSION)/g'	$(PKGDIR)/DEBIAN/control
+	mkdir -p					$(PKGDIR)/$(INSTALLDIR)
+	install -csm 0555 $(STLINKFLASH)		$(PKGDIR)/$(INSTALLDIR)
+	install -csm 0555 $(STLINKGDB)			$(PKGDIR)/$(INSTALLDIR)
+	$(FAKEROOT) dpkg-deb --build $(PKGDIR)
+
 # Clean out working files
 
 clean:
-	-rm $(STLINKGDB)
-	-rm $(STLINKFLASH)
+	-rm -rf $(STLINKFLASH) $(STLINKGDB) $(PKGDIR) $(PKGFILE)
 	-$(MAKE) -C $(STLINKSRC) clean
 
 reallyclean: clean
