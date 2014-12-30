@@ -151,11 +151,4 @@ int device_stat(int fd, struct stat *st);
 #define cputs(s)	device_write(1, s, strlen(s))
 
 _END_STD_C
-
-// Lightweight console I/O library
-
-#ifdef CONIO_STDIO
-#include <conio.h>
-#endif
-
 #endif

@@ -36,14 +36,9 @@
 
 #include <semihosting.h>
 
-#ifdef CONIO_STDIO
-_BEGIN_STD_C
-extern int lightweight_errno;
-_END_STD_C
-#define errno_r			lightweight_errno
-#else
+// Define errno
+
 #define errno_r			(*(__errno()))
-#endif
 
 // Define compiler string
 
@@ -65,6 +60,8 @@ _END_STD_C
 #define __ABI__			"ELF"
 #endif
 
+// Integer I/O
+
 #ifdef INTEGER_STDIO
 #define printf(...)		iprintf(__VA_ARGS__)
 #define fprintf(...)		fiprintf(__VA_ARGS__)
@@ -77,4 +74,11 @@ _END_STD_C
 #define sscanf(...)		siscanf(__VA_ARGS__)
 #define fscanf(...)		fiscanf(__VA_ARGS__)
 #endif
+
+// Lightweight console I/O
+
+#ifdef CONIO_STDIO
+#include <conio.h>
+#endif
+
 #endif
