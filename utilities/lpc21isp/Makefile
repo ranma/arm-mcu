@@ -28,19 +28,17 @@ LPC21ISP_DIR	= lpc21isp.src
 LPC21ISP_VER	= $(shell awk '/define VERSION_STR/ { print $$3 }' $(LPC21ISP_DIR)/lpc21isp.c)
 LPC21ISP_PROG	= $(LPC21ISP_NAME)
 
-OSNAME		= debian7
+CC		= $(CROSS_COMPILE)gcc
+CFLAGS		= -Wall
+
+INSTALLDIR	?= /usr/local/bin
+
+OSNAME		?= debian7
 PKGNAME		= $(LPC21ISP_NAME)
 PKGVERSION	= $(LPC21ISP_VER)
 PKGARCH		= `dpkg --print-architecture`
 PKGDIR		= $(PKGNAME)-$(PKGVERSION)-$(OSNAME)-$(PKGARCH)
 PKGFILE		= $(PKGDIR).deb
-
-CC		= $(CROSS_COMPILE)gcc
-CFLAGS		= -Wall
-
-INSTALLDIR	= /usr/local/bin
-
-.PHONY: default install uninstall clean reallyclean distclean
 
 default: $(LPC21ISP_PROG)
 
@@ -86,9 +84,9 @@ rpm: specfile
 deb: fakeroot
 	mkdir -p $(PKGDIR)/DEBIAN
 	install -cm 0444 control.template		$(PKGDIR)/DEBIAN/control
-	sed -i '' s/@@ARCH@@/$(PKGARCH)/g		$(PKGDIR)/DEBIAN/control
-	sed -i '' s/@@NAME@@/$(PKGNAME)/g		$(PKGDIR)/DEBIAN/control
-	sed -i '' s/@@VERSION@@/$(PKGVERSION)/g		$(PKGDIR)/DEBIAN/control
+	sed -i'' s/@@ARCH@@/$(PKGARCH)/g		$(PKGDIR)/DEBIAN/control
+	sed -i'' s/@@NAME@@/$(PKGNAME)/g		$(PKGDIR)/DEBIAN/control
+	sed -i'' s/@@VERSION@@/$(PKGVERSION)/g		$(PKGDIR)/DEBIAN/control
 	cp -R -P -p fakeroot/* $(PKGDIR)
 	dpkg-deb --build $(PKGDIR)
 
