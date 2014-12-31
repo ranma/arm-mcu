@@ -72,6 +72,13 @@ else
 TARBALL		= $(PKGNAME)-$(VERSION)-$(shell uname -s)-$(shell uname -m).tgz
 endif
 
+ifeq ($(shell uname), Darwin)
+GCCEXTRACONFIG	+= --with-gmp=/sw
+GCCEXTRACONFIG	+= --with-mpc=/sw
+GCCEXTRACONFIG	+= --with-mpfr=/sw
+GCCEXTRACONFIG	+= --with-libiconv-prefix=/sw
+endif
+
 ifeq ($(shell uname), OpenBSD)
 GCCEXTRACONFIG	+= --with-gmp=/usr/local
 GCCEXTRACONFIG	+= --with-mpc=/usr/local
@@ -80,8 +87,15 @@ PACKAGENAME	= $(PKGNAME)-$(VERSION).tgz
 TAR		= gtar
 endif
 
+ifeq ($(shell uname), Darwin)
+OSNAME		= MacOS
+PKGARCH		= $(shell dpkg --print-installation-architecture)
+SED		= sed -i ''
+else
 OSNAME		= debian7
-PKGARCH		= `dpkg --print-architecture`
+PKGARCH		= $(shell dpkg --print-architecture)
+SED		= sed -i
+endif
 PKGDIR		= $(PKGNAME)-$(VERSION)-$(OSNAME)-$(PKGARCH)
 PKGFILE		= $(PKGDIR).deb
 
@@ -212,28 +226,30 @@ endif
 
 ################################################################################
 
-# Create Linux .deb package
+# Create Debian package
 
-ifeq ($(shell uname), Linux)
 deb: readme.done
 	mkdir -p					$(PKGDIR)/DEBIAN
 	mkdir -p					$(PKGDIR)/usr/local
 	install -cm 0444 control.template		$(PKGDIR)/DEBIAN/control
-	sed -i s/@@ARCH@@/$(PKGARCH)/g			$(PKGDIR)/DEBIAN/control
-	sed -i s/@@NAME@@/$(PKGNAME)/g			$(PKGDIR)/DEBIAN/control
-	sed -i s/@@VERSION@@/$(VERSION)/g		$(PKGDIR)/DEBIAN/control
-	sed -i /Version:/s/_/-/g			$(PKGDIR)/DEBIAN/control
+	$(SED) s/@@ARCH@@/$(PKGARCH)/g			$(PKGDIR)/DEBIAN/control
+	$(SED) s/@@NAME@@/$(PKGNAME)/g			$(PKGDIR)/DEBIAN/control
+	$(SED) s/@@VERSION@@/$(VERSION)/g		$(PKGDIR)/DEBIAN/control
+	$(SED) /Version:/s/_/-/g			$(PKGDIR)/DEBIAN/control
 	cp -R -P -p $(PKGNAME)				$(PKGDIR)/usr/local
 	chmod -R ugo-w					$(PKGDIR)/usr/local
+ifeq ($(shell uname), Darwin)
+	chown -R 0:0					$(PKGDIR)/usr/local
+	dpkg-deb --build				$(PKGDIR)
+else
 	fakeroot dpkg-deb --build			$(PKGDIR)
-	chmod -R ugo+w					$(PKGDIR)/usr/local
 endif
+	chmod -R ugo+w					$(PKGDIR)/usr/local
 
 ################################################################################
 
-# Create Linux RPM package
+# Create RPM package
 
-ifeq ($(shell uname), Linux)
 fakeroot: readme.done
 	mkdir -p fakeroot/usr/local
 	cp -R -P -p $(PKGNAME) fakeroot/usr/local
@@ -247,14 +263,12 @@ specfile: specfile.template fakeroot
 rpm: specfile
 	rpmbuild --buildroot=`pwd`/fakeroot --define="_topdir `pwd`/rpmbuild" -bb specfile
 	cp rpmbuild/RPMS/*/*.rpm .
-endif
 
 ################################################################################
 
 # Create OpenBSD package
 
 ifeq ($(shell uname), OpenBSD)
-
 fakeroot: readme.done
 	mkdir -p fakeroot/usr/local
 	cp -R -P -p $(PKGNAME) fakeroot/usr/local
