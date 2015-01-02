@@ -31,6 +31,10 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
+#ifndef FLOATIO
+#error This program requires the floating point I/O library (WITH_FLOATIO=yes)
+#endif
+
 int main(void)
 {
   float x, y;

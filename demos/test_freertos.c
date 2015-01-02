@@ -25,7 +25,7 @@
 static const char revision[] = "$Id$";
 
 #ifndef FREERTOS
-#error You must define FREERTOS to compile this FreeRTOS application
+#error You must define FREERTOS to compile this FreeRTOS application (WITH_FREERTOS=yes)
 #endif
 
 #include <assert.h>
