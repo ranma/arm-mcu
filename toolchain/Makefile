@@ -250,6 +250,7 @@ endif
 
 # Create RPM package
 
+ifeq ($(shell uname), Linux)
 fakeroot: readme.done
 	mkdir -p fakeroot/usr/local
 	cp -R -P -p $(PKGNAME) fakeroot/usr/local
@@ -263,6 +264,7 @@ specfile: specfile.template fakeroot
 rpm: specfile
 	rpmbuild --buildroot=`pwd`/fakeroot --define="_topdir `pwd`/rpmbuild" -bb specfile
 	cp rpmbuild/RPMS/*/*.rpm .
+endif
 
 ################################################################################
 
