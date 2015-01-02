@@ -128,6 +128,26 @@ ARM_mk_default:
 COMMON_DIR	= $(ARMSRC)/common
 include $(COMMON_DIR)/common.mk
 
+# Support for lightweight console I/O library
+
+ifeq ($(WITH_CONIO), yes)
+IOFLAGS += -DCONIO_STDIO
+endif
+
+# Support for floating point I/O
+
+ifeq ($(WITH_FLOATINPUT), yes)
+IOFLAGS	+= -DFLOATIO -u _scanf_float
+endif
+
+ifeq ($(WITH_FLOATOUTPUT), yes)
+IOFLAGS	+= -DFLOATIO -u _printf_float
+endif
+
+ifeq ($(WITH_FLOATIO), yes)
+IOFLAGS	+= -DFLOATIO -u _printf_float -u _scanf_float
+endif
+
 # Support for FreeRTOS
 
 ifeq ($(WITH_FREERTOS), yes)
