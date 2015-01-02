@@ -83,7 +83,6 @@ ifeq ($(shell uname), OpenBSD)
 GCCEXTRACONFIG	+= --with-gmp=/usr/local
 GCCEXTRACONFIG	+= --with-mpc=/usr/local
 GCCEXTRACONFIG	+= --with-mpfr=/usr/local
-PACKAGENAME	= $(PKGNAME)-$(VERSION).tgz
 TAR		= gtar
 endif
 
@@ -228,7 +227,7 @@ endif
 
 # Create Debian package
 
-deb: readme.done
+package.deb: readme.done
 	mkdir -p					$(PKGDIR)/DEBIAN
 	mkdir -p					$(PKGDIR)/usr/local
 	install -cm 0444 control.template		$(PKGDIR)/DEBIAN/control
@@ -250,55 +249,51 @@ endif
 
 # Create RPM package
 
-ifeq ($(shell uname), Linux)
-fakeroot: readme.done
-	mkdir -p fakeroot/usr/local
-	cp -R -P -p $(PKGNAME) fakeroot/usr/local
+fakeroot.rpm: readme.done
+	mkdir -p fakeroot.rpm/usr/local
+	cp -R -P -p $(PKGNAME) fakeroot.rpm/usr/local
 
-specfile: specfile.template fakeroot
+specfile: specfile.template fakeroot.rpm
 	sed s/@@PKGNAME@@/$(PKGNAME)/g <specfile.template | sed s/@@VERSION@@/$(VERSION)/g | sed s/@@RELEASE@@/$(RELEASE)/g >specfile
-	$(FIND) fakeroot/usr/local/$(PKGNAME) -type d | awk '{ printf("%%dir /%s\n", substr($$1, 10)); }' >>specfile
-	$(FIND) fakeroot/usr/local/$(PKGNAME) -type f | cut -c 9- >>specfile
-	$(FIND) fakeroot/usr/local/$(PKGNAME) -type l | cut -c 9- >>specfile
+	$(FIND) fakeroot.rpm/usr/local/$(PKGNAME) -type d | awk '{ printf("%%dir /%s\n", substr($$1, 14)); }' >>specfile
+	$(FIND) fakeroot.rpm/usr/local/$(PKGNAME) -type f | cut -c 13- >>specfile
+	$(FIND) fakeroot.rpm/usr/local/$(PKGNAME) -type l | cut -c 13- >>specfile
 
-rpm: specfile
-	rpmbuild --buildroot=`pwd`/fakeroot --define="_topdir `pwd`/rpmbuild" -bb specfile
+package.rpm: specfile
+	rpmbuild --buildroot=`pwd`/fakeroot.rpm --define="_topdir `pwd`/rpmbuild" -bb specfile
 	cp rpmbuild/RPMS/*/*.rpm .
-endif
 
 ################################################################################
 
 # Create OpenBSD package
 
-ifeq ($(shell uname), OpenBSD)
-fakeroot: readme.done
-	mkdir -p fakeroot/usr/local
-	cp -R -P -p $(PKGNAME) fakeroot/usr/local
+fakeroot.openbsd: readme.done
+	mkdir -p fakeroot.openbsd/usr/local
+	cp -R -P -p $(PKGNAME) fakeroot.openbsd/usr/local
 # Why aren't these links already created on OpenBSD?
-	ln -s liblto_plugin.so.0.0 fakeroot/usr/local/$(PKGNAME)/libexec/gcc/arm-none-eabi/$(GCCVER)/liblto_plugin.so
-	ln -s liblto_plugin.so.0.0 fakeroot/usr/local/$(PKGNAME)/libexec/gcc/arm-none-eabi/$(GCCVER)/liblto_plugin.so.0
+	ln -s liblto_plugin.so.0.0 fakeroot.openbsd/usr/local/$(PKGNAME)/libexec/gcc/arm-none-eabi/$(GCCVER)/liblto_plugin.so
+	ln -s liblto_plugin.so.0.0 fakeroot.openbsd/usr/local/$(PKGNAME)/libexec/gcc/arm-none-eabi/$(GCCVER)/liblto_plugin.so.0
 
-CONTENTS: fakeroot
+CONTENTS: fakeroot.openbsd
 	echo "@owner root"				>CONTENTS
 	echo "@group wheel"				>>CONTENTS
 	echo "@mode -w"					>>CONTENTS
 	echo "@cwd /usr/local"				>>CONTENTS
-	find fakeroot/usr/local/$(PKGNAME) -type d | awk '{ printf("@dir %s\n", substr($$1, 20)); }' >>CONTENTS
-	find fakeroot -type f | cut -c 20- | sort	>>CONTENTS
-	find fakeroot -type l | awk '{ printf("echo %s `readlink %s`\n", $$1, $$1); }' | sh | \
-	awk '{ printf("@exec ln -s %s %s\n", $$2, substr($$1,9)); }'            >>CONTENTS
-	find fakeroot -type l | awk '{ printf("@unexec rm %s\n", substr($$1, 9)); }' >>CONTENTS
+	find fakeroot.openbsd/usr/local/$(PKGNAME) -type d | awk '{ printf("@dir %s\n", substr($$1, 28)); }' >>CONTENTS
+	find fakeroot.openbsd -type f | cut -c 28- | sort	>>CONTENTS
+	find fakeroot.openbsd -type l | awk '{ printf("echo %s `readlink %s`\n", $$1, $$1); }' | sh | \
+	awk '{ printf("@exec ln -s %s %s\n", $$2, substr($$1,17)); }'            >>CONTENTS
+	find fakeroot.openbsd -type l | awk '{ printf("@unexec rm %s\n", substr($$1, 17)); }' >>CONTENTS
 
 COMMENT:
 	echo "ARM Microcontroller Toolchain"		>COMMENT
 
-$(PACKAGENAME): CONTENTS COMMENT
-	pkg_create -A `uname -m` -f CONTENTS -D COMMENT="`cat COMMENT`" -d COMMENT -p / -B fakeroot $(PACKAGENAME)
+$(PKGNAME)-$(VERSION).tgz: CONTENTS COMMENT
+	pkg_create -A `uname -m` -f CONTENTS -D COMMENT="`cat COMMENT`" -d COMMENT -p / -B fakeroot.openbsd $(PKGNAME)-$(VERSION).tgz
 	@-rm CONTENTS
 	@-rm COMMENT
 
-package: $(PACKAGENAME)
-endif
+package.openbsd: $(PKGNAME)-$(VERSION).tgz
 
 ################################################################################
 
@@ -310,6 +305,6 @@ clean:
 	rm -rf $(GCCSRC)
 	rm -rf $(NEWLIBSRC)
 	rm -rf $(GDBSRC)
-	rm -rf build fakeroot specfile rpmbuild *.done *.deb *.rpm *.tgz $(PKGDIR)
+	rm -rf build fakeroot.* specfile rpmbuild *.done *.deb *.rpm *.tgz $(PKGDIR)
 
 distclean: clean
