@@ -34,10 +34,10 @@
 
 _BEGIN_STD_C
 
+#ifndef MAX_DEVICES
 #ifdef CONIO_STDIO
 #define MAX_DEVICES		2
 #else
-#ifndef MAX_DEVICES
 #define MAX_DEVICES		16
 #endif
 #endif
