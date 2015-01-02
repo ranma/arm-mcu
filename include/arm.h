@@ -60,21 +60,6 @@
 #define __ABI__			"ELF"
 #endif
 
-// Integer I/O
-
-#ifdef INTEGER_STDIO
-#define printf(...)		iprintf(__VA_ARGS__)
-#define fprintf(...)		fiprintf(__VA_ARGS__)
-#define sprintf(...)		siprintf(__VA_ARGS__)
-#define snprintf(...)		sniprintf(__VA_ARGS__)
-#define asprintf(...)		asiprintf(__VA_ARGS__)
-#define asnprintf(...)		asniprintf(__VA_ARGS__)
-
-#define scanf(...)		iscanf(__VA_ARGS__)
-#define sscanf(...)		siscanf(__VA_ARGS__)
-#define fscanf(...)		fiscanf(__VA_ARGS__)
-#endif
-
 // Lightweight console I/O
 
 #ifdef CONIO_STDIO

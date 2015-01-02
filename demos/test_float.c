@@ -24,8 +24,6 @@
 
 static const char revision[] = "$Id$";
 
-#undef INTEGER_STDIO
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
