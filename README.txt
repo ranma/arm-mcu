@@ -160,11 +160,17 @@ News
        support for arm-elf toolchains. Cleaned up the multilibs patch.
      * 24 September 2014 -- Upgraded FreeRTOS to 8.1.2. Removed LWIP.
      * 4 December 2014 -- Upgraded OpenOCD to 0.8.0.
+     * 5 January 2015 -- Upgraded binutils to 2.25, gcc to 4.9.2, newlib
+       to 2.2.0, and gdb to 7.8.1. With newlib 2.2.0, the INTEGER_STDIO
+       and CONIO_STDIO options are no longer needed. CONIO_STDIO is still
+       supported, mostly for other tool chains such as [14]GCC ARM
+       Embedded. It is enabled by adding WITH_CONIO=yes to the make
+       command line options.
 
 Git Repository
 
-   The source code is hosted on [14]SourceForge at
-   [15]http://sourceforge.net/p/arm-mcu/code.
+   The source code is hosted on [15]SourceForge at
+   [16]http://sourceforge.net/p/arm-mcu/code.
 
    Use one of the following commands to clone it:
 git clone --depth 1 git://git.code.sf.net/p/arm-mcu/code  ARM
@@ -198,7 +204,7 @@ POSSIBILITY OF SUCH DAMAGE.
    respective authors.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [16]phil@munts.net
+   Questions or comments to Philip Munts [17]phil@munts.net
 
    $Id$
 
@@ -220,6 +226,7 @@ References
   11. http://sourceforge.net/
   12. http://www.openbsd.org/
   13. http://www.mikroe.com/mini/stm32
-  14. http://sourceforge.net/
-  15. http://sourceforge.net/p/arm-mcu/code
-  16. mailto:phil@munts.net
+  14. https://launchpad.net/gcc-arm-embedded
+  15. http://sourceforge.net/
+  16. http://sourceforge.net/p/arm-mcu/code
+  17. mailto:phil@munts.net
