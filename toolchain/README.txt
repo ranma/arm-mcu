@@ -4,13 +4,14 @@
    for Linux, OpenBSD, and Windows (using Cygwin). The Linux, OpenBSD, and
    Windows releases are virtually identical in every respect. (This is the
    reason I created my own toolchain: I routinely flip back and forth
-   among Linux, OpenBSD, and Windows development environments.)
+   among Linux, MacOS (with [1]Fink), OpenBSD, and Windows development
+   environments.)
 
    My toolchain builds multilibs for the various Cortex-Mx devices,
    including hardware floating point for the Cortex-M4.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [1]phil@munts.net
+   Questions or comments to Philip Munts [2]phil@munts.net
 
    $Id$
 
@@ -19,4 +20,5 @@
 
 References
 
-   1. mailto:phil@munts.net
+   1. http://www.finkproject.org/
+   2. mailto:phil@munts.net
