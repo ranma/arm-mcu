@@ -27,6 +27,8 @@ TARGETNAME	= arm-none-eabi
 PKGNAME		= arm-mcu-tools
 INSTBASE	= $(shell pwd)/$(PKGNAME)
 
+CC		= gcc
+CXX		= g++
 FIND		= find
 TAR		= tar
 TEMP		= /tmp
@@ -45,12 +47,17 @@ GCCURL		= $(GCCSERVER)/`basename $(GCCDIST)`
 GCCSRC		= gcc-$(GCCVER)
 GCCBLD		= build/gcc-$(GCCVER)
 
+LIBICONVVER	= 1.14
+LIBICONVSERVER	= http://ftp.gnu.org/pub/gnu/libiconv
+LIBICONVDIST	= $(TEMP)/libiconv-$(LIBICONVVER).tar.gz
+LIBICONVURL	= $(LIBICONVSERVER)/`basename $(LIBICONVDIST)`
+LIBICONVSRC	= libiconv-$(LIBICONVVER)
+
 NEWLIBVER	= 2.2.0
 NEWLIBSERVER	= http://mirrors.kernel.org/sources.redhat.com/newlib
 NEWLIBDIST	= $(TEMP)/newlib-$(NEWLIBVER).tar.gz
 NEWLIBURL	= $(NEWLIBSERVER)/`basename $(NEWLIBDIST)`
 NEWLIBSRC	= newlib-$(NEWLIBVER)
-NEWLIBBLD	= build/newlib-$(NEWLIBVER)
 LIBCPDFURL	= $(NEWLIBSERVER)/libc.pdf
 LIBMPDFURL	= $(NEWLIBSERVER)/libm.pdf
 LIBCPDF		= $(TEMP)/libc.pdf
@@ -67,36 +74,39 @@ VERSION		= $(BINUTILVER)_$(GCCVER)_$(NEWLIBVER)_$(GDBVER)
 RELEASE		= 1
 
 ifeq ($(findstring CYGWIN, $(shell uname)), CYGWIN)
-TARBALL		= $(PKGNAME)-$(VERSION)-cygwin.tgz
-else
-TARBALL		= $(PKGNAME)-$(VERSION)-$(shell uname -s)-$(shell uname -m).tgz
+PKGSUFFIX	= cygwin
+TARBALL		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX).tgz
+TAROWNER	=
+TARGROUP	=
 endif
 
 ifeq ($(shell uname), Darwin)
-GCCEXTRACONFIG	+= --with-gmp=/sw
-GCCEXTRACONFIG	+= --with-mpc=/sw
-GCCEXTRACONFIG	+= --with-mpfr=/sw
-GCCEXTRACONFIG	+= --with-libiconv-prefix=/sw
+CC		= gcc-4
+CXX		= g++-4
+PKGSUFFIX	= $(shell uname -s)-$(shell uname -r)-$(shell uname -m)
+TARBALL		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX).tgz
+TAROWNER	= --owner root
+TARGROUP	= --group wheel
+endif
+
+ifeq ($(shell uname), Linux)
+OSNAME		= unknown
+PKGSUFFIX	= $(OSNAME)-$(PKGARCH)
+PKGARCH		= $(shell dpkg --print-architecture)
+PKGDIR		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX)
+PKGFILE		= $(PKGDIR).deb
+TARBALL		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX).tgz
+TAROWNER	= --owner root
+TARGROUP	= --group root
 endif
 
 ifeq ($(shell uname), OpenBSD)
-GCCEXTRACONFIG	+= --with-gmp=/usr/local
-GCCEXTRACONFIG	+= --with-mpc=/usr/local
-GCCEXTRACONFIG	+= --with-mpfr=/usr/local
 TAR		= gtar
+PKGSUFFIX	= $(shell uname -s)-$(shell uname -r)-$(shell uname -m)
+PKGFILE		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX)
 endif
 
-ifeq ($(shell uname), Darwin)
-OSNAME		= MacOS
-PKGARCH		= $(shell dpkg --print-installation-architecture)
-SED		= sed -i ''
-else
-OSNAME		= debian7
-PKGARCH		= $(shell dpkg --print-architecture)
-SED		= sed -i
-endif
-PKGDIR		= $(PKGNAME)-$(VERSION)-$(OSNAME)-$(PKGARCH)
-PKGFILE		= $(PKGDIR).deb
+BUILDCONFIG	= CC=$(CC) CXX=$(CXX)
 
 default: readme.done
 
@@ -104,16 +114,19 @@ default: readme.done
 
 # Download all source distributions
 
-download: $(BINUTILDIST) $(GCCDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPDF)
+download: $(BINUTILDIST) $(GCCDIST) $(LIBICONVDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPDF)
 
 ################################################################################
 
 # Unpack all source distributions
 
-source.done: $(BINUTILDIST) $(GCCDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPDF)
+source.done: $(BINUTILDIST) $(GCCDIST) $(LIBICONVDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPDF)
 	$(TAR) xjf $(BINUTILDIST)
 	$(TAR) xjf $(GCCDIST)
 	if [ -f multilibs.patch ]; then cd $(GCCSRC) ; patch -b -p0 <../multilibs.patch ; fi
+	cd $(GCCSRC) ; ./contrib/download_prerequisites
+	$(TAR) xzf $(LIBICONVDIST)
+	ln -s "../$(LIBICONVSRC)" $(GCCSRC)/libiconv
 	$(TAR) xzf $(NEWLIBDIST)
 	ln -s "../$(NEWLIBSRC)/newlib" $(GCCSRC)/newlib
 	$(TAR) xzf $(GDBDIST)
@@ -131,7 +144,7 @@ $(BINUTILDIST):
 binutils.done: source.done
 	rm -rf $(BINUTILBLD)
 	mkdir -p $(BINUTILBLD)
-	cd $(BINUTILBLD) && ../../$(BINUTILSRC)/configure --prefix=$(INSTBASE) --target=$(TARGETNAME) --with-march=armv4t --with-float=soft --enable-interwork --enable-multilib --enable-lto --disable-nls --disable-shared --disable-werror
+	cd $(BINUTILBLD) && ../../$(BINUTILSRC)/configure --prefix=$(INSTBASE) $(BUILDCONFIG) --target=$(TARGETNAME) --with-march=armv4t --with-float=soft --enable-interwork --enable-multilib --enable-lto --disable-nls --disable-shared --disable-werror
 	$(MAKE) $(MAKEJOBS) -C $(BINUTILBLD)
 	$(MAKE) -C $(BINUTILBLD) install
 	touch binutils.done
@@ -148,7 +161,7 @@ $(GCCDIST):
 gcc.done: binutils.done
 	rm -rf $(GCCBLD)
 	mkdir -p $(GCCBLD)
-	cd $(GCCBLD) && ../../$(GCCSRC)/configure --prefix=$(INSTBASE) --target=$(TARGETNAME) --with-march=armv4t --with-float=soft --enable-interwork --enable-multilib --enable-lto --disable-nls --disable-shared --disable-werror --enable-languages=c,c++ --disable-libssp --disable-libgomp --with-newlib --disable-newlib-libgloss --disable-newlib-supplied-syscalls --disable-mb --disable-newlib-wide-orient --disable-newlib-multithread --disable-newlib-iconv --enable-newlib-global-atexit --enable-newlib-reent-small --enable-newlib-nano-malloc --enable-newlib-nano-formatted-io --with-system-zlib $(GCCEXTRACONFIG)
+	cd $(GCCBLD) && ../../$(GCCSRC)/configure --prefix=$(INSTBASE) $(BUILDCONFIG) --target=$(TARGETNAME) --with-march=armv4t --with-float=soft --enable-interwork --enable-multilib --enable-lto --disable-nls --disable-shared --disable-werror --enable-languages=c,c++ --disable-libssp --disable-libgomp --with-newlib --disable-newlib-libgloss --disable-newlib-supplied-syscalls --disable-mb --disable-newlib-wide-orient --disable-newlib-multithread --disable-newlib-iconv --enable-newlib-global-atexit --enable-newlib-reent-small --enable-newlib-nano-malloc --enable-newlib-nano-formatted-io --with-system-zlib
 	export PATH=$$PATH':'$(INSTBASE)/bin && $(MAKE) $(MAKEJOBS) -C $(GCCBLD)
 	export PATH=$$PATH':'$(INSTBASE)/bin && $(MAKE) -C $(GCCBLD) install
 	touch gcc.done
@@ -180,6 +193,13 @@ newlibdocs.done: $(LIBCPDF) $(LIBMPDF)
 
 ################################################################################
 
+# Download libiconv
+
+$(LIBICONVDIST):
+	wget -nv -P $(TEMP) $(LIBICONVURL)
+
+################################################################################
+
 # Download gdb
 
 $(GDBDIST):
@@ -191,7 +211,7 @@ gdb.done: $(GDBDIST)
 	test -f /usr/include/expat.h
 	rm -rf $(GDBBLD)
 	mkdir -p $(GDBBLD)
-	cd $(GDBBLD) && ../../$(GDBSRC)/configure --prefix=$(INSTBASE) --target=$(TARGETNAME) --enable-interwork --enable-multilib --disable-libssp --disable-nls --disable-shared --disable-werror
+	cd $(GDBBLD) && ../../$(GDBSRC)/configure --prefix=$(INSTBASE) $(BUILDCONFIG) --target=$(TARGETNAME) --enable-interwork --enable-multilib --disable-libssp --disable-nls --disable-shared --disable-werror
 	$(MAKE) $(MAKEJOBS) -C $(GDBBLD)
 	$(MAKE) -C $(GDBBLD) install
 	touch gdb.done
@@ -217,11 +237,7 @@ readme.done: binutils.done gcc.done newlibdocs.done gdb.done
 # Create toolchain tarball
 
 tarball: readme.done
-ifeq ($(findstring CYGWIN, $(shell uname)), CYGWIN)
-	$(TAR) czf $(TARBALL) `basename $(INSTBASE)` --mode=ugo-w
-else
-	$(TAR) czf $(TARBALL) `basename $(INSTBASE)` --owner=root --group=root --mode=ugo-w
-endif
+	$(TAR) czf $(TARBALL) `basename $(INSTBASE)` --mode=ugo-w $(TAROWNER) $(TARGROUP)
 
 ################################################################################
 
@@ -231,18 +247,13 @@ package.deb: readme.done
 	mkdir -p					$(PKGDIR)/DEBIAN
 	mkdir -p					$(PKGDIR)/usr/local
 	install -cm 0444 control.template		$(PKGDIR)/DEBIAN/control
-	$(SED) s/@@ARCH@@/$(PKGARCH)/g			$(PKGDIR)/DEBIAN/control
-	$(SED) s/@@NAME@@/$(PKGNAME)/g			$(PKGDIR)/DEBIAN/control
-	$(SED) s/@@VERSION@@/$(VERSION)/g		$(PKGDIR)/DEBIAN/control
-	$(SED) /Version:/s/_/-/g			$(PKGDIR)/DEBIAN/control
+	sed -i s/@@ARCH@@/$(PKGARCH)/g			$(PKGDIR)/DEBIAN/control
+	sed -i s/@@NAME@@/$(PKGNAME)/g			$(PKGDIR)/DEBIAN/control
+	sed -i s/@@VERSION@@/$(VERSION)/g		$(PKGDIR)/DEBIAN/control
+	sed -i /Version:/s/_/-/g			$(PKGDIR)/DEBIAN/control
 	cp -R -P -p $(PKGNAME)				$(PKGDIR)/usr/local
 	chmod -R ugo-w					$(PKGDIR)/usr/local
-ifeq ($(shell uname), Darwin)
-	chown -R 0:0					$(PKGDIR)/usr/local
-	dpkg-deb --build				$(PKGDIR)
-else
 	fakeroot dpkg-deb --build			$(PKGDIR)
-endif
 	chmod -R ugo+w					$(PKGDIR)/usr/local
 
 ################################################################################
@@ -289,7 +300,7 @@ COMMENT:
 	echo "ARM Microcontroller Toolchain"		>COMMENT
 
 $(PKGNAME)-$(VERSION).tgz: CONTENTS COMMENT
-	pkg_create -A `uname -m` -f CONTENTS -D COMMENT="`cat COMMENT`" -d COMMENT -p / -B fakeroot.openbsd $(PKGNAME)-$(VERSION).tgz
+	pkg_create -A `uname -m` -f CONTENTS -D COMMENT="`cat COMMENT`" -d COMMENT -p / -B fakeroot.openbsd $(PKGFILE)
 	@-rm CONTENTS
 	@-rm COMMENT
 
@@ -303,6 +314,7 @@ clean:
 	rm -rf $(INSTBASE)
 	rm -rf $(BINUTILSRC)
 	rm -rf $(GCCSRC)
+	rm -rf $(LIBICONVSRC)
 	rm -rf $(NEWLIBSRC)
 	rm -rf $(GDBSRC)
 	rm -rf build fakeroot.* specfile rpmbuild *.done *.deb *.rpm *.tgz $(PKGDIR)
