@@ -91,8 +91,8 @@ endif
 
 ifeq ($(shell uname), Linux)
 OSNAME		= unknown
-PKGSUFFIX	= $(OSNAME)-$(PKGARCH)
 PKGARCH		= $(shell dpkg --print-architecture)
+PKGSUFFIX	= $(OSNAME)-$(PKGARCH)
 PKGDIR		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX)
 PKGFILE		= $(PKGDIR).deb
 TARBALL		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX).tgz
@@ -102,8 +102,7 @@ endif
 
 ifeq ($(shell uname), OpenBSD)
 TAR		= gtar
-PKGSUFFIX	= $(shell uname -s)-$(shell uname -r)-$(shell uname -m)
-PKGFILE		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX)
+PKGFILE		= $(PKGNAME)-$(VERSION).tgz
 endif
 
 BUILDCONFIG	= CC=$(CC) CXX=$(CXX)
@@ -299,12 +298,10 @@ CONTENTS: fakeroot.openbsd
 COMMENT:
 	echo "ARM Microcontroller Toolchain"		>COMMENT
 
-$(PKGNAME)-$(VERSION).tgz: CONTENTS COMMENT
+package.openbsd: CONTENTS COMMENT
 	pkg_create -A `uname -m` -f CONTENTS -D COMMENT="`cat COMMENT`" -d COMMENT -p / -B fakeroot.openbsd $(PKGFILE)
 	@-rm CONTENTS
 	@-rm COMMENT
-
-package.openbsd: $(PKGNAME)-$(VERSION).tgz
 
 ################################################################################
 
