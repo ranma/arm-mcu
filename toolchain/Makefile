@@ -111,15 +111,17 @@ default: readme.done
 
 ################################################################################
 
+DISTFILES	= $(BINUTILDIST) $(GCCDIST) $(LIBICONVDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPDF)
+
 # Download all source distributions
 
-download: $(BINUTILDIST) $(GCCDIST) $(LIBICONVDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPDF)
+download: $(DISTFILES)
 
 ################################################################################
 
 # Unpack all source distributions
 
-source.done: $(BINUTILDIST) $(GCCDIST) $(LIBICONVDIST) $(NEWLIBDIST) $(GDBDIST) $(LIBCPDF) $(LIBMPDF)
+source.done: $(DISTFILES)
 	$(TAR) xjf $(BINUTILDIST)
 	$(TAR) xjf $(GCCDIST)
 	if [ -f multilibs.patch ]; then cd $(GCCSRC) ; patch -b -p0 <../multilibs.patch ; fi
@@ -147,6 +149,13 @@ binutils.done: source.done
 	$(MAKE) $(MAKEJOBS) -C $(BINUTILBLD)
 	$(MAKE) -C $(BINUTILBLD) install
 	touch binutils.done
+
+################################################################################
+
+# Download libiconv
+
+$(LIBICONVDIST):
+	wget -nv -P $(TEMP) $(LIBICONVURL)
 
 ################################################################################
 
@@ -189,13 +198,6 @@ newlibdocs.done: $(LIBCPDF) $(LIBMPDF)
 	install -cm 0444 $(LIBCPDF) $(INSTBASE)/doc
 	install -cm 0444 $(LIBMPDF) $(INSTBASE)/doc
 	touch newlibdocs.done
-
-################################################################################
-
-# Download libiconv
-
-$(LIBICONVDIST):
-	wget -nv -P $(TEMP) $(LIBICONVURL)
 
 ################################################################################
 
