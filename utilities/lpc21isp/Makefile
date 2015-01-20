@@ -32,17 +32,10 @@ CC		= $(CROSS_COMPILE)gcc
 CFLAGS		= -Wall
 INSTALLDIR	= /usr/local/bin
 
+OSNAME		= unknown
 PKGNAME		= $(LPC21ISP_NAME)
 PKGVERSION	= $(LPC21ISP_VER)
-ifeq ($(shell uname), Darwin)
-OSNAME		= MacOS
-PKGARCH		= $(shell dpkg --print-installation-architecture)
-SED		= sed -i ''
-else
-OSNAME		= debian7
 PKGARCH		= $(shell dpkg --print-architecture)
-SED		= sed -i
-endif
 PKGDIR		= $(PKGNAME)-$(PKGVERSION)-$(OSNAME)-$(PKGARCH)
 PKGFILE		= $(PKGDIR).deb
 
@@ -80,25 +73,22 @@ fakeroot: $(LPC21ISP_PROG)
 specfile: fakeroot specfile.template
 	sed s#@@VERSION@@#$(LPC21ISP_VER)#g <specfile.template >specfile
 
-rpm: specfile
+package.rpm: specfile
 	rpmbuild --buildroot=`pwd`/fakeroot --define="_topdir `pwd`/rpmbuild" -bb specfile
 	cp rpmbuild/RPMS/*/*.rpm .
 
 # Create Deb package
 
-deb: fakeroot
+package.deb: $(LPC21ISP_PROG)
 	mkdir -p					$(PKGDIR)/DEBIAN
-	install -cm 0444 control.template		$(PKGDIR)/DEBIAN/control
-	$(SED) 's/@@ARCH@@/$(PKGARCH)/g'		$(PKGDIR)/DEBIAN/control
-	$(SED) 's/@@NAME@@/$(PKGNAME)/g'		$(PKGDIR)/DEBIAN/control
-	$(SED) 's/@@VERSION@@/$(PKGVERSION)/g'		$(PKGDIR)/DEBIAN/control
-	cp -R -P -p fakeroot/*				$(PKGDIR)
-ifeq ($(shell uname), Darwin)
-	chown -R 0:0 $(PKGDIR)
-	dpkg-deb --build $(PKGDIR)
-else
+	install -cm 0644 control.template		$(PKGDIR)/DEBIAN/control
+	sed -i 's/@@ARCH@@/$(PKGARCH)/g'		$(PKGDIR)/DEBIAN/control
+	sed -i 's/@@NAME@@/$(PKGNAME)/g'		$(PKGDIR)/DEBIAN/control
+	sed -i 's/@@VERSION@@/$(PKGVERSION)/g'		$(PKGDIR)/DEBIAN/control
+	install -csm 0755 $(LPC21ISP_PROG)		$(PKGDIR)/$(INSTALLDIR)
+	chmod -R ugo-w $(PKGDIR)
 	fakeroot dpkg-deb --build $(PKGDIR)
-endif
+	chomd -R ugo+w $(PKGDIR)
 
 # Clean out working files
 
