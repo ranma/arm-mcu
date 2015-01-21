@@ -169,7 +169,7 @@ $(GCCDIST):
 gcc.done: binutils.done
 	rm -rf $(GCCBLD)
 	mkdir -p $(GCCBLD)
-	cd $(GCCBLD) && ../../$(GCCSRC)/configure --prefix=$(INSTBASE) $(BUILDCONFIG) --target=$(TARGETNAME) --with-march=armv4t --with-float=soft --enable-interwork --enable-multilib --enable-lto --disable-nls --disable-shared --disable-werror --enable-languages=c,c++ --disable-libssp --disable-libgomp --with-newlib --disable-newlib-libgloss --disable-newlib-supplied-syscalls --disable-mb --disable-newlib-wide-orient --disable-newlib-multithread --disable-newlib-iconv --enable-newlib-global-atexit --enable-newlib-reent-small --enable-newlib-nano-malloc --enable-newlib-nano-formatted-io --with-system-zlib
+	cd $(GCCBLD) && ../../$(GCCSRC)/configure --prefix=$(INSTBASE) $(BUILDCONFIG) --target=$(TARGETNAME) --with-march=armv4t --with-float=soft --enable-interwork --enable-multilib --enable-lto --disable-nls --disable-shared --disable-werror --enable-languages=c,c++ --disable-libssp --disable-libgomp --with-newlib --disable-newlib-libgloss --disable-newlib-supplied-syscalls --disable-mb --disable-newlib-wide-orient --disable-newlib-multithread --disable-newlib-iconv --enable-newlib-global-atexit --enable-newlib-reent-small --enable-newlib-nano-malloc --enable-newlib-nano-formatted-io
 	export PATH=$$PATH':'$(INSTBASE)/bin && $(MAKE) $(MAKEJOBS) -C $(GCCBLD)
 	export PATH=$$PATH':'$(INSTBASE)/bin && $(MAKE) -C $(GCCBLD) install
 	touch gcc.done
