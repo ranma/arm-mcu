@@ -23,27 +23,27 @@ HOST_LIBS_DIR	 		= $(shell pwd)/../../ARM-Linux/libs/libs-RaspberryPi-gcc-linaro
 
 # The following make flags enable the Canadian Cross Compiler build
 
-MAKEFLAGS			:= PATH="$(PATH):$(BUILD_HOST_TOOLCHAIN_DIR):$(BUILD_MCU_TOOLCHAIN_DIR)" BUILDCONFIG="$(BUILD_CONFIG_NAME) $(HOST_CONFIG_NAME)" OSNAME=$(HOST_OSNAME) PKGARCH=$(HOST_PKGARCH) PKGSUFFIX=$(HOST_PKGSUFFIX) CFLAGS=-I$(HOST_LIBS_DIR)/include CXXFLAGS=-I$(HOST_LIBS_DIR)/include LDFLAGS=-L$(HOST_LIBS_DIR)/lib
+CROSSMAKEFLAGS			:= PATH="$(PATH):$(BUILD_HOST_TOOLCHAIN_DIR):$(BUILD_MCU_TOOLCHAIN_DIR)" BUILDCONFIG="$(BUILD_CONFIG_NAME) $(HOST_CONFIG_NAME)" OSNAME=$(HOST_OSNAME) PKGARCH=$(HOST_PKGARCH) PKGSUFFIX=$(HOST_PKGSUFFIX) CFLAGS=-I$(HOST_LIBS_DIR)/include CXXFLAGS=-I$(HOST_LIBS_DIR)/include LDFLAGS=-L$(HOST_LIBS_DIR)/lib
 
 # The following build targets are available
 
 default:
-	$(MAKE) $@ $(MAKEFLAGS)
+	$(MAKE) $@ $(CROSSMAKEFLAGS)
 
 download:
-	$(MAKE) $@ $(MAKEFLAGS)
+	$(MAKE) $@ $(CROSSMAKEFLAGS)
 
 source.done:
-	$(MAKE) $@ $(MAKEFLAGS)
+	$(MAKE) $@ $(CROSSMAKEFLAGS)
 
 tarball:
-	$(MAKE) $@ $(MAKEFLAGS)
+	$(MAKE) $@ $(CROSSMAKEFLAGS)
 
 package.deb:
-	$(MAKE) $@ $(MAKEFLAGS)
+	$(MAKE) $@ $(CROSSMAKEFLAGS)
 
 clean:
-	$(MAKE) $@ $(MAKEFLAGS)
+	$(MAKE) $@ $(CROSSMAKEFLAGS)
 
 distclean:
-	$(MAKE) $@ $(MAKEFLAGS)
+	$(MAKE) $@ $(CROSSMAKEFLAGS)
