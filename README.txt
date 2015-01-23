@@ -166,8 +166,10 @@ News
        supported, mostly for other tool chains such as [14]GCC ARM
        Embedded. It is enabled by adding WITH_CONIO=yes to the make
        command line options.
-     * 21 January 2015 -- Upgraded gdb to 7.8.1. Build gcc prequisites,
-       including libiconv, from source.
+     * 21 January 2015 -- Upgraded gdb to 7.8.2. Build gcc prequisites,
+       including libiconv, from source. Added auxiliary makefile for
+       building a Canadian Cross ARM microcontroller toolchain for the
+       Raspberry Pi.
 
 Git Repository
 
