@@ -1,5 +1,11 @@
 # Build a Canadian Cross Compiler running on Raspbian, targeting ARM microcontrollers
 
+# It is not easy to build this toolchain natively on the Raspberry Pi, because of how
+# much memory and disk space is required to build GCC.  Using the Candian Cross
+# technique, we can build the toolchain on an x86 Linux system (build machine) to
+# run on the Raspberry Pi (host machine) to generate code for an ARM microcontroller
+# (target machine).
+
 # $Id$
 
 # Build machine definitions
