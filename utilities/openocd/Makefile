@@ -25,6 +25,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+TEMP		= /tmp
+
 OPENOCD_NAME	= openocd
 OPENOCD_VER	= 0.8.0
 OPENOCD_SRC	= $(OPENOCD_NAME)-$(OPENOCD_VER)
@@ -33,7 +35,7 @@ OPENOCD_DIST	= $(TEMP)/$(OPENOCD_TARBALL)
 OPENOCD_SERVER	= http://sourceforge.net/projects/openocd/files/openocd/$(OPENOCD_VER)
 OPENOCD_URL	= $(OPENOCD_SERVER)/$(OPENOCD_TARBALL)
 
-OSNAME		= debian7
+OSNAME		= unknown
 PKGNAME		= $(OPENOCD_NAME)
 PKGVERSION	= $(OPENOCD_VER)
 PKGARCH		= `dpkg --print-architecture`
@@ -80,20 +82,22 @@ specfile: fakeroot specfile.template
 	find fakeroot -type f | cut -c 9- >>specfile
 	find fakeroot -type l | cut -c 9- >>specfile
 
-rpm: specfile
+package.rpm: specfile
 	rpmbuild --buildroot=`pwd`/fakeroot --define="_topdir `pwd`/rpmbuild" -bb specfile
 	cp rpmbuild/RPMS/*/*.rpm .
 
 # Build Deb package
 
-deb: fakeroot
+package.deb: fakeroot
 	mkdir -p $(PKGDIR)/DEBIAN
 	install -cm 0444 control.template		$(PKGDIR)/DEBIAN/control
 	sed -i s/@@ARCH@@/$(PKGARCH)/g			$(PKGDIR)/DEBIAN/control
 	sed -i s/@@NAME@@/$(PKGNAME)/g			$(PKGDIR)/DEBIAN/control
 	sed -i s/@@VERSION@@/$(PKGVERSION)/g		$(PKGDIR)/DEBIAN/control
 	cp -R -P -p fakeroot/* $(PKGDIR)
+	chmod -R ugo-w $(PKGDIR)/usr/local/*
 	fakeroot dpkg-deb --build $(PKGDIR)
+	chmod -R ugo+w $(PKGDIR)/usr/local/*
 
 # Clean out working files
 

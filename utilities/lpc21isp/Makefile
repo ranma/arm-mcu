@@ -81,14 +81,15 @@ package.rpm: specfile
 
 package.deb: $(LPC21ISP_PROG)
 	mkdir -p					$(PKGDIR)/DEBIAN
+	mkdir -p					$(PKGDIR)/$(INSTALLDIR)
 	install -cm 0644 control.template		$(PKGDIR)/DEBIAN/control
 	sed -i 's/@@ARCH@@/$(PKGARCH)/g'		$(PKGDIR)/DEBIAN/control
 	sed -i 's/@@NAME@@/$(PKGNAME)/g'		$(PKGDIR)/DEBIAN/control
 	sed -i 's/@@VERSION@@/$(PKGVERSION)/g'		$(PKGDIR)/DEBIAN/control
 	install -csm 0755 $(LPC21ISP_PROG)		$(PKGDIR)/$(INSTALLDIR)
-	chmod -R ugo-w $(PKGDIR)
+	chmod -R ugo-w $(PKGDIR)/$(INSTALLDIR)/*
 	fakeroot dpkg-deb --build $(PKGDIR)
-	chomd -R ugo+w $(PKGDIR)
+	chmod -R ugo+w $(PKGDIR)/$(INSTALLDIR)/*
 
 # Clean out working files
 

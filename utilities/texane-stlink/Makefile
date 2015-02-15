@@ -66,18 +66,18 @@ uninstall:
 
 # Create Debian package file
 
-deb: $(STLINKFLASH)
+package.deb: $(STLINKFLASH)
 	mkdir -p					$(PKGDIR)/DEBIAN
 	install -cm 0644 control.template		$(PKGDIR)/DEBIAN/control
-	$(SED) 's/@@ARCH@@/$(PKGARCH)/g'		$(PKGDIR)/DEBIAN/control
-	$(SED) 's/@@NAME@@/$(PKGNAME)/g'		$(PKGDIR)/DEBIAN/control
-	$(SED) 's/@@VERSION@@/$(PKGVERSION)/g'		$(PKGDIR)/DEBIAN/control
+	sed -i 's/@@ARCH@@/$(PKGARCH)/g'		$(PKGDIR)/DEBIAN/control
+	sed -i 's/@@NAME@@/$(PKGNAME)/g'		$(PKGDIR)/DEBIAN/control
+	sed -i 's/@@VERSION@@/$(PKGVERSION)/g'		$(PKGDIR)/DEBIAN/control
 	mkdir -p					$(PKGDIR)/$(INSTALLDIR)
 	install -csm 0755 $(STLINKFLASH)		$(PKGDIR)/$(INSTALLDIR)
 	install -csm 0755 $(STLINKGDB)			$(PKGDIR)/$(INSTALLDIR)
-	chmod -R ugo-w $(PKGDIR)
+	chmod -R ugo-w $(PKGDIR)/$(INSTALLDIR)/*
 	fakeroot dpkg-deb --build $(PKGDIR)
-	chmod -R ugo+w $(PKGDIR)
+	chmod -R ugo+w $(PKGDIR)/$(INSTALLDIR)/*
 
 # Clean out working files
 
