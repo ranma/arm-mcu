@@ -23,6 +23,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+TEMP		?= /tmp
+
 TARGETNAME	= arm-none-eabi
 PKGNAME		= arm-mcu-tools
 INSTBASE	= $(shell pwd)/$(PKGNAME)
@@ -31,7 +33,6 @@ CC		= gcc
 CXX		= g++
 FIND		= find
 TAR		= tar
-TEMP		= /tmp
 
 BINUTILVER	= 2.25
 BINUTILSERVER	= http://ftp.gnu.org/pub/gnu/binutils
