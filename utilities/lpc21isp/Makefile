@@ -32,7 +32,7 @@ CC		= $(CROSS_COMPILE)gcc
 CFLAGS		= -Wall
 INSTALLDIR	= /usr/local/bin
 
-OSNAME		= unknown
+OSNAME		?= unknown
 PKGNAME		= $(LPC21ISP_NAME)
 PKGVERSION	= $(LPC21ISP_VER)
 PKGARCH		= $(shell dpkg --print-architecture)

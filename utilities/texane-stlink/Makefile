@@ -30,7 +30,7 @@ STLINKGDB	= stlink-gdbserver
 LIBUSBCFLAGS	= -DLIBUSB_CALL='' $(shell pkg-config --cflags libusb-1.0)
 INSTALLDIR	= /usr/local/bin
 
-OSNAME		= unknown
+OSNAME		?= unknown
 PKGNAME		= texane-stlink
 PKGVERSION	= $(shell awk '/PACKAGE_VERSION=/ { print substr($$1, 18, length($$1)-18); }' $(STLINKSRC)/configure)
 PKGARCH		= $(shell dpkg --print-architecture)

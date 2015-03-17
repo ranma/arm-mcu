@@ -35,7 +35,7 @@ OPENOCD_DIST	= $(TEMP)/$(OPENOCD_TARBALL)
 OPENOCD_SERVER	= http://sourceforge.net/projects/openocd/files/openocd/$(OPENOCD_VER)
 OPENOCD_URL	= $(OPENOCD_SERVER)/$(OPENOCD_TARBALL)
 
-OSNAME		= unknown
+OSNAME		?= unknown
 PKGNAME		= $(OPENOCD_NAME)
 PKGVERSION	= $(OPENOCD_VER)
 PKGARCH		= `dpkg --print-architecture`

@@ -91,7 +91,7 @@ TARGROUP	= --group wheel
 endif
 
 ifeq ($(shell uname), Linux)
-OSNAME		= unknown
+OSNAME		?= unknown
 PKGARCH		= $(shell dpkg --print-architecture)
 PKGSUFFIX	= $(OSNAME)-$(PKGARCH)
 PKGDIR		= $(PKGNAME)-$(VERSION)-$(PKGSUFFIX)
