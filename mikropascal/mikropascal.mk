@@ -30,22 +30,10 @@
 
 MIKROPASCAL	?= "C:/Users/Public/Documents/Mikroelektronika/mikroPascal PRO for ARM/mPARM.exe"
 
-# Pretty printer definitions
-
-PTOP		?= ptop
-PTOP_CFG	= $(MIKROPASCALSRC)/ptop.cfg
-PTOP_FLAGS	= -i -c $(PTOP_CFG)
-
 # Define a pattern rule to build a Mikropascal project
 
 %.hex: %.mppar
 	$(MIKROPASCAL) -RA -PF $<
-
-# Define a pattern rule to format a Pascal source program using the the ptop
-# utility from Free Pascal
-
-%.prettyprint: %.mpas
-	$(PTOP) $(PTOP_FLAGS) $< $<.tmp && mv $<.tmp $<
 
 # Default target
 
