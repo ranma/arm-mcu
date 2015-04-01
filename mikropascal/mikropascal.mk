@@ -33,7 +33,7 @@ MIKROPASCAL	?= "C:/Users/Public/Documents/Mikroelektronika/mikroPascal PRO for A
 # Define a pattern rule to build a Mikropascal project
 
 %.hex: %.mppar
-	$(MIKROPASCAL) -RA -SSA -PF $<
+	$(MIKROPASCAL) -DL -RA -SSA -PF $<
 
 # Default target
 
