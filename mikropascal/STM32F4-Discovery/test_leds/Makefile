@@ -43,3 +43,4 @@ clean: mikropascal_mk_clean
 
 include $(ARMSRC)/include/stlink.mk
 include $(MIKROPASCALSRC)/mikropascal.mk
+sinclude $(HOME)/src/include/subversion.mk
