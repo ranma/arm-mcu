@@ -20,8 +20,7 @@ Count=0
 [Useses]
 Count=0
 [EXPANDED NODES]
-Node1=Sources
-Count=1
+Count=0
 [PROGRAMMER_OPTIONS]
 Value=SWD
 [PROGRAMMER_TYPE]
@@ -34,8 +33,7 @@ Count=0
 [IMAGES]
 Count=0
 [OPENED_FILES]
-Count=1
-File0=test_leds.mpas
+Count=0
 [EEPROM]
 Count=0
 [OTHER_FILES]
