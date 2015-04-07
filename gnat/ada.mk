@@ -74,7 +74,3 @@ ada_mk_default:
 
 ada_mk_clean:
 	-rm -rf *.bin *.elf *.hex *.log *.stackdump obj
-
-ada_mk_reallyclean: ada_mk_clean
-
-ada_mk_distclean: ada_mk_reallyclean
