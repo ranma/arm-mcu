@@ -27,6 +27,9 @@
 ARMSRC		?= $(HOME)/src/ARM
 MIKROPASCALSRC	?= $(HOME)/src/ARM/mikropascal
 
+MCUFAMILY	= stm32f4
+BOARDNAME	= STM32F4_DISCOVERY
+
 # Build the program
 
 default: test_leds.hex
@@ -41,6 +44,6 @@ clean: mikropascal_mk_clean
 
 # Include subordinate makefiles
 
-include $(ARMSRC)/include/stlink.mk
+include $(ARMSRC)/include/ARM.mk
 include $(MIKROPASCALSRC)/mikropascal.mk
 sinclude $(HOME)/src/include/subversion.mk
