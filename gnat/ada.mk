@@ -30,8 +30,8 @@
 # Toolchain definitions
 
 GNATARCH		= arm-eabi
-GNATDIR			= /usr/local/gnat-gpl-2014-$(GNATARCH)
-GNATBIN			= $(GNATDIR)/bin
+GNATDIR			?= /usr/local/gnat-gpl-2014-$(GNATARCH)
+GNATBIN			?= $(GNATDIR)/bin
 
 GPRBUILD		= env PATH=$(GNATBIN) gprbuild
 OBJCOPY			= env PATH=$(GNATBIN) $(GNATARCH)-objcopy
