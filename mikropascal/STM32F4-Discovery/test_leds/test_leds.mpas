@@ -47,7 +47,7 @@ BEGIN
   LD5_RED    := false;
   LD6_BLUE   := false;
 
-  { Togle LED outputs }
+  { Toggle LED outputs }
 
   WHILE true DO
     BEGIN
