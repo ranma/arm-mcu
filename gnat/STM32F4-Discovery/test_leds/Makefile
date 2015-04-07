@@ -30,15 +30,19 @@ ADASRC		?= $(ARMSRC)/gnat
 MCUFAMILY	= stm32f4
 BOARDNAME	= STM32F4_DISCOVERY
 
+# Build the program
+
 default: test_leds.bin
+
+# Write program to code flash
 
 install: test_leds.flashstlink
 
+# Remove working files
+
 clean: ada_mk_clean
 
-reallyclean: clean ada_mk_reallyclean
-
-distclean: reallyclean ada_mk_distclean
+# Include subordinate makefiles
 
 include $(ADASRC)/ada.mk
 include $(ARMSRC)/include/ARM.mk
