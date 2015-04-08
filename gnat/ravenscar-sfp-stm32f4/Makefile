@@ -1,5 +1,5 @@
-# Makefile template for building a custom GNAT Ada Ravenscar profile run
-# time library for the STM32F4 microcontroller family
+# Makefile template for building a customized GNAT Ada Ravenscar profile
+# run time library for the STM32F4 microcontroller family
 
 # $Id$
 
@@ -28,12 +28,16 @@
 ARMSRC		?= $(HOME)/src/ARM
 ADASRC		?= $(ARMSRC)/gnat
 
+# Build the Run Time Library
+
 adalib/libgnat.a:
-	$(MAKE) runtime_build.elf
+	env PATH=$(GNATBIN) gprbuild -p --target=$(GNATARCH) runtime_build.gpr
 	rm -rf obj
 
+# Remove working files
+
 clean:
-	rm -f adalib/*.a adalib/*.ali
+	rm -rf adalib/*.a adalib/*.ali obj
 
 include $(ADASRC)/ada.mk
 sinclude $(HOME)/src/include/subversion.mk
