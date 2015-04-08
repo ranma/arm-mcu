@@ -40,12 +40,10 @@ GPRBUILD		= env PATH=$(GNATBIN) gprbuild
 GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
 OBJCOPY			= $(GNATBIN)/$(GNATARCH)-objcopy
 
-GNATPP			= gnatpp
-GNATPPFLAGS		= -i2 -aU -kU -rnb $(ADA_INCLUDES)
-
-# Define a pattern rule for building an Ada program from a project file
+# Build program from project file
 
 %.elf: %.gpr
+	$(MAKE) -C $(GNATRTS)
 	$(GPRBUILD) $(GPRBUILDFLAGS) $<
 
 # Convert ELF to binary
@@ -58,14 +56,6 @@ GNATPPFLAGS		= -i2 -aU -kU -rnb $(ADA_INCLUDES)
 %.hex: %.elf
 	$(OBJCOPY) -S -O ihex --change-addresses=$(FLASHWRITEADDR) --gap-fill=0 $< $@
 
-# Define pattern rules for formatting Ada source files
-
-%.adb.prettyprint: %.adb
-	$(GNATPP) $(GNATPPFLAGS) $^ ; sed -i -r '/(^ *[-][-])|(^ *\()|( IS \()/! s/ \(/(/g' $^
-
-%.ads.prettyprint: %.ads
-	$(GNATPP) $(GNATPPFLAGS) $^ ; sed -i -r '/(^ *[-][-])|(^ *\()|( IS \()/! s/ \(/(/g' $^
-
 # Default make target
 
 ada_mk_default:
@@ -76,3 +66,8 @@ ada_mk_default:
 
 ada_mk_clean:
 	-rm -rf *.bin *.elf *.hex *.log *.stackdump obj
+
+ada_mk_reallyclean: ada_mk_clean
+	$(MAKE) -C $(GNATRTS) clean
+
+ada_mk_distclean: ada_mk_reallyclean
