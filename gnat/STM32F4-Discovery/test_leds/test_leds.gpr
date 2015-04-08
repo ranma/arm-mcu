@@ -1,4 +1,4 @@
-project Demo_Leds is
+project test_leds is
 
    for Languages use ("Ada");
    for Main use ("demo.adb");
@@ -23,5 +23,5 @@ project Demo_Leds is
       for Communication_Protocol use "remote";
    end Ide;
 
-end Demo_Leds;
+end test_leds;
 
