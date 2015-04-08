@@ -42,6 +42,10 @@ install: test_leds.flashstlink
 
 clean: ada_mk_clean
 
+reallyclean: ada_mk_reallyclean
+
+distclean: ada_mk_distclean
+
 # Include subordinate makefiles
 
 include $(ADASRC)/ada.mk

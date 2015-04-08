@@ -31,10 +31,19 @@ ADASRC		?= $(ARMSRC)/gnat
 MCUFAMILY	= stm32f4
 BOARDNAME	= STM32F4_DISCOVERY
 
+# Default target placeholder
+
 default: ada_mk_default
+
+# Remove working files
 
 clean: ada_mk_clean
 
+reallyclean: ada_mk_reallyclean
+
+distclean: ada_mk_distclean
+
+# Include subordinate makefiles
+
 include $(ADASRC)/ada.mk
 include $(ARMSRC)/include/ARM.mk
-sinclude $(HOME)/src/include/subversion.mk
