@@ -30,13 +30,15 @@
 # Toolchain definitions
 
 GNATARCH		= arm-eabi
-GNATDIR			?= /usr/local/gnat-gpl-2014-$(GNATARCH)
-GNATBIN			?= $(GNATDIR)/bin
-
+GNATRELEASE		= 2014
+GNATDIR			?= /usr/local/gnat-gpl-$(GNATRELEASE)-$(GNATARCH)
+GNATBIN			= $(GNATDIR)/bin
+GNATRTS			= $(GNATDIR)/lib/gnat/$(GNATARCH)/ravenscar-sfp-stm32f4
+GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
+GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
 GPRBUILD		= env PATH=$(GNATBIN) gprbuild
-OBJCOPY			= env PATH=$(GNATBIN) $(GNATARCH)-objcopy
-
-GPRBUILDFLAGS		= --target=$(GNATARCH) --RTS=$(GNATDIR)/lib/gnat/$(GNATARCH)/ravenscar-sfp-stm32f4 -p
+GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
+OBJCOPY			= $(GNATBIN)/$(GNATARCH)-objcopy
 
 GNATPP			= gnatpp
 GNATPPFLAGS		= -i2 -aU -kU -rnb $(ADA_INCLUDES)
