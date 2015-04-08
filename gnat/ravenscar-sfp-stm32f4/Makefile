@@ -28,8 +28,9 @@
 ARMSRC		?= $(HOME)/src/ARM
 ADASRC		?= $(ARMSRC)/gnat
 
-default: runtime_build.elf
-	rm -f obj
+adalib/libgnat.a:
+	$(MAKE) runtime_build.elf
+	rm -rf obj
 
 clean:
 	rm -f adalib/*.a adalib/*.ali
