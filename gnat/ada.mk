@@ -33,7 +33,7 @@ GNATARCH		= arm-eabi
 GNATRELEASE		= 2014
 GNATDIR			?= /usr/local/gnat-gpl-$(GNATRELEASE)-$(GNATARCH)
 GNATBIN			= $(GNATDIR)/bin
-GNATRTS			= $(GNATDIR)/lib/gnat/$(GNATARCH)/ravenscar-sfp-stm32f4
+GNATRTS			= $(ADASRC)/ravenscar-sfp-stm32f4
 GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
 GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
 GPRBUILD		= env PATH=$(GNATBIN) gprbuild
