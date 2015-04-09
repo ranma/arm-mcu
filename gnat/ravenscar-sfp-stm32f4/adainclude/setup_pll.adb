@@ -138,7 +138,7 @@ procedure Setup_Pll is
    procedure Reset (Register : in out Word; Mask : Word);
    procedure Set (Register : in out Word; Mask : Word);
 
-   procedure Initialize_USART1 (Baudrate : Positive);
+   procedure Initialize_USART2 (Baudrate : Positive);
    procedure Initialize_Clocks;
    procedure Reset_Clocks;
 
@@ -280,36 +280,36 @@ procedure Setup_Pll is
    end Reset_Clocks;
 
    -----------------------
-   -- Initialize_USART1 --
+   -- Initialize_USART2 --
    -----------------------
 
-   procedure Initialize_USART1 (Baudrate : Positive) is
+   procedure Initialize_USART2 (Baudrate : Positive) is
       use GPIO;
       APB_Clock    : constant Positive := PCLK2;
       Int_Divider  : constant Positive := (25 * APB_Clock) / (4 * Baudrate);
       Frac_Divider : constant Natural := Int_Divider rem 100;
       BRR          : Bits_16;
    begin
-      RCC.APB2ENR := RCC.APB2ENR or RCC_APB2ENR_USART1;
-      RCC.AHB1ENR := RCC.AHB1ENR or RCC_AHB1ENR_GPIOB;
+      RCC.APB1ENR := RCC.APB1ENR or RCC_APB1ENR_USART2;
+      RCC.AHB1ENR := RCC.AHB1ENR or RCC_AHB1ENR_GPIOA;
 
-      GPIOB.MODER   (6 .. 7) := (Mode_AF,     Mode_AF);
-      GPIOB.OSPEEDR (6 .. 7) := (Speed_50MHz, Speed_50MHz);
-      GPIOB.OTYPER  (6 .. 7) := (Type_PP,     Type_PP);
-      GPIOB.PUPDR   (6 .. 7) := (Pull_Up,     Pull_Up);
-      GPIOB.AFRL    (6 .. 7) := (AF_USART1,   AF_USART1);
+      GPIOA.MODER   (2 .. 3) := (Mode_AF,     Mode_AF);
+      GPIOA.OSPEEDR (2 .. 3) := (Speed_50MHz, Speed_50MHz);
+      GPIOA.OTYPER  (2 .. 3) := (Type_PP,     Type_PP);
+      GPIOA.PUPDR   (2 .. 3) := (Pull_Up,     Pull_Up);
+      GPIOA.AFRL    (2 .. 3) := (AF_USART2,   AF_USART2);
 
       BRR := (Bits_16 (Frac_Divider * 16) + 50) / 100 mod 16
                or Bits_16 (Int_Divider / 100 * 16);
 
-      USART1.BRR := BRR;
-      USART1.CR1 := USART.CR1_UE or USART.CR1_RE or USART.CR1_TE;
-      USART1.CR2 := 0;
-      USART1.CR3 := 0;
-   end Initialize_USART1;
+      USART2.BRR := BRR;
+      USART2.CR1 := USART.CR1_UE or USART.CR1_RE or USART.CR1_TE;
+      USART2.CR2 := 0;
+      USART2.CR3 := 0;
+   end Initialize_USART2;
 
 begin
    Reset_Clocks;
    Initialize_Clocks;
-   Initialize_USART1 (115_200);
+   Initialize_USART2 (115_200);
 end Setup_Pll;

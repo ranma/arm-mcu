@@ -29,13 +29,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Minimal version of Text_IO body for use on STM32F4xxx, using USART1
+--  Minimal version of Text_IO body for use on STM32F4xxx, using USART2
 
 with Interfaces; use Interfaces;
 
 package body System.Text_IO is
 
-   USART1_Base : constant := 16#4001_1000#;
+   USART2_Base : constant := 16#4000_4400#;
 
    type USART_Registers is record
       SR         : Unsigned_16; -- USART Status register
@@ -54,9 +54,9 @@ package body System.Text_IO is
       Reserved_6 : Unsigned_16;
    end record;
 
-   USART1 : USART_Registers;
-   for USART1'Address use USART1_Base;
-   pragma Volatile (USART1);
+   USART2 : USART_Registers;
+   for USART2'Address use USART2_Base;
+   pragma Volatile (USART2);
 
    TX_Ready : constant := 2**6;
    RX_Ready : constant := 2**5;
@@ -65,7 +65,7 @@ package body System.Text_IO is
    -- Get --
    ---------
 
-   function Get return Character is (Character'Val (USART1.DR and 16#FF#));
+   function Get return Character is (Character'Val (USART2.DR and 16#FF#));
 
    ----------------
    -- Initialize --
@@ -80,13 +80,13 @@ package body System.Text_IO is
    -- Is_Tx_Ready --
    -----------------
 
-   function Is_Tx_Ready return Boolean is ((USART1.SR and TX_Ready) /= 0);
+   function Is_Tx_Ready return Boolean is ((USART2.SR and TX_Ready) /= 0);
 
    -----------------
    -- Is_Rx_Ready --
    -----------------
 
-   function Is_Rx_Ready return Boolean is ((USART1.SR and RX_Ready) /= 0);
+   function Is_Rx_Ready return Boolean is ((USART2.SR and RX_Ready) /= 0);
 
    ---------
    -- Put --
@@ -94,7 +94,7 @@ package body System.Text_IO is
 
    procedure Put (C : Character) is
    begin
-      USART1.DR := Character'Pos (C);
+      USART2.DR := Character'Pos (C);
    end Put;
 
    ----------------------------

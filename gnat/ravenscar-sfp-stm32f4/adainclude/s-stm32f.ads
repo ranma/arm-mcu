@@ -54,9 +54,18 @@ package System.STM32F4 is
    AHB1_Peripheral_Base : constant := Peripheral_Base + 16#0002_0000#;
    AHB2_Peripheral_Base : constant := Peripheral_Base + 16#1000_0000#;
 
+   GPIOA_Base  : constant := AHB1_Peripheral_Base + 16#0000#;
    GPIOB_Base  : constant := AHB1_Peripheral_Base + 16#0400#;
+   GPIOC_Base  : constant := AHB1_Peripheral_Base + 16#0800#;
+   GPIOD_Base  : constant := AHB1_Peripheral_Base + 16#0C00#;
+   GPIOE_Base  : constant := AHB1_Peripheral_Base + 16#1000#;
+   GPIOF_Base  : constant := AHB1_Peripheral_Base + 16#1400#;
+   GPIOG_Base  : constant := AHB1_Peripheral_Base + 16#1800#;
+   GPIOH_Base  : constant := AHB1_Peripheral_Base + 16#1C00#;
+   GPIOI_Base  : constant := AHB1_Peripheral_Base + 16#2000#;
    FLASH_Base  : constant := AHB1_Peripheral_Base + 16#3C00#;
    USART1_Base : constant := APB2_Peripheral_Base + 16#1000#;
+   USART2_Base : constant := APB1_Peripheral_Base + 16#4400#;
    RCC_Base    : constant := AHB1_Peripheral_Base + 16#3800#;
    PWR_Base    : constant := APB1_Peripheral_Base + 16#7000#;
 
@@ -197,12 +206,21 @@ package System.STM32F4 is
 
    --  Bit definitions for RCC APB1ENR register
    RCC_APB1ENR_PWR      : constant Word := 16#1000_0000#;
+   RCC_APB1ENR_USART2   : constant Word := 16#0001_0000#;
 
    --  Bit definitions for RCC APB2ENR register
    RCC_APB2ENR_USART1   : constant Word := 16#10#;
 
    --  Bit definitions for RCC AHB1ENR register
-   RCC_AHB1ENR_GPIOB    : constant Word := 16#02#;
+   RCC_AHB1ENR_GPIOA    : constant Word := 16#001#;
+   RCC_AHB1ENR_GPIOB    : constant Word := 16#002#;
+   RCC_AHB1ENR_GPIOC    : constant Word := 16#004#;
+   RCC_AHB1ENR_GPIOD    : constant Word := 16#008#;
+   RCC_AHB1ENR_GPIOE    : constant Word := 16#010#;
+   RCC_AHB1ENR_GPIOF    : constant Word := 16#020#;
+   RCC_AHB1ENR_GPIOG    : constant Word := 16#040#;
+   RCC_AHB1ENR_GPIOH    : constant Word := 16#080#;
+   RCC_AHB1ENR_GPIOI    : constant Word := 16#100#;
 
    ---------
    -- PWR --
@@ -285,6 +303,7 @@ package System.STM32F4 is
 
       --  AFL constants
       AF_USART1    : constant Bits_4 := 7;
+      AF_USART2    : constant Bits_4 := 7;
    end GPIO;
 
    type GPIO_Registers is record
@@ -302,9 +321,41 @@ package System.STM32F4 is
       AFRH    : Bits_8x4;
    end record;
 
+   GPIOA : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOA_Base);
+   pragma Import (Ada, GPIOA);
+
    GPIOB : GPIO_Registers with Volatile,
                                Address => System'To_Address (GPIOB_Base);
    pragma Import (Ada, GPIOB);
+
+   GPIOC : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOC_Base);
+   pragma Import (Ada, GPIOC);
+
+   GPIOD : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOD_Base);
+   pragma Import (Ada, GPIOD);
+
+   GPIOE : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOE_Base);
+   pragma Import (Ada, GPIOE);
+
+   GPIOF : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOF_Base);
+   pragma Import (Ada, GPIOF);
+
+   GPIOG : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOG_Base);
+   pragma Import (Ada, GPIOG);
+
+   GPIOH : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOH_Base);
+   pragma Import (Ada, GPIOH);
+
+   GPIOI : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOI_Base);
+   pragma Import (Ada, GPIOI);
 
    -----------
    -- USART --
@@ -377,5 +428,8 @@ package System.STM32F4 is
 
    USART1 : USART_Registers with Volatile,
                                  Address => System'To_Address (USART1_Base);
+
+   USART2 : USART_Registers with Volatile,
+                                 Address => System'To_Address (USART2_Base);
 
 end System.STM32F4;
