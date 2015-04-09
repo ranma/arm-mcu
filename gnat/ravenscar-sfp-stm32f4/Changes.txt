@@ -1,5 +1,5 @@
-Changes to the Adacore Libre GNAT/GPL Ravenscar profile for STM32F4
--------------------------------------------------------------------
+Changes to the Adacore Libre GNAT/GPL Ravenscar profile RTS for STM32F4
+-----------------------------------------------------------------------
 
 $Id$
 
@@ -9,3 +9,9 @@ $Id$
 2. Changed the console serial port from USART1 to USART2 on pins
    PA2 and PA3, for compatibility with my C language framework.
    Added definitions for GPIOA, GPIOC-I, and USART2 to s_stm32f.ads.
+
+3. Added goop to runtime_build.gpr to select a customized body for
+   Setup_PLL(), depending on the board name.  (I have 4 STM32F4
+   development boards, each with a different frequency crystal.
+   Since the crystal frequency is hard coded in Setup_PLL(), we
+   need to select a customized source file for each frequency.)

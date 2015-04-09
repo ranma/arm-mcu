@@ -45,6 +45,35 @@ project Runtime_Build is
       for Switches ("s-excdeb.adb") use ALL_ADAFLAGS & ("-g", "-O0");
       for Switches ("s-assert.adb") use ALL_ADAFLAGS & ("-g");
       for Switches ("a-tags.adb") use ALL_ADAFLAGS & ("-g");
-  end Compiler;
+   end Compiler;
+
+   -- Select the proper oscillator setup for the board.  The oscillator settings
+   -- are hard coded in the parameterless library level procedure Setup_PLL(),
+   -- which is called from the assembliy language run time startup code, and
+   -- selecting a particular source file from the value of the BOARDNAME macro
+   -- seems to be the only reasonable way to select the proper oscillator settings
+   -- at compile time.
+
+   type Board_Name_Type is ("UNKNOWN", "STM32F4_DISCOVERY", "FEZ_CERB40", "NETDUINO2", "MINI_M4_STM32");
+   Board_Name : Board_Name_type := external("BOARDNAME", "UNKNOWN");
+
+   package Naming is
+      case Board_Name is
+         when "STM32F4_DISCOVERY" =>
+            for Body("setup_pll") use "setup_pll-8MHz.adb";
+
+         when "FEZ_CERB40" =>
+            for Body("setup_pll") use "setup_pll-12MHz.adb";
+
+         when "MINI_M4_STM32" =>
+            for Body("setup_pll") use "setup_pll-16MHz.adb";
+
+         when "NETDUINO2" =>
+            for Body("setup_pll") use "setup_pll-25MHz.adb";
+
+         when others =>
+            for Body("setup_pll") use "setup_pll.adb"; -- Use original unmodified source file
+      end case;
+   end Naming;
 
 end Runtime_Build;
