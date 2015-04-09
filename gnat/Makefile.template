@@ -29,7 +29,7 @@ ARMSRC		?= $(HOME)/src/ARM
 ADASRC		?= $(ARMSRC)/gnat
 
 MCUFAMILY	= stm32f4
-BOARDNAME	= STM32F4_DISCOVERY
+BOARDNAME	= UNKNOWN
 
 # Default target placeholder
 
