@@ -43,7 +43,7 @@ OBJCOPY			= $(GNATBIN)/$(GNATARCH)-objcopy
 # Build program from project file
 
 %.elf: %.gpr
-	$(MAKE) -C $(GNATRTS)
+	$(MAKE) -C $(GNATRTS) BOARDNAME=$(BOARDNAME)
 	$(GPRBUILD) $(GPRBUILDFLAGS) $<
 
 # Convert ELF to binary
