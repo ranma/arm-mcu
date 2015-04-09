@@ -57,7 +57,7 @@ procedure Setup_Pll is
    --  values have been calculated for a 168 MHz system clock from an external
    --  25 MHz HSE clock. The PLL values are used when Activate_PLL is True.
 
-   HSECLK          : constant HSECLK_Range := 25_000_000; -- ext. clock is 25 MHz
+   HSECLK        : constant HSECLK_Range := 25_000_000; -- ext. clock is 25 MHz
 
    HSE_Enabled     : constant Boolean := True;  -- use high-speed ext. clock
    HSE_Bypass      : constant Boolean := False; -- don't bypass ext. resonator
