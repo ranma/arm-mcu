@@ -36,9 +36,9 @@ GNATBIN			= $(GNATDIR)/bin
 GNATRTS			= $(ADASRC)/ravenscar-sfp-stm32f4
 GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
 GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
+GNATOBJCOPY		= $(GNATBIN)/$(GNATARCH)-objcopy
 GPRBUILD		= env PATH=$(GNATBIN) gprbuild
 GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
-OBJCOPY			= $(GNATBIN)/$(GNATARCH)-objcopy
 
 # Build program from project file
 
@@ -49,12 +49,12 @@ OBJCOPY			= $(GNATBIN)/$(GNATARCH)-objcopy
 # Convert ELF to binary
 
 %.bin: %.elf
-	$(OBJCOPY) -S -O binary --gap-fill=0 $< $@
+	$(GNATOBJCOPY) -S -O binary --gap-fill=0 $< $@
 
 # Convert ELF to Intel hex
 
 %.hex: %.elf
-	$(OBJCOPY) -S -O ihex --change-addresses=$(FLASHWRITEADDR) --gap-fill=0 $< $@
+	$(GNATOBJCOPY) -S -O ihex --change-addresses=$(FLASHWRITEADDR) --gap-fill=0 $< $@
 
 # Default make target
 
