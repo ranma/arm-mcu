@@ -33,7 +33,7 @@ GNATARCH		= arm-eabi
 GNATRELEASE		= 2014
 GNATDIR			?= /usr/local/gnat-gpl-$(GNATRELEASE)-$(GNATARCH)
 GNATBIN			= $(GNATDIR)/bin
-GNATRTS			= $(ADASRC)/ravenscar-sfp-stm32f4
+GNATRTS			= $(ADASRC)/$(MCUFAMILY)/ravenscar-sfp-stm32f4
 GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
 GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
 GNATOBJCOPY		= $(GNATBIN)/$(GNATARCH)-objcopy
