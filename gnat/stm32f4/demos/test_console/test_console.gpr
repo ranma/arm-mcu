@@ -22,11 +22,13 @@
 -- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 -- POSSIBILITY OF SUCH DAMAGE.
 
+with "boards";
+
 project test_console is
 
    for Languages use ("Ada");
    for Main use ("main.adb");
-   for Source_Dirs use (".", "../common", "../../common");
+   for Source_Dirs use (".", "../../common", "../../" & boards.Board_name & "/common");
    for Object_Dir use "obj";
    for Exec_Dir use ".";
 
@@ -40,4 +42,3 @@ project test_console is
    end Builder;
 
 end test_console;
-
