@@ -1,4 +1,4 @@
--- STM32F4-Discovery serial console test
+-- Board Support Package for the STM32F4-Discovery microcomputer board
 
 -- $Id$
 
@@ -22,40 +22,8 @@
 -- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 -- POSSIBILITY OF SUCH DAMAGE.
 
-with Ada.Real_Time;
-use Ada.Real_Time;
+PACKAGE BSP IS
 
-with Ada.Text_IO;
-use Ada.Text_IO;
+  boardname : constant String := "STM32F4-Discovery";
 
-with BSP;
-
-procedure Main is
-
-  ClearScreen : constant String := ASCII.ESC & "[H" & ASCII.ESC & "[J";  -- VT100 clear screen
-  fingers : constant Natural := 10;
-  counter : Natural range 1 .. fingers;
-
-begin
-  put(ClearScreen);
-  put("STM32F4 Ada console output test for " & BSP.boardname);
-  new_line;
-  new_line;
-
-  counter := 1;
-
-  loop
-    begin
-      put("Hello, world");
-      put_line(Natural'image(counter));
-
-      delay until Clock + Milliseconds(1000);
-      counter := counter + 1;
-
-    exception
-      when CONSTRAINT_ERROR =>
-        put_line("You ran out of fingers!");
-        counter := 1;
-    end;
-  end loop;
-end Main;
+END BSP;
