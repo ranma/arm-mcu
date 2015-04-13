@@ -1,3 +1,5 @@
+with "boards";
+
 project Runtime_Build is
    for Languages use ("Ada", "Asm_Cpp", "C");
 
@@ -54,8 +56,7 @@ project Runtime_Build is
    -- seems to be the only reasonable way to select the proper oscillator settings
    -- at compile time.
 
-   type Board_Name_Type is ("UNKNOWN", "STM32F4_DISCOVERY", "FEZ_CERB40", "NETDUINO2", "MINI_M4_STM32");
-   Board_Name : Board_Name_type := external("BOARDNAME", "UNKNOWN");
+   Board_Name : boards.Board_Name_type := external("BOARDNAME", "UNKNOWN");
 
    package Naming is
       case Board_Name is

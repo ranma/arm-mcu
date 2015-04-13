@@ -38,13 +38,13 @@ GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
 GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
 GNATOBJCOPY		= $(GNATBIN)/$(GNATARCH)-objcopy
 GPRBUILD		= env PATH=$(GNATBIN) gprbuild
-GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
+GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH) -aP $(ADASRC)/$(MCUFAMILY)
 
 # Build program from project file
 
 %.elf: %.gpr
-	$(MAKE) -C $(GNATRTS) BOARDNAME=$(BOARDNAME)
-	$(GPRBUILD) $(GPRBUILDFLAGS) $<
+	$(MAKE) -C $(GNATRTS) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME)
+	$(GPRBUILD) $< $(GPRBUILDFLAGS)
 
 # Convert ELF to binary
 
