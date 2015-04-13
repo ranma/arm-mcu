@@ -37,7 +37,7 @@ GNATRTS			= $(ADASRC)/$(MCUFAMILY)/ravenscar-sfp-stm32f4
 GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
 GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
 GNATOBJCOPY		= $(GNATBIN)/$(GNATARCH)-objcopy
-GPRBUILD		= env PATH=$(GNATBIN) gprbuild
+GPRBUILD		= env PATH=$(GNATBIN) BOARDNAME=$(BOARDNAME) gprbuild
 GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH) -aP $(ADASRC)/$(MCUFAMILY)/$(BOARDNAME)/common -aP $(ADASRC)/$(MCUFAMILY)/common
 
 # Build program from project file
