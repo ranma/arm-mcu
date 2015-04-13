@@ -174,6 +174,7 @@ ARM_mk_clean:
 
 # Include programming and debugging makefiles
 
+include $(ARMSRC)/include/dfu.mk
 include $(ARMSRC)/include/jlink.mk
 include $(ARMSRC)/include/lpc21isp.mk
 include $(ARMSRC)/include/mbed.mk
