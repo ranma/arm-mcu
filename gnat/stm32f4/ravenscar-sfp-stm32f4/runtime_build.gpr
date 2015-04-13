@@ -67,7 +67,7 @@ project Runtime_Build is
          when "MINI_M4_STM32" =>
             for Body("setup_pll") use "setup_pll-16MHz.adb";
 
-         when "NETDUINO2" =>
+         when "NETDUINOPLUS2" =>
             for Body("setup_pll") use "setup_pll-25MHz.adb";
 
          when others =>

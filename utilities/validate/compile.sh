@@ -691,7 +691,7 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 ##########################################################################
 
 export MCUFAMILY=stm32f4
-export BOARDNAME=NETDUINO2
+export BOARDNAME=NETDUINOPLUS2
 export WITH_CONIO=no
 export WITH_USBSERIAL=no
 
@@ -713,7 +713,7 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 ##########################################################################
 
 export MCUFAMILY=stm32f4
-export BOARDNAME=NETDUINO2
+export BOARDNAME=NETDUINOPLUS2
 export WITH_CONIO=no
 export WITH_USBSERIAL=yes
 
@@ -735,7 +735,7 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 ##########################################################################
 
 export MCUFAMILY=stm32f4
-export BOARDNAME=NETDUINO2
+export BOARDNAME=NETDUINOPLUS2
 export WITH_CONIO=yes
 export WITH_USBSERIAL=no
 

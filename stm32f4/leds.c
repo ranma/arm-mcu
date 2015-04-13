@@ -37,7 +37,7 @@ void LEDS_initialize(void)
   gpiopin_configure(GPIOPIN63, GPIOPIN_OUTPUT);		// PD15
 #endif
 
-#ifdef NETDUINO2
+#ifdef NETDUINOPLUS2
   gpiopin_configure(GPIOPIN10, GPIOPIN_OUTPUT);		// PA10
 #endif
 
@@ -63,7 +63,7 @@ unsigned long int LEDS_get(void)
   result += GPIOPIN63IN << 3;
 #endif
 
-#ifdef NETDUINO2
+#ifdef NETDUINOPLUS2
   result += GPIOPIN10IN;
 #endif
 
@@ -87,7 +87,7 @@ void LEDS_set(unsigned long int mask)
   GPIOPIN63OUT = mask >> 3;
 #endif
 
-#ifdef NETDUINO2
+#ifdef NETDUINOPLUS2
   GPIOPIN10OUT = mask;
 #endif
 

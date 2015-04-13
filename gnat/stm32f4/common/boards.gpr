@@ -24,7 +24,7 @@
 
 project boards is
 
-  type Board_Name_Type is ("UNKNOWN", "STM32F4_DISCOVERY", "FEZ_CERB40", "NETDUINO2", "MINI_M4_STM32");
+  type Board_Name_Type is ("UNKNOWN", "STM32F4_DISCOVERY", "FEZ_CERB40", "NETDUINOPLUS2", "MINI_M4_STM32");
 
   Board_Name : Board_Name_type := external("BOARDNAME", "UNKNOWN");
  

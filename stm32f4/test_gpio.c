@@ -78,7 +78,7 @@ int main(void)
   }
 #endif
 
-#ifdef NETDUINO2
+#ifdef NETDUINOPLUS2
   gpiopin_configure(GPIOPIN27, GPIOPIN_INPUT);		// PB11
   gpiopin_configure(GPIOPIN10, GPIOPIN_OUTPUT);		// PA10
 
