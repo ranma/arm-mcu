@@ -29,7 +29,7 @@ pragma Ada_2012; -- To work around pre-commit check?
 pragma Restrictions (No_Elaboration_Code);
 
 --  This initialization procedure mainly initializes the PLLs and
---  all derived clocks. For now it also initializes the first USART.
+--  all derived clocks. For now it also initializes the console USART.
 --  To be moved to s-textio, but needs clock info ???
 
 with System.STM32F4; use System.STM32F4;
@@ -119,7 +119,6 @@ procedure Setup_Pll is
                  when RCC_CFGR.PPRE1_DIV8  => HCLK / 8,
                  when RCC_CFGR.PPRE1_DIV16 => HCLK / 16,
                  when others => raise Program_Error);
-   pragma Unreferenced (PCLK1);
 
    PCLK2    : constant PCLK2_Range :=
                 (case PPRE2 is
@@ -129,6 +128,7 @@ procedure Setup_Pll is
                  when RCC_CFGR.PPRE2_DIV8  => HCLK / 8,
                  when RCC_CFGR.PPRE2_DIV16 => HCLK / 16,
                  when others => raise Program_Error);
+   pragma Unreferenced (PCLK2);
 
    --  Local Subprograms
 
@@ -285,7 +285,7 @@ procedure Setup_Pll is
 
    procedure Initialize_USART2 (Baudrate : Positive) is
       use GPIO;
-      APB_Clock    : constant Positive := PCLK2;
+      APB_Clock    : constant Positive := PCLK1;
       Int_Divider  : constant Positive := (25 * APB_Clock) / (4 * Baudrate);
       Frac_Divider : constant Natural := Int_Divider rem 100;
       BRR          : Bits_16;
