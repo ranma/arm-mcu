@@ -56,10 +56,8 @@ project Runtime_Build is
    -- seems to be the only reasonable way to select the proper oscillator settings
    -- at compile time.
 
-   Board_Name : boards.Board_Name_type := external("BOARDNAME", "UNKNOWN");
-
    package Naming is
-      case Board_Name is
+      case boards.Board_Name is
          when "STM32F4_DISCOVERY" =>
             for Body("setup_pll") use "setup_pll-8MHz.adb";
 
