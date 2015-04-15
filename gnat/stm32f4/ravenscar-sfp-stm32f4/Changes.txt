@@ -18,6 +18,4 @@ $Id$
 
 4. Removed unneeded ada_object_path and ada_source_path.
 
-5. Removed unneeded start-ram.S and stm32f4-ram.ld.
-
-6. Removed unneeded runtime.xml.
+5. Removed unneded start-ram.S and stm32f4-ram.ld.
