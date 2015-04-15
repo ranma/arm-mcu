@@ -1,4 +1,4 @@
--- STM32F4-Discovery serial console test
+-- Serial console test
 
 -- $Id$
 
@@ -38,7 +38,7 @@ procedure Main is
 
 begin
   put(ClearScreen);
-  put("STM32F4 Ada console output test for " & BSP.boardname);
+  put("Serial console test for " & BSP.boardname);
   new_line;
   new_line;
 

@@ -1,4 +1,4 @@
-# Makefile for building the GNAT Ada console I/O test for the STM32F4-Discovery
+# Makefile for building the GNAT Ada serial console test
 
 # $Id$
 
@@ -27,7 +27,7 @@
 ARMSRC		?= $(HOME)/src/ARM
 ADASRC		?= $(ARMSRC)/gnat
 
-MCUFAMILY	= stm32f4
+MCUFAMILY	?= stm32f4
 
 BOARDNAME	?= STM32F4_DISCOVERY
 #BOARDNAME	?= FEZ_CERB40
