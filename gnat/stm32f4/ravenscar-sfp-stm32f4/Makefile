@@ -31,7 +31,7 @@ ADASRC		?= $(ARMSRC)/gnat
 # Build the Run Time Library
 
 adalib/libgnat.a:
-	env PATH=$(GNATBIN) gprbuild runtime_build.gpr -p --target=$(GNATARCH) -aP $(ADASRC)/$(MCUFAMILY)/boards
+	env PATH=$(GNATBIN) gprbuild runtime_build.gpr -p --target=$(GNATARCH) -aP ../boards
 	rm -rf obj
 
 # Remove working files
