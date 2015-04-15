@@ -38,7 +38,7 @@ GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
 GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
 GNATOBJCOPY		= $(GNATBIN)/$(GNATARCH)-objcopy
 GPRBUILD		= env PATH=$(GNATBIN) ADASRC=$(ADASRC) BOARDNAME=$(BOARDNAME) gprbuild
-GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH
+GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
 
 # Build program from project file
 
