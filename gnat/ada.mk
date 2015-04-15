@@ -43,7 +43,7 @@ GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH) -aP $(ADASRC)/$(MCUFAM
 # Build program from project file
 
 %.elf: %.gpr
-	$(MAKE) -C $(GNATRTS) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME)
+	$(MAKE) -C $(GNATRTS) BOARDNAME=$(BOARDNAME)
 	$(GPRBUILD) $< $(GPRBUILDFLAGS)
 
 # Convert ELF to binary
