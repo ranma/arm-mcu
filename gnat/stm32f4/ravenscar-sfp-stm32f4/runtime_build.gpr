@@ -1,7 +1,5 @@
-with "boards";
-
 project Runtime_Build is
-   for Languages use ("Ada", "Asm_Cpp", "C");
+   for Languages use ("Ada", "Asm_Cpp");
 
    for Library_Auto_Init use "False";
    for Library_Name use "gnat";
@@ -10,7 +8,8 @@ project Runtime_Build is
    for Library_Dir use "adalib";
    for Object_Dir use "obj";
 
-   for Source_Dirs use ("adainclude");
+   for Source_Dirs use ("adainclude", "../boards/" & external("BOARDNAME"));
+   for Source_List_file use "source_files";
 
    for Target use "arm-eabi";
 
@@ -36,7 +35,6 @@ project Runtime_Build is
       NO_SIBLING_ADAFLAGS := ("-fno-optimize-sibling-calls");
       NO_REORDER_ADAFLAGS := ("-fno-toplevel-reorder");
 
-      for Switches ("C") use ALL_CFLAGS;
       for Switches ("Ada") use ALL_ADAFLAGS;
 
       for Switches ("s-traceb.adb") use ALL_ADAFLAGS & ("-g")
@@ -48,31 +46,5 @@ project Runtime_Build is
       for Switches ("s-assert.adb") use ALL_ADAFLAGS & ("-g");
       for Switches ("a-tags.adb") use ALL_ADAFLAGS & ("-g");
    end Compiler;
-
-   -- Select the proper oscillator setup for the board.  The oscillator settings
-   -- are hard coded in the parameterless library level procedure Setup_PLL(),
-   -- which is called from the assembliy language run time startup code, and
-   -- selecting a particular source file from the value of the BOARDNAME macro
-   -- seems to be the only reasonable way to select the proper oscillator settings
-   -- at compile time.
-
-   package Naming is
-      case boards.Board_Name is
-         when "STM32F4_DISCOVERY" =>
-            for Body("setup_pll") use "setup_pll-8MHz.adb";
-
-         when "FEZ_CERB40" =>
-            for Body("setup_pll") use "setup_pll-12MHz.adb";
-
-         when "MINI_M4_STM32" =>
-            for Body("setup_pll") use "setup_pll-16MHz.adb";
-
-         when "NETDUINOPLUS2" =>
-            for Body("setup_pll") use "setup_pll-25MHz.adb";
-
-         when others =>
-            for Body("setup_pll") use "setup_pll.adb"; -- Use original unmodified source file
-      end case;
-   end Naming;
 
 end Runtime_Build;
