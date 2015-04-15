@@ -15,3 +15,5 @@ $Id$
    development boards, each with a different frequency crystal.
    Since the crystal frequency is hard coded in Setup_PLL(), we
    need to select a customized source file for each frequency.)
+
+3. Removed unneeded ada_object_path and ada_source_path.
