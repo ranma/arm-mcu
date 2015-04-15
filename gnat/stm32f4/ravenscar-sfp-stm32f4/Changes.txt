@@ -16,4 +16,6 @@ $Id$
    Since the crystal frequency is hard coded in Setup_PLL(), we
    need to select a customized source file for each frequency.)
 
-3. Removed unneeded ada_object_path and ada_source_path.
+4. Removed unneeded ada_object_path and ada_source_path.
+
+5. Removed unneded start-ram.S and stm32f4-ram.ld.
