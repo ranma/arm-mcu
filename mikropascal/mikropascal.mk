@@ -35,6 +35,9 @@ MIKROPASCAL	?= "C:/Users/Public/Documents/Mikroelektronika/mikroPascal PRO for A
 %.hex: %.mppar
 	$(MIKROPASCAL) -DL -RA -SSA -PF $<
 
+%.bin: %.mppar
+	$(MIKROPASCAL) -DL -RA -SSA -PF $< -BIN
+
 # Default target
 
 mikropascal_mk_default:
