@@ -1,7 +1,7 @@
 unit USBdsc;
 
-const USB_VENDOR_ID : word = 0x1234;
-const USB_PRODUCT_ID : word = 0x0001;
+const USB_VENDOR_ID : word = 0x16D0;
+const USB_PRODUCT_ID : word = 0x0AFA;
 const USB_SELF_POWER : char = 0x80;            // Self powered 0xC0,  0x80 bus powered
 const USB_MAX_POWER : char = 250;              // Bus power required in units of 2 mA
 const HID_INPUT_REPORT_BYTES : char = 64;
@@ -139,27 +139,27 @@ const strd1 : str1 = (
 type str2 = record
   bLength : char;
   bDscType : char;
-  str : array[16] of word;
+  str : array[18] of word;
 end;
 
 const strd2 : str2 = (
-  34,           //sizeof this descriptor string
+  38,           //sizeof this descriptor string
   0x03,
-  ('M','i','k','r','o','e','l','e','k','t','r','o','n','i','k','a')
+  ('M','u','n','t','s',' ','T','e','c','h','n','o','l','o','g','i','e','s')
 );
 
 //Product string descriptor
 type str3 = record
   bLength : char;
   bDscType : char;
-  str : array[23] of word;
+  str : array[14] of word;
 end;
-const strd3 : str3 = (
-  32,           //sizeof this descriptor string
-  0x03,
-  ('U','S','B',' ','H','I','D',' ','L','i','b','r','a','r','y')
-);
 
+const strd3 : str3 = (
+  30,           //sizeof this descriptor string
+  0x03,
+  ('U','S','B',' ','H','I','D',' ','D','e','v','i','c','e')
+);
 
 var USB_config_dsc_ptr : array[1] of ^const char;
 
