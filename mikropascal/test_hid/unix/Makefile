@@ -23,7 +23,14 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 CFLAGS		+= -Wall
+
+ifeq ($(findstring CYGWIN, $(shell uname)), CYGWIN)
+LDFLAGS		+= -lhidapi
+endif
+
+ifeq ($(shell uname), Linux)
 LDFLAGS		+= -lhidapi-hidraw
+endif
 
 test_hid: test_hid.c
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
