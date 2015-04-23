@@ -22,7 +22,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-CFLAGS		+= -Wall -I/usr/local/include/hidapi
+CFLAGS		+= -Wall
 LDFLAGS		+= -lhidapi-hidraw
 
 test_hid: test_hid.c

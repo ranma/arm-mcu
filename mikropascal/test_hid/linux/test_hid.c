@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "hidapi.h"
+#include <hidapi/hidapi.h>
 
 #define REPORTSIZE	65
 #define COMMAND		argv[1]
