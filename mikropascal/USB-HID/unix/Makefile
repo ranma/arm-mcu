@@ -32,8 +32,8 @@ ifeq ($(shell uname), Linux)
 LDFLAGS		+= -lhidapi-hidraw
 endif
 
-test_hid: test_hid.c
+test_usbhid: test_usbhid.c
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean:
-	rm test_hid
+	rm test_usbhid

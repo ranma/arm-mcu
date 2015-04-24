@@ -32,11 +32,11 @@ BOARDNAME	= FEZ_CERB40
 
 # Build the program
 
-default: test_hid.bin
+default: test_usbhid.bin
 
 # Write program to code flash
 
-install: test_hid.flashdfu
+install: test_usbhid.flashdfu
 
 # Remove working files
 

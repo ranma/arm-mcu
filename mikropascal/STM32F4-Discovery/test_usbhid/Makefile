@@ -32,11 +32,11 @@ BOARDNAME	= STM32F4_DISCOVERY
 
 # Build the program
 
-default: test_hid.bin
+default: test_usbhid.bin
 
 # Write program to code flash
 
-install: test_hid.flashstlink
+install: test_usbhid.flashstlink
 
 # Remove working files
 

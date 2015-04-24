@@ -41,13 +41,13 @@ int main(int argc, char* argv[])
 
   if (argc != 2)
   {
-    fprintf(stderr, "Usage: test_hid on|off\n");
+    fprintf(stderr, "Usage: test_usbhid on|off\n");
     exit(1);
   }
 
   if (strcasecmp(COMMAND, "on") && strcasecmp(COMMAND, "off"))
   {
-    fprintf(stderr, "Usage: test_hid on|off\n");
+    fprintf(stderr, "Usage: test_usbhid on|off\n");
     exit(1);
   }
 
