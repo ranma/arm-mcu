@@ -27,6 +27,10 @@ STLINKFLASH	?= ST-LINK_CLI.exe
 STLINKIF	?= -c SWD
 endif
 
+ifeq ($(shell uname), Darwin)
+STLINKFLASH	?= stlink-flash
+endif
+
 ifeq ($(shell uname), Linux)
 STLINKFLASH	?= stlink-flash
 endif
