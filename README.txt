@@ -173,11 +173,14 @@ News
      * 13 April 2015 -- Renamed NETDUINO2 (which is STM32F2) to
        NETDUNIOPLUS2 (which is STM32FN4). Added support for programming
        STM32 flash with [15]dfu-util.
+     * 27 April 2015 -- Upgraded the STM32F4 Standard Peripheral Library
+       to version 1.5.0. Added support for the [16]NUCLEO-F411RE board,
+       and the corresponding STM32F411RE MCU.
 
 Git Repository
 
-   The source code is hosted on [16]SourceForge at
-   [17]http://sourceforge.net/p/arm-mcu/code.
+   The source code is hosted on [17]SourceForge at
+   [18]http://sourceforge.net/p/arm-mcu/code.
 
    Use one of the following commands to clone it:
 git clone --depth 1 git://git.code.sf.net/p/arm-mcu/code  ARM
@@ -211,7 +214,7 @@ POSSIBILITY OF SUCH DAMAGE.
    respective authors.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [18]phil@munts.net
+   Questions or comments to Philip Munts [19]phil@munts.net
 
    $Id$
 
@@ -235,6 +238,7 @@ References
   13. http://www.mikroe.com/mini/stm32
   14. https://launchpad.net/gcc-arm-embedded
   15. http://dfu-util.sourceforge.net/
-  16. http://sourceforge.net/
-  17. http://sourceforge.net/p/arm-mcu/code
-  18. mailto:phil@munts.net
+  16. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF260320
+  17. http://sourceforge.net/
+  18. http://sourceforge.net/p/arm-mcu/code
+  19. mailto:phil@munts.net
