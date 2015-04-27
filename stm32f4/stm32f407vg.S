@@ -1,4 +1,4 @@
-/* Startup for STM32F407 Cortex-M4 ARM MCU */
+/* Startup for STM32F407VG Cortex-M4 ARM MCU */
 
 // $Id$
 
@@ -75,7 +75,7 @@ _vectors: 	.word		__stack_end__
 		IRQ		PendSV_Handler
 		IRQ		SysTick_Handler
 
-// Hardware interrupts specific to the STM32F407
+// Hardware interrupts specific to the STM32F407VG
 
 		IRQ		WWDG_IRQHandler
 		IRQ		PVD_IRQHandler
