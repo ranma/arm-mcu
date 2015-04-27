@@ -354,7 +354,7 @@
 /* #define USE_HSE_BYPASS */
 
 #if defined(USE_HSE_BYPASS)     
-#define HSE_BYPASS_INPUT_FREQUENCY   8000000
+#define HSE_BYPASS_INPUT_FREQUENCY   HSE_VALUE
 #endif /* USE_HSE_BYPASS */    
 #endif /* STM32F411xE */
     
