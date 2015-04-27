@@ -7,3 +7,5 @@ $Id$
    useless prebuilt libraries in Libraries/CMSIS/Lib.
 
 2. Define assert_param() as assert() in stm32f4xx_conf.h.
+
+3. Changed PLL_M to (HSE_VALUE/1000000) in system_stm32f4xx.c.
