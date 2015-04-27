@@ -107,4 +107,23 @@ int main(void)
     GPIOPIN45OUT = i >> 21;
   }
 #endif
+
+#ifdef NUCLEO_F411RE
+  gpiopin_configure(GPIOPIN45, GPIOPIN_INPUT);		// PC13
+  gpiopin_configure(GPIOPIN5, GPIOPIN_OUTPUT);		// PA5
+
+  for (i = 0;; i++)
+  {
+    // Speed up flashing if user button is pressed
+
+    if (!GPIOPIN45IN)
+    {
+      GPIOPIN5OUT = i >> 21;
+    }
+    else
+    {
+      GPIOPIN5OUT = i >> 22;
+    }
+  }
+#endif
 }

@@ -1,4 +1,4 @@
-# Make processor dependent startup and libraries
+# GDB startup script for debugging a program in flash ROM
 
 # $Id$
 
@@ -22,23 +22,24 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-ARMSRC		?= ..
-MCUFAMILY	= stm32f4
-BOARDNAME	?= STM32F4_DISCOVERY
-#BOARDNAME	?= STM32F4_DISCOVERY_SHIELD
-#BOARDNAME	?= FEZ_CERB40
-#BOARDNAME	?= NETDUINOPLUS2
-#BOARDNAME	?= MINI_M4_STM32
-#BOARDNAME	?= NUCLEO_F411RE
+# Connect to the GDB server
 
-include $(ARMSRC)/include/ARM.mk
+target remote localhost:3333
 
-.PHONY: lib clean reallyclean distclean
+# Reset target & gain control
 
-lib: lib$(MCU).a
+monitor reset
 
-clean: ARM_mk_clean
+# J-Link doesn't seem to provide target memory regions
 
-reallyclean: clean
+mem 0x00000000 0x00080000 ro
+mem 0x20000000 0x20020000 rw
 
-distclean: reallyclean
+# Display memory regions
+
+info mem
+
+# Break at beginning of main()
+
+break main
+continue

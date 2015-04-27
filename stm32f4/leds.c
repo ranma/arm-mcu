@@ -46,6 +46,10 @@ void LEDS_initialize(void)
   gpiopin_configure(GPIOPIN45, GPIOPIN_OUTPUT);		// PC13, red
 #endif
 
+#ifdef NUCLEO_F411RE
+  gpiopin_configure(GPIOPIN5, GPIOPIN_OUTPUT);		// PA5, green
+#endif
+
   LEDS_set(0);						// Turn off all LEDs at startup
 }
 
@@ -72,6 +76,10 @@ unsigned long int LEDS_get(void)
   result += GPIOPIN45IN << 1;
 #endif
 
+#ifdef NUCLEO_F411RE
+  result += GPIOPIN5IN;
+#endif
+
   return result;
 }
 
@@ -94,5 +102,9 @@ void LEDS_set(unsigned long int mask)
 #ifdef MINI_M4_STM32
   GPIOPIN44OUT = mask;
   GPIOPIN45OUT = mask >> 1;
+#endif
+
+#ifdef NUCLEO_F411RE
+  GPIOPIN5OUT = mask;
 #endif
 }
