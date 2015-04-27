@@ -5,3 +5,5 @@ $Id$
 
 1. Imported STM32F4 Standard Peripheral Libary V1.5.0, except for
    useless prebuilt libraries in Libraries/CMSIS/Lib.
+
+2. Define assert_param() as assert() in stm32f4xx_conf.h.
