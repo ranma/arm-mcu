@@ -35,6 +35,12 @@ SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", \
   SYMLINK+="stlink-v2" \
   MODE:="0666", GROUP:="wheel"
 
+# ST-Link V2-1 (e.g. Nucleo board)
+
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", \
+  SYMLINK+="stlink-v2-1" \
+  MODE:="0666", GROUP:="wheel"
+
 LABEL="stlink_rules_end"
 
 # Remove any device nodes or links we have created
@@ -44,3 +50,6 @@ ACTION=="remove", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3744", \
 
 ACTION=="remove", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", \
   RUN+="/bin/sh -c '/bin/rm /dev/stlink-v2'"
+
+ACTION=="remove", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", \
+  RUN+="/bin/sh -c '/bin/rm /dev/stlink-v2-1'"
