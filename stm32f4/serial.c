@@ -101,12 +101,13 @@ int serial_open(char *name, unsigned int *subdevice)
   {
     case 0 : // USART1
 
-// Turn on peripheral clocks
+// Turn on USART1 peripheral clock
 
-      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 
 // Configure TX pin on PA9
+
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
       GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_USART1);
 
@@ -119,6 +120,8 @@ int serial_open(char *name, unsigned int *subdevice)
 
 // Configure RX pin PA10
 
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
       GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_USART1);
 
       GPIO_StructInit(&GPIO_config);
@@ -130,12 +133,13 @@ int serial_open(char *name, unsigned int *subdevice)
 
     case 1 : // USART2
 
-// Turn on peripheral clocks
+// Turn on USART2 peripheral clock
 
-      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
       RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
 // Configure TX pin on PA2
+
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
       GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
 
@@ -148,6 +152,8 @@ int serial_open(char *name, unsigned int *subdevice)
 
 // Configure RX pin on PA3
 
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
       GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
 
       GPIO_StructInit(&GPIO_config);
@@ -159,12 +165,13 @@ int serial_open(char *name, unsigned int *subdevice)
 
     case 2 : // USART3
 
-// Turn on peripheral clocks
+// Turn on USART3 peripheral clock
 
-      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
       RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 
 // Configure TX pin on PB10
+
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 
       GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_USART3);
 
@@ -177,6 +184,8 @@ int serial_open(char *name, unsigned int *subdevice)
 
 // Configure RX pin on PB11
 
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+
       GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF_USART3);
 
       GPIO_StructInit(&GPIO_config);
@@ -188,12 +197,13 @@ int serial_open(char *name, unsigned int *subdevice)
 
     case 3 : // UART4
 
-// Turn on peripheral clocks
+// Turn on UART4 peripheral clock
 
-      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
       RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
 
 // Configure TX pin on PA0
+
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
       GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_UART4);
 
@@ -206,6 +216,8 @@ int serial_open(char *name, unsigned int *subdevice)
 
 // Configure RX pin on PA1
 
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
       GPIO_PinAFConfig(GPIOA, GPIO_PinSource1, GPIO_AF_UART4);
 
       GPIO_StructInit(&GPIO_config);
@@ -217,13 +229,13 @@ int serial_open(char *name, unsigned int *subdevice)
 
     case 4 : // UART5
 
-// Turn on peripheral clocks
+// Turn on UART5 peripheral clock
 
-      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
-      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
       RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);
 
 // Configure TX pin on PC12
+
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
 
       GPIO_PinAFConfig(GPIOC, GPIO_PinSource12, GPIO_AF_UART5);
 
@@ -236,6 +248,8 @@ int serial_open(char *name, unsigned int *subdevice)
 
 // Configure RX pin on PD2
 
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+
       GPIO_PinAFConfig(GPIOD, GPIO_PinSource2, GPIO_AF_UART5);
 
       GPIO_StructInit(&GPIO_config);
@@ -247,12 +261,39 @@ int serial_open(char *name, unsigned int *subdevice)
 
     case 5 : //  USART6
 
-// Turn on peripheral clocks
+// Turn on USART6 peripheral clock
 
-      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART6, ENABLE);
 
+#ifdef NUCLEO_F411RE
+// Configure TX pin on PA11 (aka Arduino D1)
+
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+      GPIO_PinAFConfig(GPIOA, GPIO_PinSource11, GPIO_AF_USART6);
+
+      GPIO_StructInit(&GPIO_config);
+      GPIO_config.GPIO_Pin = GPIO_Pin_11;
+      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
+      GPIO_config.GPIO_Speed = GPIO_Speed_50MHz;
+      GPIO_config.GPIO_OType = GPIO_OType_PP;
+      GPIO_Init(GPIOA, &GPIO_config);
+
+// Configure RX pin on PA12 (aka Arduino D0)
+
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+      GPIO_PinAFConfig(GPIOA, GPIO_PinSource12, GPIO_AF_USART6);
+
+      GPIO_StructInit(&GPIO_config);
+      GPIO_config.GPIO_Pin = GPIO_Pin_12;
+      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
+      GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
+      GPIO_Init(GPIOA, &GPIO_config);
+#else
 // Configure TX pin on PC6
+
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
 
       GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_USART6);
 
@@ -265,6 +306,8 @@ int serial_open(char *name, unsigned int *subdevice)
 
 // Configure RX pin on PC7
 
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+
       GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_USART6);
 
       GPIO_StructInit(&GPIO_config);
@@ -272,6 +315,7 @@ int serial_open(char *name, unsigned int *subdevice)
       GPIO_config.GPIO_Mode = GPIO_Mode_AF;
       GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
       GPIO_Init(GPIOC, &GPIO_config);
+#endif
       break;
 
     default :
