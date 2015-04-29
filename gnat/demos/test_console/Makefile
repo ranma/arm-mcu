@@ -52,6 +52,6 @@ distclean: ada_mk_distclean
 
 # Include subordinate makefiles
 
-include $(ADASRC)/ada.mk
 include $(ARMSRC)/include/ARM.mk
+include $(ADASRC)/ada.mk
 sinclude $(HOME)/src/include/subversion.mk
