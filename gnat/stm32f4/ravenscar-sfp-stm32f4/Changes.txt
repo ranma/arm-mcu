@@ -10,14 +10,12 @@ $Id$
    PA2 and PA3, for compatibility with my C language framework.
    Added definitions for GPIOA, GPIOC-I, and USART2 to s_stm32f.ads.
 
-3. Added goop to runtime_build.gpr to select a customized body for
-   Setup_PLL(), depending on the board name.  (I have 4 STM32F4
-   development boards, each with a different frequency crystal.
-   Since the crystal frequency is hard coded in Setup_PLL(), we
-   need to select a customized source file for each frequency.)
-   Renamed the original setup_pll.adb to setup_pll.adb.original and
-   created a new setup_pll.adb.$(BOARDNAME) for each supported board.
+3. Renamed setup_pll.adb to setup_pll.adb.original and s-bbpara.ads
+   to s-bbpara.ads.original.  Added setup_pll.adb.$(BOARDNAME) and
+   s_bbpara.ads.$(BOARDNAME), because these files contain board
+   specific clock configuration information.  The Makefile will now
+   select the proper files for each board at library compilation time.
 
 4. Removed unneeded ada_object_path and ada_source_path.
 
-5. Removed unneded start-ram.S and stm32f4-ram.ld.
+5. Removed unneeded start-ram.S and stm32f4-ram.ld.
