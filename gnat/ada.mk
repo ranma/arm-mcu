@@ -43,6 +43,7 @@ GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
 
 OBJCOPY			= $(GNATBIN)/$(GNATARCH)-objcopy
 GDB			= $(GNATBIN)/$(GNATARCH)-gdb
+OPENOCDDEBUG		= $(ADASRC)/ada.gdb
 STLINKDEBUG		= $(ADASRC)/ada.gdb
 
 # Build program from project file
