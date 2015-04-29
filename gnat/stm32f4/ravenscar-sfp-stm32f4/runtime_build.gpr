@@ -8,8 +8,7 @@ project Runtime_Build is
    for Library_Dir use "adalib";
    for Object_Dir use "obj";
 
-   for Source_Dirs use ("adainclude", external("ADASRC") & "/" & external("MCUFAMILY") & "/boards/" & external("BOARDNAME"));
-   for Source_List_file use "source_files";
+   for Source_Dirs use ("adainclude");
 
    for Target use "arm-eabi";
 
@@ -47,4 +46,7 @@ project Runtime_Build is
       for Switches ("a-tags.adb") use ALL_ADAFLAGS & ("-g");
    end Compiler;
 
+   package Naming is
+      for Body("setup_pll") use "setup_pll.adb." & external("BOARDNAME");
+   end Naming;
 end Runtime_Build;
