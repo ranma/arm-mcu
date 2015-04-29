@@ -31,6 +31,8 @@ ADASRC		?= $(ARMSRC)/gnat
 # Build the Run Time Library
 
 adalib/libgnat.a:
+	cp adainclude/s-bbpara.ads.NUCLEO_F411RE adainclude/s-bbpara.ads
+	cp adainclude/setup_pll.adb.NUCLEO_F411RE adainclude/setup_pll.adb
 	$(GPRBUILD) runtime_build.gpr -p --target=$(GNATARCH)
 	rm -rf obj
 
@@ -38,6 +40,7 @@ adalib/libgnat.a:
 
 clean:
 	rm -rf adalib/*.a adalib/*.ali obj
+	rm -f adainclude/s-bbpara.ads adainclude/setup_pll.adb
 
 include $(ADASRC)/ada.mk
 sinclude $(HOME)/src/include/subversion.mk

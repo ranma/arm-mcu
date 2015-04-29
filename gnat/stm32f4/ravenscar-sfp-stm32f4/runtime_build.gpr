@@ -46,7 +46,4 @@ project Runtime_Build is
       for Switches ("a-tags.adb") use ALL_ADAFLAGS & ("-g");
    end Compiler;
 
-   package Naming is
-      for Body("setup_pll") use "setup_pll.adb." & external("BOARDNAME");
-   end Naming;
 end Runtime_Build;
