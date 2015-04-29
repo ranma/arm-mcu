@@ -15,9 +15,9 @@ $Id$
    development boards, each with a different frequency crystal.
    Since the crystal frequency is hard coded in Setup_PLL(), we
    need to select a customized source file for each frequency.)
+   Renamed the original setup_pll.adb to setup_pll.adb.original and
+   created a new setup_pll.adb.$(BOARDNAME) for each supported board.
 
 4. Removed unneeded ada_object_path and ada_source_path.
 
 5. Removed unneded start-ram.S and stm32f4-ram.ld.
-
-6. Moved board specific setup_pll.adb files to ../boards/$(BOARDNAME).
