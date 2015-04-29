@@ -239,10 +239,6 @@ procedure Setup_Pll is
         --  AHB prescaler is 1, APB1 uses 4 and APB2 prescaler is 2
         HPRE or PPRE1 or PPRE2 or
         --  Configure MC01 pin to have the HSI (high speed internal clock)
-        RCC_CFGR.MCO1PRE_DIV1 or RCC_CFGR.MCO1SEL_HSI or
-        --  Configure MCO2 pin to have SYSCLK / 5
-        RCC_CFGR.MCO2PRE_DIV5 or RCC_CFGR.MCO2SEL_SYSCLK or
-        --  Select system clock source
         SW;
 
       if Activate_PLL then
