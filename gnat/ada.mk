@@ -36,25 +36,20 @@ GNATBIN			= $(GNATDIR)/bin
 GNATRTS			= $(ADASRC)/$(MCUFAMILY)/ravenscar-sfp-stm32f4
 GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
 GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
-GNATOBJCOPY		= $(GNATBIN)/$(GNATARCH)-objcopy
 GPRBUILD		= env PATH=$(GNATBIN) ADASRC=$(ADASRC) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME) gprbuild
 GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
+
+# Override the following macros previously defined in ARM.mk
+
+OBJCOPY			= $(GNATBIN)/$(GNATARCH)-objcopy
+GDB			= $(GNATBIN)/$(GNATARCH)-gdb
+STLINKDEBUG		= $(ADASRC)/ada.gdb
 
 # Build program from project file
 
 %.elf: %.gpr
 	$(MAKE) -C $(GNATRTS) ADASRC=$(ADASRC) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME)
 	$(GPRBUILD) $< $(GPRBUILDFLAGS)
-
-# Convert ELF to binary
-
-%.bin: %.elf
-	$(GNATOBJCOPY) -S -O binary --gap-fill=0 $< $@
-
-# Convert ELF to Intel hex
-
-%.hex: %.elf
-	$(GNATOBJCOPY) -S -O ihex --change-addresses=$(FLASHWRITEADDR) --gap-fill=0 $< $@
 
 # Default make target
 
@@ -65,7 +60,7 @@ ada_mk_default:
 # Clean out working files
 
 ada_mk_clean:
-	-rm -rf *.bin *.elf *.hex *.log *.stackdump obj
+	-rm -rf *.asm *.bin *.elf *.hex *.log *.map *.o *.stackdump obj
 
 ada_mk_reallyclean: ada_mk_clean
 	$(MAKE) -C $(GNATRTS) clean
