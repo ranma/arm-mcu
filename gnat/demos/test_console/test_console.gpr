@@ -39,4 +39,7 @@ project test_console is
       for Executable_Suffix use ".elf";
    end Builder;
 
+   package Linker is
+      for Default_Switches ("Ada") use ("-Wl,-Map=test_console.map,--cref");
+   end Linker;
 end test_console;

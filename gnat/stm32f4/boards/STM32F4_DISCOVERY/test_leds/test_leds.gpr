@@ -15,6 +15,10 @@ project test_leds is
       for Executable_Suffix use ".elf";
    end Builder;
 
+   package Linker is
+      for Default_Switches ("Ada") use ("-Wl,-Map=test_leds.map,--cref");
+   end Linker;
+
    package Ide is
       for Gnat use "arm-eabi-gnat";
       for Gnatlist use "arm-eabi-gnatls";
