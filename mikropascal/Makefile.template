@@ -27,8 +27,8 @@
 ARMSRC		?= $(HOME)/src/ARM
 MIKROPASCALSRC	?= $(HOME)/src/ARM/mikropascal
 
-MCUFAMILY	= stm32f4
-BOARDNAME	= STM32F4_DISCOVERY
+MCUFAMILY	= UNKNOWN
+BOARDNAME	= UNKNOWN
 
 # Default target
 
@@ -42,4 +42,3 @@ clean: mikropascal_mk_clean
 
 include $(ARMSRC)/include/ARM.mk
 include $(MIKROPASCALSRC)/mikropascal.mk
-sinclude $(HOME)/src/include/subversion.mk
