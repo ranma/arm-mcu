@@ -266,7 +266,7 @@ int serial_open(char *name, unsigned int *subdevice)
       RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART6, ENABLE);
 
 #ifdef NUCLEO_F411RE
-// Configure TX pin on PA11 (aka Arduino D1)
+// Configure TX pin on PA11 (aka Arduino D1, wire wrap CN10 pin 35 to CN10 pin 14)
 
       RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
@@ -279,7 +279,7 @@ int serial_open(char *name, unsigned int *subdevice)
       GPIO_config.GPIO_OType = GPIO_OType_PP;
       GPIO_Init(GPIOA, &GPIO_config);
 
-// Configure RX pin on PA12 (aka Arduino D0)
+// Configure RX pin on PA12 (aka Arduino D0, wire wrap CN10 pin 37 to CN 10 pin 12)
 
       RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
