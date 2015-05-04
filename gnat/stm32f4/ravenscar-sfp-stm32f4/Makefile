@@ -31,8 +31,8 @@ ADASRC		?= $(ARMSRC)/gnat
 # Build the Run Time Library
 
 adalib/libgnat.a:
-	cp adainclude/s-bbpara.ads.NUCLEO_F411RE adainclude/s-bbpara.ads
-	cp adainclude/setup_pll.adb.NUCLEO_F411RE adainclude/setup_pll.adb
+	cp adainclude/s-bbpara.ads.$(BOARDNAME) adainclude/s-bbpara.ads
+	cp adainclude/setup_pll.adb.$(BOARDNAME) adainclude/setup_pll.adb
 	$(GPRBUILD) runtime_build.gpr -p --target=$(GNATARCH)
 	rm -rf obj
 
