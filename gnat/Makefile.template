@@ -26,7 +26,7 @@
 # Override the following macros to build out of tree
 
 ARMSRC		?= $(HOME)/src/ARM
-ADASRC		?= $(ARMSRC)/gnat
+ADA_SRC		?= $(ARMSRC)/gnat
 
 MCUFAMILY	?= UNKNOWN
 BOARDNAME	?= UNKNOWN
@@ -46,4 +46,4 @@ distclean: ada_mk_distclean
 # Include subordinate makefiles
 
 include $(ARMSRC)/include/ARM.mk
-include $(ADASRC)/ada.mk
+include $(ADA_SRC)/ada.mk

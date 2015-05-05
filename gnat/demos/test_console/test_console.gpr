@@ -26,7 +26,7 @@ project test_console is
 
    for Languages use ("Ada");
    for Main use ("main.adb");
-   for Source_Dirs use (".", external("ADASRC") & "/" & external("MCUFAMILY") & "/boards/" & external("BOARDNAME"));
+   for Source_Dirs use (".", external("ADA_SRC") & "/" & external("MCUFAMILY") & "/boards/" & external("BOARDNAME"));
    for Object_Dir use "obj";
    for Exec_Dir use ".";
 

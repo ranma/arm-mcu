@@ -26,7 +26,7 @@
 # Override the following macros to build out of tree
 
 ARMSRC		?= $(HOME)/src/ARM
-ADASRC		?= $(ARMSRC)/gnat
+ADA_SRC		?= $(ARMSRC)/gnat
 
 # Build the Run Time Library
 
@@ -42,5 +42,5 @@ clean:
 	rm -rf adalib/*.a adalib/*.ali obj
 	rm -f adainclude/s-bbpara.ads adainclude/setup_pll.adb
 
-include $(ADASRC)/ada.mk
+include $(ADA_SRC)/ada.mk
 sinclude $(HOME)/src/include/subversion.mk

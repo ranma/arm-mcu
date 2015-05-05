@@ -25,7 +25,7 @@
 # Override the following macros to build out of tree
 
 ARMSRC		?= $(HOME)/src/ARM
-ADASRC		?= $(ARMSRC)/gnat
+ADA_SRC		?= $(ARMSRC)/gnat
 
 MCUFAMILY	= stm32f4
 BOARDNAME	= STM32F4_DISCOVERY
@@ -49,5 +49,5 @@ distclean: ada_mk_distclean
 # Include subordinate makefiles
 
 include $(ARMSRC)/include/ARM.mk
-include $(ADASRC)/ada.mk
+include $(ADA_SRC)/ada.mk
 sinclude $(HOME)/src/include/subversion.mk
