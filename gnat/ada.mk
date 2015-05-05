@@ -29,28 +29,31 @@
 
 # Toolchain definitions
 
+ADA_INCLUDES		?= -I. -I$(ADA_SRC)
+ADA_OBJ			?= obj
+ADA_VERSION		?= -gnat2012
+
 GNATARCH		= arm-eabi
 GNATRELEASE		= 2014
 GNATDIR			?= /usr/local/gnat-gpl-$(GNATRELEASE)-$(GNATARCH)
 GNATBIN			= $(GNATDIR)/bin
-GNATRTS			= $(ADASRC)/$(MCUFAMILY)/ravenscar-sfp-stm32f4
-GNATMAKE		= $(GNATBIN)/$(GNATARCH)-gnatmake
-GNATMAKEFLAGS		= -p --RTS=$(GNATRTS) -P
-GPRBUILD		= env PATH=$(GNATBIN) ADASRC=$(ADASRC) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME) gprbuild
+GNATRTS			= $(ADA_SRC)/$(MCUFAMILY)/ravenscar-sfp-stm32f4
+GPRBUILD		= env PATH=$(GNATBIN)':'$(PATH) ADA_SRC=$(ADA_SRC) ADA_OBJ=$(ADA_OBJ) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME) gprbuild
 GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
+GPRBUILDCFLAGS		= -cargs:Ada $(ADA_VERSION) $(CFLAGS)
 
 # Override the following macros previously defined in ARM.mk
 
 OBJCOPY			= $(GNATBIN)/$(GNATARCH)-objcopy
 GDB			= $(GNATBIN)/$(GNATARCH)-gdb
-OPENOCDDEBUG		= $(ADASRC)/ada.gdb
-STLINKDEBUG		= $(ADASRC)/ada.gdb
+OPENOCDDEBUG		= $(ADA_SRC)/ada.gdb
+STLINKDEBUG		= $(ADA_SRC)/ada.gdb
 
 # Build program from project file
 
 %.elf: %.gpr
-	$(MAKE) -C $(GNATRTS) ADASRC=$(ADASRC) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME)
-	$(GPRBUILD) $< $(GPRBUILDFLAGS)
+	$(MAKE) -C $(GNATRTS) ADA_SRC=$(ADA_SRC) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME)
+	$(GPRBUILD) $< $(GPRBUILDFLAGS) $(GPRBUILDCFLAGS)
 
 # Default make target
 
