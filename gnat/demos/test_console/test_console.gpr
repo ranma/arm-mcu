@@ -23,7 +23,6 @@
 -- POSSIBILITY OF SUCH DAMAGE.
 
 project test_console is
-
    for Languages use ("Ada");
    for Main use ("main.adb");
    for Source_Dirs use (".", external("ADA_SRC") & "/" & external("MCUFAMILY") & "/boards/" & external("BOARDNAME"));
@@ -34,8 +33,4 @@ project test_console is
       for Executable ("main.adb") use "test_console";
       for Executable_Suffix use ".elf";
    end Builder;
-
-   package Linker is
-      for Default_Switches ("Ada") use ("-Wl,-Map=test_console.map,--cref");
-   end Linker;
 end test_console;
