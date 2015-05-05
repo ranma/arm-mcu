@@ -40,7 +40,7 @@ GNATBIN			= $(GNATDIR)/bin
 GNATRTS			= $(ADA_SRC)/$(MCUFAMILY)/ravenscar-sfp-stm32f4
 GPRBUILD		= env PATH=$(GNATBIN)':'$(PATH) ADA_SRC=$(ADA_SRC) ADA_OBJ=$(ADA_OBJ) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME) gprbuild
 GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
-GPRBUILDCFLAGS		= -cargs:Ada $(ADA_VERSION) $(CFLAGS)
+GPRBUILDCFLAGS		= -cargs:Ada $(ADA_VERSION) $(ADA_CFLAGS)
 
 # Override the following macros previously defined in ARM.mk
 
