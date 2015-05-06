@@ -163,7 +163,7 @@ News
      * 5 January 2015 -- Upgraded binutils to 2.25, gcc to 4.9.2, newlib
        to 2.2.0, and gdb to 7.8.1. With newlib 2.2.0, the INTEGER_STDIO
        and CONIO_STDIO options are no longer needed. CONIO_STDIO is still
-       supported, mostly for other tool chains such as [14]GCC ARM
+       supported, mostly for other tool chains such as [14]GNU ARM
        Embedded. It is enabled by adding WITH_CONIO=yes to the make
        command line options.
      * 21 January 2015 -- Upgraded gdb to 7.8.2. Build gcc prequisites,
@@ -171,16 +171,15 @@ News
        building a Canadian Cross ARM microcontroller toolchain for the
        Raspberry Pi.
      * 13 April 2015 -- Renamed NETDUINO2 (which is STM32F2) to
-       NETDUNIOPLUS2 (which is STM32FN4). Added support for programming
+       NETDUNIOPLUS2 (which is STM32F4). Added support for programming
        STM32 flash with [15]dfu-util.
      * 27 April 2015 -- Upgraded the STM32F4 Standard Peripheral Library
        to version 1.5.0. Added support for the [16]NUCLEO-F411RE board,
        and the corresponding STM32F411RE MCU.
      * 6 May 2015 -- Fixed a subtle bug in the linker scripts: (.data)
        should be (.data*) and (.bss) should be (.bss*). This was
-       preventing successful use of the [17]GNU Tools for ARM Embedded
-       Processors toolchain, because some data sections were being
-       discarded.
+       preventing successful use of the [17]GNU ARM Embedded toolchain,
+       because some data sections were being discarded.
 
 Git Repository
 
@@ -241,7 +240,7 @@ References
   11. http://sourceforge.net/
   12. http://www.openbsd.org/
   13. http://www.mikroe.com/mini/stm32
-  14. https://launchpad.net/gcc-arm-embedded
+  14. http://launchpad.net/gcc-arm-embedded
   15. http://dfu-util.sourceforge.net/
   16. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF260320
   17. http://launchpad.net/gcc-arm-embedded
