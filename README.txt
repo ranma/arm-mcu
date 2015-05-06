@@ -176,11 +176,16 @@ News
      * 27 April 2015 -- Upgraded the STM32F4 Standard Peripheral Library
        to version 1.5.0. Added support for the [16]NUCLEO-F411RE board,
        and the corresponding STM32F411RE MCU.
+     * 6 May 2015 -- Fixed a subtle bug in the linker scripts: (.data)
+       should be (.data*) and (.bss) should be (.bss*). This was
+       preventing successful use of the [17]GNU Tools for ARM Embedded
+       Processors toolchain, because some data sections were being
+       discarded.
 
 Git Repository
 
-   The source code is hosted on [17]SourceForge at
-   [18]http://sourceforge.net/p/arm-mcu/code.
+   The source code is hosted on [18]SourceForge at
+   [19]http://sourceforge.net/p/arm-mcu/code.
 
    Use one of the following commands to clone it:
 git clone --depth 1 git://git.code.sf.net/p/arm-mcu/code  ARM
@@ -214,7 +219,7 @@ POSSIBILITY OF SUCH DAMAGE.
    respective authors.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [19]phil@munts.net
+   Questions or comments to Philip Munts [20]phil@munts.net
 
    $Id$
 
@@ -239,6 +244,7 @@ References
   14. https://launchpad.net/gcc-arm-embedded
   15. http://dfu-util.sourceforge.net/
   16. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF260320
-  17. http://sourceforge.net/
-  18. http://sourceforge.net/p/arm-mcu/code
-  19. mailto:phil@munts.net
+  17. http://launchpad.net/gcc-arm-embedded
+  18. http://sourceforge.net/
+  19. http://sourceforge.net/p/arm-mcu/code
+  20. mailto:phil@munts.net

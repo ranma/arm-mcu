@@ -80,7 +80,7 @@ SECTIONS {
 
   data : ALIGN(16) {
     __data_beg__ = .;			/* Used by startup.	*/
-    *(.data)
+    *(.data*)
     *(.gnu.linkonce.d.*)
     __data_end__ = .;			/* Used by startup.	*/
   } >ram AT>flash
@@ -90,7 +90,7 @@ SECTIONS {
 
   bss (NOLOAD) : ALIGN(16) {
     __bss_beg__ = .;			/* Used by startup.	*/
-    *(.bss)
+    *(.bss*)
     *(.gnu.linkonce.b.*)
     *(COMMON)
     __bss_end__ = .;			/* Used by startup.	*/

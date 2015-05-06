@@ -52,8 +52,8 @@ SECTIONS
   *(.eh_frame)
   . = ALIGN(4);
   __ctors_start__ = .;
-  KEEP(*(.init_array));			/* C++ constructors */
-  KEEP(*(.ctors));			/* C++ constructors */
+  KEEP(*(.init_array))			/* C++ constructors */
+  KEEP(*(.ctors))			/* C++ constructors */
   __ctors_end__ = .;
   . = ALIGN(16);
   __text_end__ = .;
@@ -61,13 +61,13 @@ SECTIONS
 
   .data : ALIGN(16) {
   __data_beg__ = .;			/* Used in crt0.S */
-  *(.data)				/* Initialized data */
+  *(.data*)				/* Initialized data */
   __data_end__ = .;			/* Used in crt0.S */
   } >ram AT > flash
 
   .bss (NOLOAD) : ALIGN(16) {
   __bss_beg__ = .;			/* Used in crt0.S */
-  *(.bss)				/* Uninitialized data */
+  *(.bss*)				/* Uninitialized data */
   *(COMMON)				/* Common data */
   __bss_end__ = .;			/* Used in crt0.S */
   } >ram
