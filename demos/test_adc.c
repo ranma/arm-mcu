@@ -30,24 +30,6 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
-#define SYSTICKRATE     100
-
-_BEGIN_STD_C
-
-static volatile int TimerCounter = 0;
-static volatile int TimerFlag = false;
-
-void SysTick_Handler(void)
-{
-  if (++TimerCounter == SYSTICKRATE/5)
-  {
-    TimerCounter = 0;
-    TimerFlag = true;
-  }
-}
-
-_END_STD_C
-
 #define MAX_CHANNELS	8
 
 int main(void)
@@ -56,6 +38,7 @@ int main(void)
   uint16_t results[MAX_CHANNELS];
 
   cpu_init(DEFAULT_CPU_FREQ);
+  systick_init(100);
 
 #ifdef CONSOLE_SERIAL
   serial_stdio(CONSOLE_PORT);
@@ -83,23 +66,15 @@ int main(void)
 
   putchar('\n');
 
-// Initialize System Tick
-
-  SysTick_Config(SystemCoreClock / SYSTICKRATE);
-
   for (;;)
   {
-    if (TimerFlag)
-    {
-      for (channel = 0; channel < MAX_CHANNELS; channel++)
-        results[channel] = adc_read(channel);
+    for (channel = 0; channel < MAX_CHANNELS; channel++)
+      results[channel] = adc_read(channel);
 
-      for (channel = 0; channel < MAX_CHANNELS; channel++)
-        printf("%05d ", results[channel]);
+    for (channel = 0; channel < MAX_CHANNELS; channel++)
+      printf("%05d ", results[channel]);
 
-      putchar('\r');
-
-      TimerFlag = false;
-    }
+    putchar('\r');
+    sleep(1);
   }
 }

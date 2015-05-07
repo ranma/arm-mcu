@@ -1,8 +1,8 @@
-/* ARM microcontroller device specific definitions and header files */
+/* Abstract services for controlling and using the system tick timer */
 
 // $Id$
 
-// Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
+// Copyright (C)2015, Philip Munts, President, Munts AM Corp.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -22,31 +22,17 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef _CPU_H
-#define _CPU_H
-
-#include <arm.h>
-#include <device.h>
-#include <interrupt.h>
-#include <leds.h>
-#include <serial.h>
-#include <systick.h>
-#include <usb_serial.h>
-
-#define DEFAULT_CPU_FREQ	0
+#ifndef _SYSTICK_H
+#define _SYSTICK_H
 
 _BEGIN_STD_C
 
-#include <91x_lib.h>
-#include <91x_it.h>
+int systick_init(unsigned rate);
 
-extern unsigned long int SystemCoreClock;
-extern void cpu_init(unsigned long int frequency);
+void millisleep(unsigned milliseconds);
 
-// Emulate Cortex-M3 system tick timer
-
-extern unsigned long int SysTick_Config(unsigned long int ticks);
-extern void SysTick_Handler(void);
+unsigned sleep(unsigned seconds);
 
 _END_STD_C
+
 #endif

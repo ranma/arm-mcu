@@ -1,8 +1,8 @@
-/* ARM microcontroller device specific definitions and header files */
+/* Abstract services for controlling and using the system tick timer */
 
 // $Id$
 
-// Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
+// Copyright (C)2015, Philip Munts, President, Munts AM Corp.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -22,31 +22,49 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef _CPU_H
-#define _CPU_H
+#include <cpu.h>
 
-#include <arm.h>
-#include <device.h>
-#include <interrupt.h>
-#include <leds.h>
-#include <serial.h>
-#include <systick.h>
-#include <usb_serial.h>
+static volatile unsigned SleepCounter = 0;
 
-#define DEFAULT_CPU_FREQ	0
+void SysTick_Handler(void)
+{
+  if (SleepCounter) SleepCounter--;
+}
 
-_BEGIN_STD_C
+static unsigned systick_rate;
 
-#include <91x_lib.h>
-#include <91x_it.h>
+int systick_init(unsigned rate)
+{
+  errno_r = 0;
 
-extern unsigned long int SystemCoreClock;
-extern void cpu_init(unsigned long int frequency);
+  // Validate parameters
 
-// Emulate Cortex-M3 system tick timer
+  if (SystemCoreClock/rate > 16777216)
+  {
+    errno_r = EINVAL;
+    return -1;
+  }
 
-extern unsigned long int SysTick_Config(unsigned long int ticks);
-extern void SysTick_Handler(void);
+  // Save the systick rate
 
-_END_STD_C
+  systick_rate = rate;
+
+  SysTick_Config(SystemCoreClock / systick_rate);
+  return 0;
+}
+
+void millisleep(unsigned milliseconds)
+{
+  SleepCounter = systick_rate*milliseconds/1000;
+#ifdef __WFI
+  while (SleepCounter) __WFI();
+#else
+  while (SleepCounter);
 #endif
+}
+
+unsigned sleep(unsigned seconds)
+{
+  millisleep(seconds*1000);
+  return 0;
+}

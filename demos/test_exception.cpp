@@ -33,24 +33,6 @@ using namespace std;
 #include <cpu.h>
 
 #define CLEARSCREEN	"\033[H\033[2J"
-#define SYSTICKRATE	100
-
-_BEGIN_STD_C
-
-static volatile unsigned SleepCounter = 0;
-
-void SysTick_Handler(void)
-{
-  if (SleepCounter) SleepCounter--;
-}
-
-_END_STD_C
-
-static void millisleep(unsigned milliseconds)
-{
-  SleepCounter = SYSTICKRATE*milliseconds/1000;
-  while (SleepCounter) __WFI();
-}
 
 // Define an exception object
 
@@ -67,6 +49,7 @@ int main(void)
   int counter;
 
   cpu_init(DEFAULT_CPU_FREQ);
+  systick_init(100);
 
 // Bind standard I/O to hardware
 
@@ -98,20 +81,16 @@ int main(void)
   cout << "CPU Freq: " << SystemCoreClock/1000000 << " MHz\n";
   cout << "Compiler: " << __COMPILER__ << " " << __VERSION__ << " " << __ABI__ << "\n\n";
 
-// Initialize System Tick
-
-  SysTick_Config(SystemCoreClock / SYSTICKRATE);
+// Trivial main program
 
   counter = 1;
-
-// Trivial main program
 
   for (;;)
   {
     try
     {
       cout << "Hello, world " << counter << "\n";
-      millisleep(1000);
+      sleep(1);
 
       counter += 1;
       if (counter > 10) throw finger_error;

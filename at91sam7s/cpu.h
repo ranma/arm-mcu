@@ -29,6 +29,7 @@
 #include <device.h>
 #include <leds.h>
 #include <serial.h>
+#include <systick.h>
 #include <at91lib/AT91SAM7S.h>
 
 #define DEFAULT_CPU_FREQ	0

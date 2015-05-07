@@ -32,6 +32,7 @@ COMMON_OBJS	+= $(COMMON_DIR)/inet.o
 COMMON_OBJS	+= $(COMMON_DIR)/msrand32.o
 COMMON_OBJS	+= $(COMMON_DIR)/semihosting.o
 COMMON_OBJS	+= $(COMMON_DIR)/syscalls.o
+COMMON_OBJS	+= $(COMMON_DIR)/systick.o
 
 # Add common object files to the MCU library
 

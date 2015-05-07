@@ -31,6 +31,7 @@
 #include <leds.h>
 #include <serial.h>
 #include <spi.h>
+#include <systick.h>
 #include <stm32f4xx.h>
 #include <usb_serial.h>
 

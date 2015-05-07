@@ -30,6 +30,7 @@
 #include <interrupt.h>
 #include <leds.h>
 #include <serial.h>
+#include <systick.h>
 #include <LPC23xx.h>
 
 #define DEFAULT_CPU_FREQ	0

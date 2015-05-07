@@ -32,8 +32,9 @@
 #include <leds.h>
 #include <pwm.h>
 #include <serial.h>
-#include <timer.h>
 #include <spi.h>
+#include <systick.h>
+#include <timer.h>
 
 #include <LPC11xx.h>
 #include <system_LPC11xx.h>

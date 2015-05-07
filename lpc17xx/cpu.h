@@ -30,6 +30,7 @@
 #include <gpiopins.h>
 #include <leds.h>
 #include <serial.h>
+#include <systick.h>
 #include <usb_serial.h>
 
 #include <LPC17xx.h>
