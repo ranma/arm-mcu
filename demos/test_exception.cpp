@@ -24,7 +24,6 @@
 
 static const char revision[] = "$Id$";
 
-#include <cstdio>
 #include <iostream>
 #include <exception>
 
