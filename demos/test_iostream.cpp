@@ -59,6 +59,7 @@ int main(void)
   cout << revision;
   cout << "\n\n";
 
-  cout << "CPU Freq: " << SystemCoreClock << " Hz\n";
+  cout << "Board:    " << BOARDNAME << "\n";
+  cout << "CPU Freq: " << SystemCoreClock/1000000 << " MHz\n";
   cout << "Compiler: " << __COMPILER__ << " " << __VERSION__ << " " << __ABI__ << "\n\n";
 }
