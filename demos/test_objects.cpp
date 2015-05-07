@@ -24,8 +24,7 @@
 
 static const char revision[] = "$Id$";
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
 
 #include <cpu.h>
 
@@ -73,15 +72,15 @@ int main(void)
   cpu_init(DEFAULT_CPU_FREQ);
 
 #ifdef CONSOLE_SERIAL
-  serial_stdio(CONSOLE_PORT);
+  serial_stdio((char *) CONSOLE_PORT);
 #endif
 
 #ifdef CONSOLE_SEMIHOSTING
-  semihosting_stdio(CONSOLE_PORT)
+  semihosting_stdio((char *) CONSOLE_PORT)
 #endif
 
 #ifdef CONSOLE_USB
-  usb_serial_stdio(NULL);
+  usb_serial_stdio((char *) NULL);
   getch();
 #endif
 
