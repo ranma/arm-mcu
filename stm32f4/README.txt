@@ -32,16 +32,18 @@ Other Devices
    provided the following files are modified:
 
    stm32f4xxxx.ld The RAM and ROM sizes must match the device.
+   stm32f4xxxx.S  The interrupt vector table must match the device.
 
 Test Platform
 
    This framework is validated on the [2]STM32F4 Discovery, [3]FEZ Cerb40,
-   [4]Netduino Plus 2, and [5]MINI-M4-STM32 development boards.
+   [4]Netduino Plus 2, [5]MINI-M4-STM32, and [6]NUCLEO-F411RE development
+   boards.
 
-   Tested on 9 August 2013 with gcc 4.8.1.
+   Tested on 7 May 2015 with gcc 4.9.2.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [6]phil@munts.net
+   Questions or comments to Philip Munts [7]phil@munts.net
 
    $Id$
 
@@ -55,4 +57,5 @@ References
    3. http://www.ghielectronics.com/catalog/product/353
    4. http://netduino.com/netduinoplus2/specs.htm
    5. http://www.mikroe.com/mini/stm32
-   6. mailto:phil@munts.net
+   6. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF260320
+   7. mailto:phil@munts.net
