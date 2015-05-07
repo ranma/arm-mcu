@@ -185,6 +185,8 @@ News
        iostream library test. The C++ iostream library now works, but adds
        over 200 kilobytes of code and will not fit in many of the smaller
        ARM microcontrollers. C++ container classes may or may not fit.
+       Added system tick timer services, including millisleep() and
+       sleep().
 
 Git Repository
 
