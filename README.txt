@@ -180,6 +180,11 @@ News
        should be (.data*) and (.bss) should be (.bss*). This was
        preventing successful use of the [17]GNU ARM Embedded toolchain,
        because some data sections were being discarded.
+     * 7 May 2015 -- Eliminated the WITH_LIBSTDCPP macro, always link with
+       libstdc++. Added a C++ iostream library test. The C++ iostream
+       library now works, but adds over 200 kilobytes of code and will not
+       fit in many of the smaller ARM microcontrollers. C++ container
+       classes may or may not fit.
 
 Git Repository
 

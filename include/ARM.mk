@@ -60,14 +60,9 @@ CFLAGS		+= $(EARLYFLAGS)
 CFLAGS		+= -Wall -ffunction-sections
 CFLAGS		+= -I$(ARMSRC)/include -I$(MCUDIR)
 CFLAGS		+= $(OPTFLAGS) $(CPUFLAGS) $(BOARDFLAGS) $(CONSOLEFLAGS) $(IOFLAGS) $(CONFIGFLAGS) $(DEBUGFLAGS) $(EXTRAFLAGS)
-LDFLAGS		+= -nostartfiles -T$(MCULINKSCRIPT) -L$(MCUDIR) -l$(MCU) -lm
-LDFLAGS		+= -Wl,-Map=$*.map,--cref,--gc-sections $(EXTRAOBJS)
-ifeq ($(WITH_LIBSTDCPP), yes)
-LDFLAGS		+= -lstdc++
-RMAKEFLAGS	+= WITH_LIBSTDCPP=$(WITH_LIBSTDCPP)
-else
 CXXFLAGS	+= -fpermissive -fno-exceptions -fno-rtti -fno-use-cxa-atexit
-endif
+LDFLAGS		+= -nostartfiles -T$(MCULINKSCRIPT) -L$(MCUDIR) -l$(MCU) -lm -lstdc++
+LDFLAGS		+= -Wl,-Map=$*.map,--cref,--gc-sections $(EXTRAOBJS)
 
 # GDB definitions
 
@@ -93,7 +88,7 @@ GDBSERVERPORT	= 3333
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 .cpp.o:
-	$(CXX) $(CXXFLAGS) $(CFLAGS) -c -o $@ $<
+	$(CXX) $(CFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 .o.elf:
 	$(MAKE) -C $(MCUDIR) lib$(MCU).a $(RMAKEFLAGS)
