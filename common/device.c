@@ -746,7 +746,7 @@ int device_write_cooked(int fd, char *s, unsigned int count)
 
     if (p == NULL)
     {
-      len = device_write_raw(fd, s, count);	// Write everything
+      len = device_write_raw(fd, s, count - i);	// Write everything
       if (len < 0) return len;
 
       i += len;
