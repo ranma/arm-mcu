@@ -33,17 +33,17 @@ static const char revision[] = "$Id$";
 #include <sys/times.h>
 
 #include <cpu.h>
-
-extern char __heap_start__[];	// Beginning of heap, address set by linker
-extern char __heap_end__[];	// End of heap, address set by linker
-
-static char *freespace;		// Pointer to free space (unclaimed heap area)
-
+
 // Rudimentary heap area manager.  The dynamic memory allocator in newlib
 // (malloc() and friends) calls this function to claim some or all of the
 // free space allocated for heap by the linker.  The heap area is bounded
 // by __heap_start__ and __heap_end__ which are set by the linker.  Note that
 // the memory allocator will never release memory it has claimed.
+
+extern char __heap_start__[];	// Beginning of heap, address set by linker
+extern char __heap_end__[];	// End of heap, address set by linker
+
+static char *freespace;		// Pointer to free space (unclaimed heap area)
 
 char *_sbrk(size_t bytes)
 {
@@ -54,7 +54,6 @@ char *_sbrk(size_t bytes)
   if (!freespace)
   {
     freespace = __heap_start__;
-    memset(__heap_start__, 0, __heap_end__ - __heap_start__);
   }
 
 /* Check for enough free space available */
@@ -73,51 +72,9 @@ char *_sbrk(size_t bytes)
   return base;		// Return pointer to claimed heap area
 }
 
-// Basic I/O services
+// Basic I/O services have been moved to device.c
 
-int _open(char *path, int flags, int mode)
-{
-  errno_r = 0;
-  return device_open(path, flags, mode);
-}
-
-int _close(int fd)
-{
-  errno_r = 0;
-  return device_close(fd);
-}
-
-long _read(int fd, void *dst, size_t size)
-{
-  errno_r = 0;
-  return device_read(fd, (char *) dst, size);
-}
-
-long _write(int fd, void *src, size_t size)
-{
-  errno_r = 0;
-  return device_write(fd, (char *) src, size);
-}
-
-int _fstat(int fd, struct stat *st)
-{
-  errno_r = 0;
-  return device_stat(fd, st);
-}
-
-int _isatty(int fd)
-{
-  errno_r = 0;
-  return device_isatty(fd);
-}
-
-off_t _lseek(int fd, off_t pos, int whence)
-{
-  errno_r = 0;
-  return device_seek(fd, pos, whence);
-}
-
-// File system support services
+// File system support services -- Mostly unimplemented stubs
 
 int _link(char *old, char *new)
 {
@@ -137,7 +94,7 @@ int _unlink(char *name)
   return -1;
 }
 
-// Basic multiprogramming services
+// Basic multiprogramming services -- Mostly unimplemented stubs
 
 int _execve(char *name, char **argv, char **env)
 {

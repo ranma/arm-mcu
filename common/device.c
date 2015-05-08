@@ -1060,3 +1060,19 @@ int fcntl(int fd, int cmd, ...)
       return -1;
   }
 }
+
+// Alias basic I/O syscalls to device_xxxx() functions
+
+int _open(char *path, int flags, int mode) __attribute__((alias("device_open")));
+
+int _close(int fd) __attribute__((alias("device_close")));
+
+long _read(int fd, void *dst, size_t size) __attribute__((alias("device_read")));
+
+long _write(int fd, void *src, size_t size) __attribute__((alias("device_write")));
+
+int _fstat(int fd, struct stat *st) __attribute__((alias("device_stat")));
+
+int _isatty(int fd) __attribute__((alias("device_isatty")));
+
+off_t _lseek(int fd, off_t pos, int whence) __attribute__((alias("device_seek")));
