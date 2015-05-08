@@ -1,4 +1,4 @@
-/* Abstract services for controlling LED's */
+/* Abstract services for reading analog inputs */
 
 // $Id$
 
