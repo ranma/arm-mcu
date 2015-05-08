@@ -392,6 +392,12 @@ int device_ready_read(int fd)
     return -1;
   }
 
+  if (device_table[fd].flags & O_ACCMODE == O_WRONLY)
+  {
+    errno_r = EBADF;
+    return -1;
+  }
+
   return device_table[fd].read_ready(device_table[fd].subdevice);
 }
 
@@ -425,6 +431,12 @@ int device_ready_write(int fd)
     return -1;
   }
 
+  if (device_table[fd].flags & O_ACCMODE == O_RDONLY)
+  {
+    errno_r = EBADF;
+    return -1;
+  }
+
   return device_table[fd].write_ready(device_table[fd].subdevice);
 }
 
@@ -455,6 +467,12 @@ int device_read_raw(int fd, char *s, unsigned int count)
   if (device_table[fd].read == NULL)
   {
     errno_r = EIO;
+    return -1;
+  }
+
+  if (device_table[fd].flags & O_ACCMODE == O_WRONLY)
+  {
+    errno_r = EBADF;
     return -1;
   }
 
@@ -496,6 +514,12 @@ int device_read_cooked(int fd, char *s, unsigned int count)
   if (d->read == NULL)
   {
     errno_r = EIO;
+    return -1;
+  }
+
+  if (device_table[fd].flags & O_ACCMODE == O_WRONLY)
+  {
+    errno_r = EBADF;
     return -1;
   }
 
@@ -588,6 +612,12 @@ int device_read(int fd, char *s, unsigned int count)
     return -1;
   }
 
+  if (device_table[fd].flags & O_ACCMODE == O_WRONLY)
+  {
+    errno_r = EBADF;
+    return -1;
+  }
+
   if ((device_table[fd].type != DEVICE_TYPE_CHAR) ||
       (device_table[fd].flags & O_BINARY))
     return device_read_raw(fd, s, count);
@@ -625,6 +655,12 @@ int device_getc(int fd)
   if (device_table[fd].read == NULL)
   {
     errno_r = EIO;
+    return -1;
+  }
+
+  if (device_table[fd].flags & O_ACCMODE == O_WRONLY)
+  {
+    errno_r = EBADF;
     return -1;
   }
 
@@ -675,6 +711,12 @@ int device_write_raw(int fd, char *s, unsigned int count)
   if (device_table[fd].write == NULL)
   {
     errno_r = EIO;
+    return -1;
+  }
+
+  if (device_table[fd].flags & O_ACCMODE == O_RDONLY)
+  {
+    errno_r = EBADF;
     return -1;
   }
 
@@ -735,6 +777,12 @@ int device_write_cooked(int fd, char *s, unsigned int count)
   if (device_table[fd].write == NULL)
   {
     errno_r = EIO;
+    return -1;
+  }
+
+  if (device_table[fd].flags & O_ACCMODE == O_RDONLY)
+  {
+    errno_r = EBADF;
     return -1;
   }
 
@@ -800,6 +848,12 @@ int device_write(int fd, char *s, unsigned int count)
   if (device_table[fd].write == NULL)
   {
     errno_r = EIO;
+    return -1;
+  }
+
+  if (device_table[fd].flags & O_ACCMODE == O_RDONLY)
+  {
+    errno_r = EBADF;
     return -1;
   }
 
