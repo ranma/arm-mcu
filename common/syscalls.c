@@ -99,8 +99,6 @@ long _write(int fd, void *src, size_t size)
   return device_write(fd, (char *) src, size);
 }
 
-// File system support services
-
 int _fstat(int fd, struct stat *st)
 {
   errno_r = 0;
@@ -113,26 +111,24 @@ int _isatty(int fd)
   return device_isatty(fd);
 }
 
-int _link(char *old, char *new)
-{
-  errno_r = ENOSYS;
-  return -1;
-}
-
 off_t _lseek(int fd, off_t pos, int whence)
 {
   errno_r = 0;
   return device_seek(fd, pos, whence);
 }
 
+// File system support services
+
+int _link(char *old, char *new)
+{
+  errno_r = ENOSYS;
+  return -1;
+}
+
 int _stat(char *file, struct stat *st)
 {
-  errno_r = 0;
-
-  int fd = device_lookup(file);
-  if (fd < 0) return fd;
-
-  return _fstat(fd, st);
+  errno_r = ENOSYS;
+  return -1;
 }
 
 int _unlink(char *name)
