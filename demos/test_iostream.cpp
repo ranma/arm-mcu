@@ -25,15 +25,21 @@
 static const char revision[] = "$Id$";
 
 #include <iostream>
+#include <string>
+#include <cctype>
 
 using namespace std;
 
+#include <assert.h>
 #include <cpu.h>
 
 #define CLEARSCREEN "\033[H\033[2J"
 
 int main(void)
 {
+  string inbuf;
+  int x, y;
+
   cpu_init(DEFAULT_CPU_FREQ);
 
 #ifdef CONSOLE_SERIAL
@@ -61,4 +67,39 @@ int main(void)
   cout << "Board:    " << BOARDNAME << "\n";
   cout << "CPU Freq: " << SystemCoreClock/1000000 << " MHz\n";
   cout << "Compiler: " << __COMPILER__ << " " << __VERSION__ << " " << __ABI__ << "\n\n";
+
+  for (;;)
+  {
+    cout << "Enter a line of text:  " << flush;
+    getline(cin, inbuf);
+
+    cout << "You entered:           " << inbuf << " (" << inbuf.length() << " bytes)\n";
+
+    if (!inbuf.compare("next")) break;
+  }
+
+  cout << "Enter some more text:  " << flush;
+
+  for (;;)
+  {
+    cin >> inbuf;
+
+    cout << "You entered:           " << inbuf << " (" << inbuf.length() << " bytes)\n";
+
+    if (!inbuf.compare("next")) break;
+  }
+
+  for (;;)
+  {
+    cout << "Enter two numbers:     " << flush;
+
+    cin >> x;
+    cin >> y;
+
+    cout << "You entered:           " << x << " and " << y << endl;
+
+    if ((x == 0) && (y == 0)) break;    
+  }
+
+  assert(false);
 }
