@@ -187,6 +187,11 @@ News
        ARM microcontrollers. C++ container classes may or may not fit.
        Added system tick timer services, including millisleep() and
        sleep().
+     * 8 May 2015 -- Fixed a bug in device_write_cooked(). Added code to
+       device.c to honor O_RDONLY, O_WRONLY flags. Moved I/O syscall
+       definitions from syscalls.c to device.c, where they are aliased to
+       device_xxxx() functions. This eliminates an unnecessary function
+       call for each syscall operation.
 
 Git Repository
 
