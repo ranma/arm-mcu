@@ -24,7 +24,7 @@
 
 static const char revision[] = "$Id$";
 
-#include <cstdio>
+#include <cstdio>	// iostream is too large for many ARM microcontrollers
 
 #include <cpu.h>
 
