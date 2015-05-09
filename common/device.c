@@ -305,6 +305,14 @@ int device_open(char *name, int flags, int mode)
     return fd;
   }
 
+  // Check for already open
+
+  if (device_table[fd].isopen)
+  {
+    errno_r = EBUSY;
+    return -1;
+  }
+
   // Validate parameters
 
   if ((flags & O_ACCMODE) == O_ACCMODE)
@@ -327,10 +335,9 @@ int device_open(char *name, int flags, int mode)
 
   // Initialize the device
 
-  if (device_table[fd].open(name, &device_table[fd].subdevice))
-  {
-    return -1;
-  }
+  if (device_table[fd].open != NULL)
+    if (device_table[fd].open(name, &device_table[fd].subdevice))
+      return -1;
 
   return fd;
 }
@@ -357,7 +364,7 @@ int device_close(int fd)
 
   if (!device_table[fd].isopen)
   {
-    errno_r = EIO;
+    errno_r = EBADF;
     return -1;
   }
 
@@ -373,6 +380,10 @@ int device_close(int fd)
   device_table[fd].isopen = false;
   device_table[fd].flags = 0;
   device_table[fd].mode = 0;
+
+  if (device_table[fd].close != NULL)
+    if (device_table[fd].close(fd))
+      return -1;
 
   return 0;
 }
