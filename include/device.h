@@ -147,8 +147,8 @@ int device_stat(int fd, struct stat *st);
 #define keypressed(...)	device_ready_read(0)
 #define getch(...)	device_getc(0)
 #define putch(c)	device_putc(1, c)
-#define cgets(s, count)	device_read(0, s, count)
-#define cputs(s)	device_write(1, s, strlen(s))
+#define cgets(s, count)	device_read_cooked(0, s, count)
+#define cputs(s)	device_write_cooked(1, s, strlen(s))
 
 _END_STD_C
 #endif
