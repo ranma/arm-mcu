@@ -547,11 +547,10 @@ int device_read_cooked(int fd, char *s, unsigned int count)
     errno_r = EBADF;
     return -1;
   }
-
 
 // Handle cooked character device input here
 
-  for (p = s; p < s + count - 2;)
+  for (p = s; p < s + count - 1;)
   {
     do
     {
@@ -576,7 +575,7 @@ int device_read_cooked(int fd, char *s, unsigned int count)
           device_write_raw(1, (char *) "\r\n", 2);
 
         *p++ = '\n';
-        *p++ = 0;
+        *p = 0;
         return p - s;
 
       case '\b' :
@@ -603,7 +602,7 @@ int device_read_cooked(int fd, char *s, unsigned int count)
     }
   }
 
-  *p++ = 0;
+  *p = 0;
   return p - s;
 }
 
