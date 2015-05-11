@@ -502,7 +502,6 @@ int device_read_raw(int fd, char *s, unsigned int count)
     return -1;
   }
 
-  memset(s, 0, count);
   return device_table[fd].read(device_table[fd].subdevice, s, count);
 }
 
@@ -549,7 +548,6 @@ int device_read_cooked(int fd, char *s, unsigned int count)
     return -1;
   }
 
-  memset(s, 0, count);
 
 // Handle cooked character device input here
 
