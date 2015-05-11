@@ -33,17 +33,64 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
-#define MAX_SERIAL_PORTS	6
+#define MAX_SERIAL_PORTS	6	// com1: through com6:
+#define BUFSIZE			64	// Must be power of 2!
 
-static USART_TypeDef * const UARTS[MAX_SERIAL_PORTS] =
+typedef struct
 {
-  USART1,
-  USART2,
-  USART3,
-  UART4,
-  UART5,
-  USART6,
+  uint8_t data[BUFSIZE];
+  unsigned head;
+  unsigned tail;
+  unsigned count;
+} ringbuffer_t;
+
+typedef struct
+{
+  volatile ringbuffer_t *rxbuffer;	// receiver buffer structure
+  volatile ringbuffer_t *txbuffer;	// transmit buffer structure
+  volatile unsigned * const TXEIE;	// TXEIE bit band address
+} uart_t;
+
+static uart_t UARTS[MAX_SERIAL_PORTS] =
+{
+  { NULL, NULL, (volatile unsigned *) 0x4222019C},
+  { NULL, NULL, (volatile unsigned *) 0x4208819C},
+  { NULL, NULL, (volatile unsigned *) 0x4209019C},
+  { NULL, NULL, (volatile unsigned *) 0x4209819C},
+  { NULL, NULL, (volatile unsigned *) 0x420A019C},
+  { NULL, NULL, (volatile unsigned *) 0x4228019C},
 };
+
+static int InitializeRingBuffers(unsigned port)
+{
+  errno_r = 0;
+
+// Allocate buffer structures
+
+  if (UARTS[port].rxbuffer == NULL)
+  {
+    UARTS[port].rxbuffer = malloc(sizeof(ringbuffer_t));
+    if (UARTS[port].rxbuffer == NULL)
+    {
+      errno_r = ENOMEM;
+      return -1;
+    }
+  }
+
+  if (UARTS[port].txbuffer == NULL)
+  {
+    UARTS[port].txbuffer = malloc(sizeof(ringbuffer_t));
+    if (UARTS[port].txbuffer == NULL)
+    {
+      errno_r = ENOMEM;
+      return -1;
+    }
+  }
+
+  memset((void *) UARTS[port].rxbuffer, 0, sizeof(ringbuffer_t));
+  memset((void *) UARTS[port].txbuffer, 0, sizeof(ringbuffer_t));
+  return 0;
+}
 
 /* Map serial port device name to port number */
 
@@ -72,12 +119,13 @@ int serial_name_to_port(char *name)
 
 /* Initialize serial port */
 
-int serial_open(char *name, unsigned int *subdevice)
+int serial_open(char *name, unsigned *subdevice)
 {
-  unsigned int port;
-  unsigned int baudrate;
+  unsigned port;
+  unsigned baudrate;
   USART_InitTypeDef USART_config;
   GPIO_InitTypeDef GPIO_config;
+  NVIC_InitTypeDef NVIC_config;
 
   errno_r = 0;
 
@@ -94,12 +142,23 @@ int serial_open(char *name, unsigned int *subdevice)
 // Extract baud rate from device name
 
   baudrate = atoi(name+5);
+  if (baudrate == 0)
+  {
+    errno_r = EINVAL;
+    return -1;
+  }
 
-// Turn on USART
+// Configure the serial port
 
   switch (port)
   {
+#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
     case 0 : // USART1
+
+// Initialize ring buffers
+
+      if (InitializeRingBuffers(port))
+        return -1;
 
 // Turn on USART1 peripheral clock
 
@@ -129,9 +188,36 @@ int serial_open(char *name, unsigned int *subdevice)
       GPIO_config.GPIO_Mode = GPIO_Mode_AF;
       GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
       GPIO_Init(GPIOA, &GPIO_config);
-      break;
 
+// Configure USART1
+
+      USART_StructInit(&USART_config);
+      USART_config.USART_BaudRate = baudrate;
+      USART_Init(USART1, &USART_config);
+
+// Enable USART1
+
+      USART_Cmd(USART1, ENABLE);
+
+// Enable USART1 interrupts
+
+      NVIC_config.NVIC_IRQChannel = USART1_IRQn;
+      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
+      NVIC_config.NVIC_IRQChannelSubPriority = 8;
+      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
+      NVIC_Init(&NVIC_config);
+
+      USART1->CR1 |= USART_CR1_RXNEIE;
+      break;
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
     case 1 : // USART2
+
+// Initialize ring buffers
+
+      if (InitializeRingBuffers(port))
+        return -1;
 
 // Turn on USART2 peripheral clock
 
@@ -161,9 +247,36 @@ int serial_open(char *name, unsigned int *subdevice)
       GPIO_config.GPIO_Mode = GPIO_Mode_AF;
       GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
       GPIO_Init(GPIOA, &GPIO_config);
-      break;
 
+// Configure USART2
+
+      USART_StructInit(&USART_config);
+      USART_config.USART_BaudRate = baudrate;
+      USART_Init(USART2, &USART_config);
+
+// Enable USART2
+
+      USART_Cmd(USART2, ENABLE);
+
+// Enable USART2 interrupts
+
+      NVIC_config.NVIC_IRQChannel = USART2_IRQn;
+      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
+      NVIC_config.NVIC_IRQChannelSubPriority = 8;
+      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
+      NVIC_Init(&NVIC_config);
+
+      USART2->CR1 |= USART_CR1_RXNEIE;
+      break;
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
     case 2 : // USART3
+
+// Initialize ring buffers
+
+      if (InitializeRingBuffers(port))
+        return -1;
 
 // Turn on USART3 peripheral clock
 
@@ -193,9 +306,36 @@ int serial_open(char *name, unsigned int *subdevice)
       GPIO_config.GPIO_Mode = GPIO_Mode_AF;
       GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
       GPIO_Init(GPIOB, &GPIO_config);
-      break;
 
+// Configure USART3
+
+      USART_StructInit(&USART_config);
+      USART_config.USART_BaudRate = baudrate;
+      USART_Init(USART3, &USART_config);
+
+// Enable USART3
+
+      USART_Cmd(USART3, ENABLE);
+
+// Enable USART3 interrupts
+
+      NVIC_config.NVIC_IRQChannel = USART3_IRQn;
+      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
+      NVIC_config.NVIC_IRQChannelSubPriority = 8;
+      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
+      NVIC_Init(&NVIC_config);
+
+      USART3->CR1 |= USART_CR1_RXNEIE;
+      break;
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
     case 3 : // UART4
+
+// Initialize ring buffers
+
+      if (InitializeRingBuffers(port))
+        return -1;
 
 // Turn on UART4 peripheral clock
 
@@ -225,9 +365,36 @@ int serial_open(char *name, unsigned int *subdevice)
       GPIO_config.GPIO_Mode = GPIO_Mode_AF;
       GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
       GPIO_Init(GPIOA, &GPIO_config);
-      break;
 
+// Configure UART4
+
+      USART_StructInit(&USART_config);
+      USART_config.USART_BaudRate = baudrate;
+      USART_Init(UART4, &USART_config);
+
+// Enable UART4
+
+      USART_Cmd(UART4, ENABLE);
+
+// Enable UART4 interrupts
+
+      NVIC_config.NVIC_IRQChannel = UART4_IRQn;
+      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
+      NVIC_config.NVIC_IRQChannelSubPriority = 8;
+      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
+      NVIC_Init(&NVIC_config);
+
+      UART4->CR1 |= USART_CR1_RXNEIE;
+      break;
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
     case 4 : // UART5
+
+// Initialize ring buffers
+
+      if (InitializeRingBuffers(port))
+        return -1;
 
 // Turn on UART5 peripheral clock
 
@@ -257,9 +424,36 @@ int serial_open(char *name, unsigned int *subdevice)
       GPIO_config.GPIO_Mode = GPIO_Mode_AF;
       GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
       GPIO_Init(GPIOD, &GPIO_config);
-      break;
 
+// Configure UART5
+
+      USART_StructInit(&USART_config);
+      USART_config.USART_BaudRate = baudrate;
+      USART_Init(UART5, &USART_config);
+
+// Enable UART5
+
+      USART_Cmd(UART5, ENABLE);
+
+// Enable UART5 interrupts
+
+      NVIC_config.NVIC_IRQChannel = UART5_IRQn;
+      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
+      NVIC_config.NVIC_IRQChannelSubPriority = 8;
+      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
+      NVIC_Init(&NVIC_config);
+
+      UART5->CR1 |= USART_CR1_RXNEIE;
+      break;
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
     case 5 : //  USART6
+
+// Initialize ring buffers
+
+      if (InitializeRingBuffers(port))
+        return -1;
 
 // Turn on USART6 peripheral clock
 
@@ -316,22 +510,34 @@ int serial_open(char *name, unsigned int *subdevice)
       GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
       GPIO_Init(GPIOC, &GPIO_config);
 #endif
+
+// Configure USART6
+
+      USART_StructInit(&USART_config);
+      USART_config.USART_BaudRate = baudrate;
+      USART_Init(USART6, &USART_config);
+
+// Enable USART6
+
+      USART_Cmd(USART6, ENABLE);
+
+// Enable USART6 interrupts
+
+      NVIC_config.NVIC_IRQChannel = USART6_IRQn;
+      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
+      NVIC_config.NVIC_IRQChannelSubPriority = 8;
+      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
+      NVIC_Init(&NVIC_config);
+
+      USART6->CR1 |= USART_CR1_RXNEIE;
       break;
+#endif
 
     default :
       errno_r = ENODEV;
       return -1;
   }
 
-// Configure USART
-
-  USART_StructInit(&USART_config);
-  USART_config.USART_BaudRate = baudrate;
-  USART_Init(UARTS[port], &USART_config);
-
-// Enable USART
-
-  USART_Cmd(UARTS[port], ENABLE);
 
   return 0;
 }
@@ -340,7 +546,7 @@ int serial_open(char *name, unsigned int *subdevice)
 
 int serial_stdio(char *name)
 {
-  unsigned int subdevice;
+  unsigned subdevice;
 
   if (serial_open(name, &subdevice))
     return -1;
@@ -364,7 +570,7 @@ int serial_stdio(char *name)
 
 int serial_register(char *name)
 {
-  unsigned int port;
+  unsigned port;
 
 // Look up serial port number
 
@@ -376,49 +582,12 @@ int serial_register(char *name)
   return device_register_char(name, port, serial_open, NULL, serial_write, serial_read, serial_txready, serial_rxready);
 }
 
-/* Return true if transmitter is ready to accept data */
-
-int serial_txready(unsigned int port)
-{
-  errno_r = 0;
-
-  if (port >= MAX_SERIAL_PORTS)
-  {
-    errno_r = ENODEV;
-    return -1;
-  }
-
-  if (UARTS[port]->SR & USART_FLAG_TXE)
-    return 1;
-  else
-    return 0;
-}
-
-/* Send a buffer to the serial port */
-
-int serial_write(unsigned int port, char *buf, unsigned int count)
-{
-  errno_r = 0;
-
-  if (port >= MAX_SERIAL_PORTS)
-  {
-    errno_r = ENODEV;
-    return -1;
-  }
-
-  if (serial_txready(port))
-  {
-    UARTS[port]->DR = *buf++;
-    return 1;
-  }
-
-  return 0;
-}
-
 /* Return true if receive data is available */
 
-int serial_rxready(unsigned int port)
+int serial_rxready(unsigned port)
 {
+  volatile ringbuffer_t *bufptr;
+
   errno_r = 0;
 
   if (port >= MAX_SERIAL_PORTS)
@@ -427,16 +596,24 @@ int serial_rxready(unsigned int port)
     return -1;
   }
 
-  if (UARTS[port]->SR & USART_FLAG_RXNE)
-    return 1;
-  else
-    return 0;
+  bufptr = UARTS[port].rxbuffer;
+
+  if (bufptr == NULL)
+  {
+    errno_r = ENODEV;
+    return -1;
+  }
+
+  return (bufptr->count > 0);
 }
 
-/* Read buffer from the serial port */
+/* Read data from the serial port */
 
-int serial_read(unsigned int port, char *buf, unsigned int count)
+int serial_read(unsigned port, char *buf, unsigned count)
 {
+  volatile ringbuffer_t *bufptr;
+  int len = 0;
+
   errno_r = 0;
 
   if (port >= MAX_SERIAL_PORTS)
@@ -445,12 +622,383 @@ int serial_read(unsigned int port, char *buf, unsigned int count)
     return -1;
   }
 
-  if (serial_rxready(port))
+  if (buf == NULL)
   {
-    *buf++ = UARTS[port]->DR;
-
-    return 1;
+    errno_r = EINVAL;
+    return -1;
   }
 
-  return 0;
+  bufptr = UARTS[port].rxbuffer;
+
+  if (bufptr == NULL)
+  {
+    errno_r = ENODEV;
+    return -1;
+  }
+
+  while ((bufptr->count > 0) && (count > 0))
+  {
+    *buf++ = bufptr->data[bufptr->tail];
+    count--;
+    bufptr->count--;
+    bufptr->tail++;
+    bufptr->tail &= BUFSIZE-1;
+    len++;
+  }
+
+  return len;
 }
+
+/* Return true if transmitter is ready to accept data */
+
+int serial_txready(unsigned port)
+{
+  volatile ringbuffer_t *bufptr;
+
+  errno_r = 0;
+
+  if (port >= MAX_SERIAL_PORTS)
+  {
+    errno_r = ENODEV;
+    return -1;
+  }
+
+  bufptr = UARTS[port].txbuffer;
+
+  if (bufptr == NULL)
+  {
+    errno_r = ENODEV;
+    return -1;
+  }
+
+  return (bufptr->count < BUFSIZE);
+}
+
+/* Send data out the serial port */
+
+int serial_write(unsigned port, char *buf, unsigned count)
+{
+  volatile ringbuffer_t *bufptr;
+  int len = 0;
+
+  errno_r = 0;
+
+  if (port >= MAX_SERIAL_PORTS)
+  {
+    errno_r = ENODEV;
+    return -1;
+  }
+
+  if (buf == NULL)
+  {
+    errno_r = EINVAL;
+    return -1;
+  }
+
+  bufptr = UARTS[port].txbuffer;
+
+  if (bufptr == NULL)
+  {
+    errno_r = ENODEV;
+    return -1;
+  }
+
+  while ((bufptr->count < BUFSIZE) && (count > 0))
+  {
+    bufptr->data[bufptr->head] = *buf++;
+    count--;
+    bufptr->count++;
+    bufptr->head++;
+    bufptr->head &= BUFSIZE-1;
+    len++;
+
+    // Enable TXEIE interrupt
+    *UARTS[port].TXEIE = true;
+  }
+
+  return len;
+}
+
+//*************** UART interrupt service routines follow ****************
+
+#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#define USART1_DR	(*((volatile unsigned *) 0x40011004))
+#define USART1_RXNE	(*((volatile unsigned *) 0x42220014))
+#define USART1_TXE	(*((volatile unsigned *) 0x4222001C))
+#define USART1_RXNEIE	(*((volatile unsigned *) 0x42220194))
+#define USART1_TXEIE	(*((volatile unsigned *) 0x4222019C))
+
+void USART1_IRQHandler(void)
+{
+  if (USART1_RXNEIE && USART1_RXNE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+
+    if (bufptr->count == BUFSIZE)
+    {
+      // Receive buffer is full; discard overrun data
+      USART1_DR;
+    }
+    else
+    {
+      bufptr->data[bufptr->head] = USART1_DR;
+      bufptr->count++;
+      bufptr->head++;
+      bufptr->head &= BUFSIZE-1;
+    }
+  }
+
+  if (USART1_TXEIE && USART1_TXE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+
+    if (bufptr->count == 0)
+    {
+      // Transmit buffer is empty; disable interrupt
+      USART1_TXEIE = 0;	
+    }
+    else
+    {
+      USART1_DR = bufptr->data[bufptr->tail];
+      bufptr->count--;
+      bufptr->tail++;
+      bufptr->tail &= BUFSIZE-1;
+    }
+  }
+}
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#define USART2_DR	(*((volatile unsigned *) 0x40004404))
+#define USART2_RXNE	(*((volatile unsigned *) 0x42088014))
+#define USART2_TXE	(*((volatile unsigned *) 0x4208801C))
+#define USART2_RXNEIE	(*((volatile unsigned *) 0x42088194))
+#define USART2_TXEIE	(*((volatile unsigned *) 0x4208819C))
+
+void USART2_IRQHandler(void)
+{
+  if (USART2_RXNEIE && USART2_RXNE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+
+    if (bufptr->count == BUFSIZE)
+    {
+      // Receive buffer is full; discard overrun data
+      USART2_DR;
+    }
+    else
+    {
+      bufptr->data[bufptr->head] = USART2_DR;
+      bufptr->count++;
+      bufptr->head++;
+      bufptr->head &= BUFSIZE-1;
+    }
+  }
+
+  if (USART2_TXEIE && USART2_TXE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+
+    if (bufptr->count == 0)
+    {
+      // Transmit buffer is empty; disable interrupt
+      USART2_TXEIE = 0;	
+    }
+    else
+    {
+      USART2_DR = bufptr->data[bufptr->tail];
+      bufptr->count--;
+      bufptr->tail++;
+      bufptr->tail &= BUFSIZE-1;
+    }
+  }
+}
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#define USART3_DR	(*((volatile unsigned *) 0x40004804))
+#define USART3_RXNE	(*((volatile unsigned *) 0x42090014))
+#define USART3_TXE	(*((volatile unsigned *) 0x4209001C))
+#define USART3_RXNEIE	(*((volatile unsigned *) 0x42090194))
+#define USART3_TXEIE	(*((volatile unsigned *) 0x4209019C))
+
+void USART3_IRQHandler(void)
+{
+  if (USART3_RXNEIE && USART3_RXNE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+
+    if (bufptr->count == BUFSIZE)
+    {
+      // Receive buffer is full; discard overrun data
+      USART3_DR;
+    }
+    else
+    {
+      bufptr->data[bufptr->head] = USART3_DR;
+      bufptr->count++;
+      bufptr->head++;
+      bufptr->head &= BUFSIZE-1;
+    }
+  }
+
+  if (USART3_TXEIE && USART3_TXE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+
+    if (bufptr->count == 0)
+    {
+      // Transmit buffer is empty; disable interrupt
+      USART3_TXEIE = 0;	
+    }
+    else
+    {
+      USART3_DR = bufptr->data[bufptr->tail];
+      bufptr->count--;
+      bufptr->tail++;
+      bufptr->tail &= BUFSIZE-1;
+    }
+  }
+}
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#define UART4_DR	(*((volatile unsigned *) 0x40004C04))
+#define UART4_RXNE	(*((volatile unsigned *) 0x42098014))
+#define UART4_TXE	(*((volatile unsigned *) 0x4209801C))
+#define UART4_RXNEIE	(*((volatile unsigned *) 0x42098194))
+#define UART4_TXEIE	(*((volatile unsigned *) 0x4209819C))
+
+void UART4_IRQHandler(void)
+{
+  if (UART4_RXNEIE && UART4_RXNE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+
+    if (bufptr->count == BUFSIZE)
+    {
+      // Receive buffer is full; discard overrun data
+      UART4_DR;
+    }
+    else
+    {
+      bufptr->data[bufptr->head] = UART4_DR;
+      bufptr->count++;
+      bufptr->head++;
+      bufptr->head &= BUFSIZE-1;
+    }
+  }
+
+  if (UART4_TXEIE && UART4_TXE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+
+    if (bufptr->count == 0)
+    {
+      // Transmit buffer is empty; disable interrupt
+      UART4_TXEIE = 0;	
+    }
+    else
+    {
+      UART4_DR = bufptr->data[bufptr->tail];
+      bufptr->count--;
+      bufptr->tail++;
+      bufptr->tail &= BUFSIZE-1;
+    }
+  }
+}
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#define UART5_DR	(*((volatile unsigned *) 0x40005004))
+#define UART5_RXNE	(*((volatile unsigned *) 0x420A0014))
+#define UART5_TXE	(*((volatile unsigned *) 0x420A001C))
+#define UART5_RXNEIE	(*((volatile unsigned *) 0x420A0194))
+#define UART5_TXEIE	(*((volatile unsigned *) 0x420A019C))
+
+void UART5_IRQHandler(void)
+{
+  if (UART5_RXNEIE && UART5_RXNE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+
+    if (bufptr->count == BUFSIZE)
+    {
+      // Receive buffer is full; discard overrun data
+      UART5_DR;
+    }
+    else
+    {
+      bufptr->data[bufptr->head] = UART5_DR;
+      bufptr->count++;
+      bufptr->head++;
+      bufptr->head &= BUFSIZE-1;
+    }
+  }
+
+  if (UART5_TXEIE && UART5_TXE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+
+    if (bufptr->count == 0)
+    {
+      // Transmit buffer is empty; disable interrupt
+      UART5_TXEIE = 0;	
+    }
+    else
+    {
+      UART5_DR = bufptr->data[bufptr->tail];
+      bufptr->count--;
+      bufptr->tail++;
+      bufptr->tail &= BUFSIZE-1;
+    }
+  }
+}
+#endif
+
+#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#define USART6_DR	(*((volatile unsigned *) 0x40014004))
+#define USART6_RXNE	(*((volatile unsigned *) 0x42280014))
+#define USART6_TXE	(*((volatile unsigned *) 0x4228001C))
+#define USART6_RXNEIE	(*((volatile unsigned *) 0x42280194))
+#define USART6_TXEIE	(*((volatile unsigned *) 0x4228019C))
+
+void USART6_IRQHandler(void)
+{
+  if (USART6_RXNEIE && USART6_RXNE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+
+    if (bufptr->count == BUFSIZE)
+    {
+      // Receive buffer is full; discard overrun data
+      USART6_DR;
+    }
+    else
+    {
+      bufptr->data[bufptr->head] = USART6_DR;
+      bufptr->count++;
+      bufptr->head++;
+      bufptr->head &= BUFSIZE-1;
+    }
+  }
+
+  if (USART6_TXEIE && USART6_TXE)
+  {
+    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+
+    if (bufptr->count == 0)
+    {
+      // Transmit buffer is empty; disable interrupt
+      USART6_TXEIE = 0;	
+    }
+    else
+    {
+      USART6_DR = bufptr->data[bufptr->tail];
+      bufptr->count--;
+      bufptr->tail++;
+      bufptr->tail &= BUFSIZE-1;
+    }
+  }
+}
+#endif
