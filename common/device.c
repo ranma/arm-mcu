@@ -551,7 +551,7 @@ int device_read_cooked(int fd, char *s, unsigned int count)
 
 // Handle cooked character device input here
 
-  for (p = s; p < s + count - 1;)
+  for (p = s; p < s + count - 2;)
   {
     do
     {
@@ -575,9 +575,9 @@ int device_read_cooked(int fd, char *s, unsigned int count)
         else
           device_write_raw(1, (char *) "\r\n", 2);
 
-        *p = '\n';
-
-        return strlen(s);
+        *p++ = '\n';
+        *p++ = 0;
+        return p - s;
 
       case '\b' :
       case 127 :
@@ -603,7 +603,8 @@ int device_read_cooked(int fd, char *s, unsigned int count)
     }
   }
 
-  return strlen(s);
+  *p++ = 0;
+  return p - s;
 }
 
 /* Read input from a device */
