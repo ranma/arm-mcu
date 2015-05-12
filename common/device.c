@@ -1070,15 +1070,16 @@ int fcntl(int fd, int cmd, ...)
   }
 }
 
-// Alias basic I/O syscalls to device_xxxx() functions
+// The following syscall service functions are aliased to device_xxxx()
+// functions defined above
 
-int _open(char *path, int flags, int mode) __attribute__((alias("device_open")));
+int _open(const char *path, int flags, mode_t mode) __attribute__((alias("device_open")));
 
 int _close(int fd) __attribute__((alias("device_close")));
 
-long _read(int fd, void *dst, size_t size) __attribute__((alias("device_read")));
+ssize_t _read(int fd, void *dst, size_t size) __attribute__((alias("device_read")));
 
-long _write(int fd, void *src, size_t size) __attribute__((alias("device_write")));
+ssize_t _write(int fd, const void *src, size_t size) __attribute__((alias("device_write")));
 
 int _fstat(int fd, struct stat *st) __attribute__((alias("device_stat")));
 
