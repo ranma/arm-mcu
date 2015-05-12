@@ -58,7 +58,7 @@ static uart_t UARTS[MAX_SERIAL_PORTS] =
   { NULL, NULL, (volatile unsigned *) 0x4209019C},
   { NULL, NULL, (volatile unsigned *) 0x4209819C},
   { NULL, NULL, (volatile unsigned *) 0x420A019C},
-  { NULL, NULL, (volatile unsigned *) 0x4228019C},
+  { NULL, NULL, (volatile unsigned *) 0x4222819C},
 };
 
 static int InitializeRingBuffers(unsigned port)
@@ -961,11 +961,11 @@ void UART5_IRQHandler(void)
 #endif
 
 #if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
-#define USART6_DR	(*((volatile unsigned *) 0x40014004))
-#define USART6_RXNE	(*((volatile unsigned *) 0x42280014))
-#define USART6_TXE	(*((volatile unsigned *) 0x4228001C))
-#define USART6_RXNEIE	(*((volatile unsigned *) 0x42280194))
-#define USART6_TXEIE	(*((volatile unsigned *) 0x4228019C))
+#define USART6_DR	(*((volatile unsigned *) 0x40011404))
+#define USART6_RXNE	(*((volatile unsigned *) 0x42228014))
+#define USART6_TXE	(*((volatile unsigned *) 0x4222801C))
+#define USART6_RXNEIE	(*((volatile unsigned *) 0x42228194))
+#define USART6_TXEIE	(*((volatile unsigned *) 0x4222819C))
 
 void USART6_IRQHandler(void)
 {
