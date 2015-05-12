@@ -192,11 +192,14 @@ News
        from syscalls.c to device.c, where they are aliased to
        device_xxxx() functions. This eliminates an unnecessary function
        call for each syscall operation.
+     * 12 May 2015 -- More improvements in device.c--eliminated some calls
+       to memset(). Switched to [18]texane/stlink even for Windows.
+       Implemented interrupt driven serial I/O for the STM32F4 family.
 
 Git Repository
 
-   The source code is hosted on [18]SourceForge at
-   [19]http://sourceforge.net/p/arm-mcu/code.
+   The source code is hosted on [19]SourceForge at
+   [20]http://sourceforge.net/p/arm-mcu/code.
 
    Use one of the following commands to clone it:
 git clone --depth 1 git://git.code.sf.net/p/arm-mcu/code  ARM
@@ -230,7 +233,7 @@ POSSIBILITY OF SUCH DAMAGE.
    respective authors.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [20]phil@munts.net
+   Questions or comments to Philip Munts [21]phil@munts.net
 
    $Id$
 
@@ -256,6 +259,7 @@ References
   15. http://dfu-util.sourceforge.net/
   16. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF260320
   17. http://launchpad.net/gcc-arm-embedded
-  18. http://sourceforge.net/
-  19. http://sourceforge.net/p/arm-mcu/code
-  20. mailto:phil@munts.net
+  18. https://github.com/texane/stlink
+  19. http://sourceforge.net/
+  20. http://sourceforge.net/p/arm-mcu/code
+  21. mailto:phil@munts.net
