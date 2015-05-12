@@ -640,7 +640,9 @@ int serial_read(unsigned port, char *buf, unsigned count)
   {
     *buf++ = bufptr->data[bufptr->tail];
     count--;
+    __disable_irq();
     bufptr->count--;
+    __enable_irq();
     bufptr->tail++;
     bufptr->tail &= BUFSIZE-1;
     len++;
@@ -707,7 +709,9 @@ int serial_write(unsigned port, char *buf, unsigned count)
   {
     bufptr->data[bufptr->head] = *buf++;
     count--;
+    __disable_irq();
     bufptr->count++;
+    __enable_irq();
     bufptr->head++;
     bufptr->head &= BUFSIZE-1;
     len++;
@@ -732,7 +736,7 @@ void USART1_IRQHandler(void)
 {
   if (USART1_RXNEIE && USART1_RXNE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[0].rxbuffer;
 
     if (bufptr->count == BUFSIZE)
     {
@@ -750,7 +754,7 @@ void USART1_IRQHandler(void)
 
   if (USART1_TXEIE && USART1_TXE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[0].txbuffer;
 
     if (bufptr->count == 0)
     {
@@ -826,7 +830,7 @@ void USART3_IRQHandler(void)
 {
   if (USART3_RXNEIE && USART3_RXNE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[2].rxbuffer;
 
     if (bufptr->count == BUFSIZE)
     {
@@ -844,7 +848,7 @@ void USART3_IRQHandler(void)
 
   if (USART3_TXEIE && USART3_TXE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[2].txbuffer;
 
     if (bufptr->count == 0)
     {
@@ -873,7 +877,7 @@ void UART4_IRQHandler(void)
 {
   if (UART4_RXNEIE && UART4_RXNE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[3].rxbuffer;
 
     if (bufptr->count == BUFSIZE)
     {
@@ -891,7 +895,7 @@ void UART4_IRQHandler(void)
 
   if (UART4_TXEIE && UART4_TXE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[3].txbuffer;
 
     if (bufptr->count == 0)
     {
@@ -920,7 +924,7 @@ void UART5_IRQHandler(void)
 {
   if (UART5_RXNEIE && UART5_RXNE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[4].rxbuffer;
 
     if (bufptr->count == BUFSIZE)
     {
@@ -938,7 +942,7 @@ void UART5_IRQHandler(void)
 
   if (UART5_TXEIE && UART5_TXE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[4].txbuffer;
 
     if (bufptr->count == 0)
     {
@@ -967,7 +971,7 @@ void USART6_IRQHandler(void)
 {
   if (USART6_RXNEIE && USART6_RXNE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].rxbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[5].rxbuffer;
 
     if (bufptr->count == BUFSIZE)
     {
@@ -985,7 +989,7 @@ void USART6_IRQHandler(void)
 
   if (USART6_TXEIE && USART6_TXE)
   {
-    volatile ringbuffer_t *bufptr = UARTS[1].txbuffer;
+    volatile ringbuffer_t *bufptr = UARTS[5].txbuffer;
 
     if (bufptr->count == 0)
     {
