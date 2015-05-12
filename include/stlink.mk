@@ -22,26 +22,21 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-ifeq ($(findstring CYGWIN, $(shell uname)), CYGWIN)
-STLINKFLASH	?= ST-LINK_CLI.exe
-STLINKIF	?= -c SWD
-endif
+# texane/stlink
 
-ifeq ($(shell uname), Darwin)
-STLINKFLASH	?= stlink-flash
-endif
+STLINKFLASH		?= stlink-flash
+STLINKFLASHOPTS1	?= --reset write $(STLINKIF)
+STLINKFLASHOPTS2	?= $(FLASHWRITEADDR)
 
-ifeq ($(shell uname), Linux)
-STLINKFLASH	?= stlink-flash
-endif
+STLINKDEBUG		?= $(ARMSRC)/common/main.gdb
+STLINKGDB		?= stlink-gdbserver
+STLINKGDBOPTS		?= -p $(GDBSERVERPORT)
 
-ifeq ($(shell uname), OpenBSD)
-STLINKFLASH	?= stlink-flash
-endif
+# ST Microelectronics ST-LINK_CLI.exe
 
-STLINKDEBUG	?= $(ARMSRC)/common/main.gdb
-STLINKGDB	?= stlink-gdbserver
-STLINKGDBOPTS	?= -p $(GDBSERVERPORT)
+#STLINKFLASH		?=ST-LINK_CLI.exe
+#STLINKFLASHOPTS1	?=-c SWD -ME -P
+#STLINKFLASHOPTS2	?=$(FLASHWRITEADDR) -Rst
 
 .SUFFIXES: .bin .debugstlink .elf .flashstlink .hex
 
@@ -65,13 +60,4 @@ stopstlink:
 # Program flash with ST-Link
 
 .bin.flashstlink:
-ifeq ($(findstring CYGWIN, $(shell uname)), CYGWIN)
-	"$(STLINKFLASH)" $(STLINKIF) -ME -P $< $(FLASHWRITEADDR) -Rst
-else
-	$(STLINKFLASH) --reset write $(STLINKIF) $< $(FLASHWRITEADDR)
-endif
-
-ifeq ($(findstring CYGWIN, $(shell uname)), CYGWIN)
-.hex.flashstlink:
-	"$(STLINKFLASH)" $(STLINKIF) -ME -P $< -V -RST
-endif
+	$(STLINKFLASH) $(STLINKFLASHOPTS1) $< $(STLINKFLASHOPTS2)
