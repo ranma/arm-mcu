@@ -73,6 +73,7 @@ typedef struct
   device_write_ready_fn_t write_ready;
   device_read_ready_fn_t read_ready;
   device_seek_fn_t seek;
+  device_fcntl_fn_t fcntl;
   int isopen;
   int flags;	// From open()
   int mode;	// From open()
@@ -89,7 +90,8 @@ int device_register_char(char *name,
                          device_write_fn_t writefn,
                          device_read_fn_t readfn,
                          device_write_ready_fn_t write_readyfn,
-                         device_read_ready_fn_t read_readyfn)
+                         device_read_ready_fn_t read_readyfn,
+                         device_fcntl_fn_t fcntlfn)
 {
   int namelen;
   int fd;
@@ -139,6 +141,7 @@ int device_register_char(char *name,
       device_table[fd].read = readfn;
       device_table[fd].write_ready = write_readyfn;
       device_table[fd].read_ready = read_readyfn;
+      device_table[fd].fcntl = fcntlfn;
 
       return fd;
     }
@@ -154,7 +157,8 @@ int device_register_char_fd(int fd,
                             device_write_fn_t writefn,
                             device_read_fn_t readfn,
                             device_write_ready_fn_t write_readyfn,
-                            device_read_ready_fn_t read_readyfn)
+                            device_read_ready_fn_t read_readyfn,
+                            device_fcntl_fn_t fcntlfn)
 {
   errno_r = 0;
 
@@ -181,6 +185,7 @@ int device_register_char_fd(int fd,
   device_table[fd].read = readfn;
   device_table[fd].write_ready = write_readyfn;
   device_table[fd].read_ready = read_readyfn;
+  device_table[fd].fcntl = fcntlfn;
   device_table[fd].isopen = true;
 
   if ((readfn != NULL) && (writefn != NULL))
@@ -200,7 +205,8 @@ int device_register_block(char *name,
                           device_close_fn_t closefn,
                           device_write_fn_t writefn,
                           device_read_fn_t readfn,
-                          device_seek_fn_t seekfn)
+                          device_seek_fn_t seekfn,
+                          device_fcntl_fn_t fcntlfn)
 {
   int namelen;
   int fd;
@@ -248,6 +254,7 @@ int device_register_block(char *name,
       device_table[fd].write = writefn;
       device_table[fd].read = readfn;
       device_table[fd].seek = seekfn;
+      device_table[fd].fcntl = fcntlfn;
 
       return fd;
     }
@@ -1061,9 +1068,9 @@ off_t device_seek(int fd, off_t pos, int whence)
   return device_table[fd].seek(device_table[fd].subdevice, pos, whence);
 }
 
-int fcntl(int fd, int cmd, ...)
+int device_fcntl(int fd, int cmd, ...)
 {
-  va_list argptr;
+  va_list args;
 
   errno_r = 0;
 
@@ -1093,7 +1100,8 @@ int fcntl(int fd, int cmd, ...)
     return -1;
   }
 
-// Perform file operations
+
+// Perform operation
 
   switch (cmd)
   {
@@ -1101,14 +1109,24 @@ int fcntl(int fd, int cmd, ...)
       return device_table[fd].flags;
 
     case F_SETFL :
-      va_start(argptr, cmd);
-      device_table[fd].flags = va_arg(argptr, int);
-      va_end(argptr);
+      va_start(args, cmd);
+      device_table[fd].flags = va_arg(args, int);
+      va_end(args);
       return 0;
 
     default :
-      errno_r = EINVAL;
-      return -1;
+      if (device_table[fd].fcntl != NULL)
+      {
+        va_start(args, cmd);
+        int result = device_table[fd].fcntl(device_table[fd].subdevice, cmd, args);
+        va_end(args);
+        return result;
+      }
+      else
+      {
+        errno_r = EINVAL;
+        return -1;
+      }
   }
 }
 
@@ -1128,3 +1146,5 @@ int _fstat(int fd, struct stat *st) __attribute__((alias("device_stat")));
 int _isatty(int fd) __attribute__((alias("device_isatty")));
 
 off_t _lseek(int fd, off_t pos, int whence) __attribute__((alias("device_seek")));
+
+int fcntl(int fd, int cmd, ...) __attribute__((alias("device_fcntl")));

@@ -46,7 +46,7 @@ int semihosting_register(char *name)
 {
   return device_register_char(name, 0, semihosting_open, semihosting_close,
     semihosting_write, semihosting_read,
-    semihosting_write_ready, semihosting_read_ready);
+    semihosting_write_ready, semihosting_read_ready, NULL);
 }
 
 int semihosting_stdio(char *name)
@@ -64,9 +64,9 @@ int semihosting_stdio(char *name)
 
   // Register new stdin, stdout, stderr
 
-  device_register_char_fd(0, subdevice, NULL, semihosting_read, NULL, semihosting_read_ready);
-  device_register_char_fd(1, subdevice, semihosting_write, NULL, semihosting_write_ready, NULL);
-  device_register_char_fd(2, subdevice, semihosting_write, NULL, semihosting_write_ready, NULL);
+  device_register_char_fd(0, subdevice, NULL, semihosting_read, NULL, semihosting_read_ready, NULL);
+  device_register_char_fd(1, subdevice, semihosting_write, NULL, semihosting_write_ready, NULL, NULL);
+  device_register_char_fd(2, subdevice, semihosting_write, NULL, semihosting_write_ready, NULL, NULL);
 
   // Put stdin in binary mode, because of the limitations of semihosting in OpenOCD.
   // We need to use the input line editor in OpenOCD instead of ours in device.c

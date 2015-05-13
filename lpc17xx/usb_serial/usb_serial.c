@@ -57,9 +57,9 @@ int usb_serial_stdio(char *name)
 
   // Register new stdin, stdout, stderr
 
-  device_register_char_fd(0, subdevice, NULL, usb_serial_read, NULL, usb_serial_rxready);
-  device_register_char_fd(1, subdevice, usb_serial_write, NULL, usb_serial_txready, NULL);
-  device_register_char_fd(2, subdevice, usb_serial_write, NULL, usb_serial_txready, NULL);
+  device_register_char_fd(0, subdevice, NULL, usb_serial_read, NULL, usb_serial_rxready, NULL);
+  device_register_char_fd(1, subdevice, usb_serial_write, NULL, usb_serial_txready, NULL, NULL);
+  device_register_char_fd(2, subdevice, usb_serial_write, NULL, usb_serial_txready, NULL, NULL);
 
   return 0;
 }
@@ -68,7 +68,7 @@ int usb_serial_stdio(char *name)
 
 int usb_serial_register(char *name)
 {
-  return device_register_char(name, 0, usb_serial_open, NULL, usb_serial_write, usb_serial_read, usb_serial_txready, usb_serial_rxready);
+  return device_register_char(name, 0, usb_serial_open, NULL, usb_serial_write, usb_serial_read, usb_serial_txready, usb_serial_rxready, NULL);
 }
 
 // Return TRUE if USB system is ready to accept another transmit message

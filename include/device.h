@@ -50,20 +50,20 @@ typedef int (*device_open_fn_t)		(char *name, unsigned int *subdevice);
 typedef int (*device_close_fn_t)	(unsigned int subdevice);
 
 typedef int (*device_write_fn_t)	(unsigned int subdevice,
-                                         char *buf,
-                                         unsigned int count);
+					 char *buf, unsigned int count);
 
 typedef int (*device_read_fn_t)		(unsigned int subdevice,
-                                         char *buf,
-                                         unsigned int count);
+					 char *buf, unsigned int count);
 
 typedef int (*device_write_ready_fn_t)	(unsigned int subdevice);
 
 typedef int (*device_read_ready_fn_t)	(unsigned int subdevice);
 
 typedef int (*device_seek_fn_t)		(unsigned int subdevice,
-                                         off_t pos,
-                                         int whence);
+					 off_t pos, int whence);
+
+typedef int (*device_fcntl_fn_t)	(unsigned int subdevice,
+                                         int cmd, va_list args);
 
 // Device registration functions
 
@@ -74,21 +74,24 @@ int device_register_char(char *name,
                          device_write_fn_t writefn,
                          device_read_fn_t readfn,
                          device_write_ready_fn_t write_readyfn,
-                         device_read_ready_fn_t read_readyfn);
+                         device_read_ready_fn_t read_readyfn,
+                         device_fcntl_fn_t fcntlfn);
 
 int device_register_char_fd(int fd,
                             unsigned int subdevice,
                             device_write_fn_t writefn,
                             device_read_fn_t readfn,
                             device_write_ready_fn_t write_readyfn,
-                            device_read_ready_fn_t read_readyfn);
+                            device_read_ready_fn_t read_readyfn,
+                            device_fcntl_fn_t fcntlfn);
 
 int device_register_block(char *name,
                           device_open_fn_t openfn,
                           device_close_fn_t closefn,
                           device_write_fn_t writefn,
                           device_read_fn_t readfn,
-                          device_seek_fn_t seekfn);
+                          device_seek_fn_t seekfn,
+                          device_fcntl_fn_t fcntlfn);
 
 int device_unregister(int fd);
 
@@ -108,6 +111,7 @@ int device_write_raw(int fd, char *s, unsigned int count);
 int device_write_cooked(int fd, char *s, unsigned int count);
 int device_write(int fd, char *s, unsigned int count);
 int device_putc(int fd, char c);
+int device_fcntl(int fd, int cmd, ...);
 
 // File system support method functions
 

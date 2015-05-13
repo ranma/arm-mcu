@@ -192,9 +192,15 @@ News
        from syscalls.c to device.c, where they are aliased to
        device_xxxx() functions. This eliminates an unnecessary function
        call for each syscall operation.
-     * 12 May 2015 -- More improvements in device.c--eliminated some calls
+     * 12 May 2015 -- More improvements in device.c: Eliminated some calls
        to memset(). Switched to [18]texane/stlink even for Windows.
        Implemented interrupt driven serial I/O for the STM32F4 family.
+     * 13 May 2015 -- Added even more error checking to device.c. Made the
+       device table private to device.c. Added general support for
+       fcntl(). The F_GETFL and F_SETFL operations are available for any
+       file descriptor while other operations are delegated to the device
+       specific fcntl() handler, if one was provided when the device was
+       registered.
 
 Git Repository
 

@@ -179,9 +179,9 @@ int serial_stdio(char *name)
 
   // Register new stdin, stdout, stderr
 
-  device_register_char_fd(0, subdevice, NULL, serial_read, NULL, serial_rxready);
-  device_register_char_fd(1, subdevice, serial_write, NULL, serial_txready, NULL);
-  device_register_char_fd(2, subdevice, serial_write, NULL, serial_txready, NULL);
+  device_register_char_fd(0, subdevice, NULL, serial_read, NULL, serial_rxready, NULL);
+  device_register_char_fd(1, subdevice, serial_write, NULL, serial_txready, NULL, NULL);
+  device_register_char_fd(2, subdevice, serial_write, NULL, serial_txready, NULL, NULL);
 
   return 0;
 }
@@ -197,7 +197,7 @@ int serial_register(char *name)
   port = serial_name_to_port(name);
   if (port < 0) return port;
 
-  return device_register_char(name, port, serial_open, NULL, serial_write, serial_read, serial_txready, serial_rxready);
+  return device_register_char(name, port, serial_open, NULL, serial_write, serial_read, serial_txready, serial_rxready, NULL);
 }
 
 /* Return true if transmitter is ready to accept data */
