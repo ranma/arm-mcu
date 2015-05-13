@@ -69,26 +69,26 @@ typedef int (*device_seek_fn_t)		(unsigned int subdevice,
 
 int device_register_char(char *name,
                          unsigned int subdevice,
-                         device_open_fn_t open,
-                         device_close_fn_t close,
-                         device_write_fn_t write,
-                         device_read_fn_t read,
-                         device_write_ready_fn_t write_ready,
-                         device_read_ready_fn_t read_ready);
+                         device_open_fn_t openfn,
+                         device_close_fn_t closefn,
+                         device_write_fn_t writefn,
+                         device_read_fn_t readfn,
+                         device_write_ready_fn_t write_readyfn,
+                         device_read_ready_fn_t read_readyfn);
 
 int device_register_char_fd(int fd,
                             unsigned int subdevice,
-                            device_write_fn_t write,
-                            device_read_fn_t read,
-                            device_write_ready_fn_t write_ready,
-                            device_read_ready_fn_t read_ready);
+                            device_write_fn_t writefn,
+                            device_read_fn_t readfn,
+                            device_write_ready_fn_t write_readyfn,
+                            device_read_ready_fn_t read_readyfn);
 
 int device_register_block(char *name,
-                          device_open_fn_t open,
-                          device_close_fn_t close,
-                          device_write_fn_t write,
-                          device_read_fn_t read,
-                          device_seek_fn_t seek);
+                          device_open_fn_t openfn,
+                          device_close_fn_t closefn,
+                          device_write_fn_t writefn,
+                          device_read_fn_t readfn,
+                          device_seek_fn_t seekfn);
 
 int device_unregister(int fd);
 

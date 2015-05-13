@@ -84,12 +84,12 @@ static device_t device_table[MAX_DEVICES];
 
 int device_register_char(char *name,
                          unsigned int subdevice,
-                         device_open_fn_t open,
-                         device_close_fn_t close,
-                         device_write_fn_t write,
-                         device_read_fn_t read,
-                         device_write_ready_fn_t write_ready,
-                         device_read_ready_fn_t read_ready)
+                         device_open_fn_t openfn,
+                         device_close_fn_t closefn,
+                         device_write_fn_t writefn,
+                         device_read_fn_t readfn,
+                         device_write_ready_fn_t write_readyfn,
+                         device_read_ready_fn_t read_readyfn)
 {
   int namelen;
   int fd;
@@ -133,12 +133,12 @@ int device_register_char(char *name,
       strlcpy(device_table[fd].name, name, namelen+1);
       device_table[fd].type = DEVICE_TYPE_CHAR;
       device_table[fd].subdevice = subdevice;
-      device_table[fd].open = open;
-      device_table[fd].close = close;
-      device_table[fd].write = write;
-      device_table[fd].read = read;
-      device_table[fd].write_ready = write_ready;
-      device_table[fd].read_ready = read_ready;
+      device_table[fd].open = openfn;
+      device_table[fd].close = closefn;
+      device_table[fd].write = writefn;
+      device_table[fd].read = readfn;
+      device_table[fd].write_ready = write_readyfn;
+      device_table[fd].read_ready = read_readyfn;
 
       return fd;
     }
@@ -151,10 +151,10 @@ int device_register_char(char *name,
 
 int device_register_char_fd(int fd,
                             unsigned int subdevice,
-                            device_write_fn_t write,
-                            device_read_fn_t read,
-                            device_write_ready_fn_t write_ready,
-                            device_read_ready_fn_t read_ready)
+                            device_write_fn_t writefn,
+                            device_read_fn_t readfn,
+                            device_write_ready_fn_t write_readyfn,
+                            device_read_ready_fn_t read_readyfn)
 {
   errno_r = 0;
 
@@ -177,17 +177,17 @@ int device_register_char_fd(int fd,
   memset(&device_table[fd], 0, sizeof(device_t));
   device_table[fd].type = DEVICE_TYPE_CHAR;
   device_table[fd].subdevice = subdevice;
-  device_table[fd].write = write;
-  device_table[fd].read = read;
-  device_table[fd].write_ready = write_ready;
-  device_table[fd].read_ready = read_ready;
+  device_table[fd].write = writefn;
+  device_table[fd].read = readfn;
+  device_table[fd].write_ready = write_readyfn;
+  device_table[fd].read_ready = read_readyfn;
   device_table[fd].isopen = true;
 
-  if ((read != NULL) && (write != NULL))
+  if ((readfn != NULL) && (writefn != NULL))
     device_table[fd].flags = O_RDWR;
-  else if (read == NULL)
+  else if (readfn == NULL)
     device_table[fd].flags = O_WRONLY;
-  else if (write == NULL)
+  else if (writefn == NULL)
     device_table[fd].flags = O_RDONLY;
 
   return 0;
@@ -196,11 +196,11 @@ int device_register_char_fd(int fd,
 /* Register a block device driver to the next available file descriptor */
 
 int device_register_block(char *name,
-                          device_open_fn_t open,
-                          device_close_fn_t close,
-                          device_write_fn_t write,
-                          device_read_fn_t read,
-                          device_seek_fn_t seek)
+                          device_open_fn_t openfn,
+                          device_close_fn_t closefn,
+                          device_write_fn_t writefn,
+                          device_read_fn_t readfn,
+                          device_seek_fn_t seekfn)
 {
   int namelen;
   int fd;
@@ -243,11 +243,11 @@ int device_register_block(char *name,
       memset(&device_table[fd], 0, sizeof(device_t));
       strlcpy(device_table[fd].name, name, namelen+1);
       device_table[fd].type = DEVICE_TYPE_BLOCK;
-      device_table[fd].open = open;
-      device_table[fd].close = close;
-      device_table[fd].write = write;
-      device_table[fd].read = read;
-      device_table[fd].seek = seek;
+      device_table[fd].open = openfn;
+      device_table[fd].close = closefn;
+      device_table[fd].write = writefn;
+      device_table[fd].read = readfn;
+      device_table[fd].seek = seekfn;
 
       return fd;
     }
