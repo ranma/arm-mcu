@@ -32,28 +32,18 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-_BEGIN_STD_C
+// Some toolchains don't define O_BINARY
 
-#ifndef MAX_DEVICES
-#ifdef CONIO_STDIO
-#define MAX_DEVICES		2
-#else
-#define MAX_DEVICES		16
-#endif
+#ifndef O_BINARY
+#define O_BINARY	0x10000
 #endif
 
 #define DEVICE_NAME_SIZE	8
 
 // Device names are of form <DEVICE>:<PARAMETER1><,PARAMETER2>...<,PARAMETERn>
 // Only the first field is saved in the device table
-typedef enum
-{
-  DEVICE_TYPE_UNUSED		= 0,
-  DEVICE_TYPE_CHAR		= 1,
-  DEVICE_TYPE_BLOCK		= 2,
-  DEVICE_TYPE_DIRECTORY		= 3,
-  DEVICE_TYPE_FILE		= 4,
-} device_type_t;
+
+_BEGIN_STD_C
 
 typedef int (*device_open_fn_t)		(char *name, unsigned int *subdevice);
 
@@ -74,23 +64,6 @@ typedef int (*device_read_ready_fn_t)	(unsigned int subdevice);
 typedef int (*device_seek_fn_t)		(unsigned int subdevice,
                                          off_t pos,
                                          int whence);
-
-typedef struct
-{
-  char name[DEVICE_NAME_SIZE+1];
-  device_type_t type;
-  unsigned int subdevice;
-  device_open_fn_t open;
-  device_close_fn_t close;
-  device_write_fn_t write;
-  device_read_fn_t read;
-  device_write_ready_fn_t write_ready;
-  device_read_ready_fn_t read_ready;
-  device_seek_fn_t seek;
-  int isopen;
-  int flags;	// From open()
-  int mode;	// From open()
-} device_t;
 
 // Device registration functions
 
