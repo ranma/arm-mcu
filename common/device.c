@@ -39,14 +39,44 @@ static const char revision[] = "$Id$";
 #include <FreeRTOS.h>
 #include <task.h>
 #endif
+
+// Device subsystem data definitions
 
-// Some toolchains don't define O_BINARY
-
-#ifndef O_BINARY
-#define O_BINARY	0x10000
+#ifndef MAX_DEVICES
+#ifdef CONIO_STDIO
+#define MAX_DEVICES		2
+#else
+#define MAX_DEVICES		16
+#endif
 #endif
 
+typedef enum
+{
+  DEVICE_TYPE_UNUSED		= 0,
+  DEVICE_TYPE_CHAR		= 1,
+  DEVICE_TYPE_BLOCK		= 2,
+  DEVICE_TYPE_DIRECTORY		= 3,
+  DEVICE_TYPE_FILE		= 4,
+} device_type_t;
+
 // This is the device table
+
+typedef struct
+{
+  char name[DEVICE_NAME_SIZE+1];
+  device_type_t type;
+  unsigned int subdevice;
+  device_open_fn_t open;
+  device_close_fn_t close;
+  device_write_fn_t write;
+  device_read_fn_t read;
+  device_write_ready_fn_t write_ready;
+  device_read_ready_fn_t read_ready;
+  device_seek_fn_t seek;
+  int isopen;
+  int flags;	// From open()
+  int mode;	// From open()
+} device_t;
 
 static device_t device_table[MAX_DEVICES];
 
@@ -93,7 +123,7 @@ int device_register_char(char *name,
     errno_r = EINVAL;
     return -1;
   }
-
+
   // Search device table for an empty slot
 
   for (fd = 3; fd < MAX_DEVICES; fd++)
@@ -204,7 +234,7 @@ int device_register_block(char *name,
     errno_r = EINVAL;
     return -1;
   }
-
+
   // Search device table for an empty slot
 
   for (fd = 3; fd < MAX_DEVICES; fd++)
@@ -512,7 +542,7 @@ int device_read_cooked(int fd, char *s, unsigned int count)
   device_t *d;
   char *p;
   char c;
-  int len;
+  int status;
 
   errno_r = 0;
 
@@ -552,18 +582,22 @@ int device_read_cooked(int fd, char *s, unsigned int count)
 
   for (p = s; p < s + count - 1;)
   {
-    do
+    if (d->read_ready != NULL)
     {
+      do
+      {
 #ifdef FREERTOS
-      if (xTaskGetCurrentTaskHandle() != NULL)
-        taskYIELD();
+        if (xTaskGetCurrentTaskHandle() != NULL)
+          taskYIELD();
 #endif
+      }
+      while ((status = d->read_ready(d->subdevice)) == 0);
+      if (status < 0) return status;
     }
-    while (!d->read_ready(d->subdevice));
 
-    len = d->read(d->subdevice, &c, 1);
-    if (len < 0) return len;
-    if (len == 0) continue;
+    status = d->read(d->subdevice, &c, 1);
+    if (status < 0) return status;
+    if (status == 0) continue;
 
     switch (c)
     {
@@ -653,7 +687,7 @@ int device_read(int fd, char *s, unsigned int count)
 
 int device_getc(int fd)
 {
-  int len;
+  int status;
   char c;
 
   errno_r = 0;
@@ -688,17 +722,21 @@ int device_getc(int fd)
     return -1;
   }
 
-  do
+  if (device_table[fd].read_ready != NULL)
   {
+    do
+    {
 #ifdef FREERTOS
-    if (xTaskGetCurrentTaskHandle() != NULL)
-      taskYIELD();
+      if (xTaskGetCurrentTaskHandle() != NULL)
+        taskYIELD();
 #endif
+    }
+    while ((status = device_table[fd].read_ready(device_table[fd].subdevice)) == 0);
+    if (status < 0) return status;
   }
-  while (!device_table[fd].read_ready(device_table[fd].subdevice));
 
-  len = device_table[fd].read(device_table[fd].subdevice, &c, 1);
-  if (len < 0) return len;
+  status = device_table[fd].read(device_table[fd].subdevice, &c, 1);
+  if (status < 0) return status;
 
   return c;
 }
@@ -707,7 +745,7 @@ int device_getc(int fd)
 
 int device_write_raw(int fd, char *s, unsigned int count)
 {
-  int len;
+  int status;
   unsigned int i;
 
   errno_r = 0;
@@ -743,26 +781,30 @@ int device_write_raw(int fd, char *s, unsigned int count)
     errno_r = EBADF;
     return -1;
   }
-
+
 // Dispatch raw data to device driver.  Keep trying if less than the whole
 // buffer is transferred.
 
   for (i = 0; i < count;)
   {
-    do
+    if (device_table[fd].write_ready != NULL)
     {
+      do
+      {
 #ifdef FREERTOS
-      if (xTaskGetCurrentTaskHandle() != NULL) taskYIELD();
+        if (xTaskGetCurrentTaskHandle() != NULL) taskYIELD();
 #endif
+      }
+      while ((status = device_table[fd].write_ready(device_table[fd].subdevice)) == 0);
+      if (status < 0) return status;
     }
-    while (!device_table[fd].write_ready(device_table[fd].subdevice));
 
-    len = device_table[fd].write(device_table[fd].subdevice, s, count - i);
-    if (len < 0) return len;
-    if (len == 0) continue;
+    status = device_table[fd].write(device_table[fd].subdevice, s, count - i);
+    if (status < 0) return status;
+    if (status == 0) continue;
 
-    s += len;
-    i += len;
+    s += status;
+    i += status;
   }
 
   return count;
@@ -1018,7 +1060,7 @@ off_t device_seek(int fd, off_t pos, int whence)
 
   return device_table[fd].seek(device_table[fd].subdevice, pos, whence);
 }
-
+
 int fcntl(int fd, int cmd, ...)
 {
   va_list argptr;
@@ -1069,7 +1111,7 @@ int fcntl(int fd, int cmd, ...)
       return -1;
   }
 }
-
+
 // The following syscall service functions are aliased to device_xxxx()
 // functions defined above
 
