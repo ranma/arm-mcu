@@ -88,11 +88,6 @@ CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
 OPENOCDIF	= stlink-v2-1
 endif
 
-# USB serial port support
-
-USBSERIAL	= $(MCUDIR)/usb_serial
-CFLAGS		+= -I$(USBSERIAL)
-
 # Phony targets
 
 .PHONY:		clean_$(MCU) reallyclean_$(MCU) distclean_$(MCU) lib
@@ -100,13 +95,12 @@ CFLAGS		+= -I$(USBSERIAL)
 # Build processor dependent support library
 
 include $(MCUDIR)/libs/stm32f4libs.mk
+include $(MCUDIR)/usb_serial/usb_serial.mk
 
 LIBOBJS		= $(MCU).o cpu.o gpiopins.o leds.o serial.o $(EXTRALIBOBJS)
 
 lib$(MCU).a: $(LIBOBJS)
 	$(AR) crs lib$(MCU).a $(LIBOBJS)
-	for F in $(USBSERIAL)/*.c ; do $(MAKE) $${F%.c}.o ; done
-	$(AR) crs lib$(MCU).a $(USBSERIAL)/*.o
 	$(MAKE) $(LIBTARGETS)
 
 # Clean out working files
