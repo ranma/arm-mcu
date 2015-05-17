@@ -26,28 +26,48 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
+#if defined(GPIOI)
+#define MAX_GPIO_PORTS		9
+#elif defined(GPIOH)
+#define MAX_GPIO_PORTS		8
+#elif defined(GPIOG)
 #define MAX_GPIO_PORTS		7
+#elif defined(GPIOF)
+#define MAX_GPIO_PORTS		6
+#elif defined(GPIOE)
+#define MAX_GPIO_PORTS		5
+#else
+#define MAX_GPIO_PORTS		4
+#endif
+
 #define PINS_PER_GPIO_PORT	16
 
-static const struct
+GPIO_TypeDef *PORTS[] =
 {
-  GPIO_TypeDef *gpiobase;
-  unsigned long int peripheral;
-} PORTS[] =
-{
-  { GPIOA, RCC_AHB1Periph_GPIOA },
-  { GPIOB, RCC_AHB1Periph_GPIOB },
-  { GPIOC, RCC_AHB1Periph_GPIOC },
-  { GPIOD, RCC_AHB1Periph_GPIOD },
-  { GPIOE, RCC_AHB1Periph_GPIOE },
-  { GPIOF, RCC_AHB1Periph_GPIOF },
-  { GPIOG, RCC_AHB1Periph_GPIOG }
+  GPIOA,
+  GPIOB,
+  GPIOC,
+  GPIOD,
+#ifdef GPIOE
+  GPIOE,
+#endif
+#ifdef GPIOF
+  GPIOF,
+#endif
+#ifdef GPIOG
+  GPIOG,
+#endif
+#ifdef GPIOH
+  GPIOH,
+#endif
+#ifdef GPIOI
+  GPIOI,
+#endif
 };
 
 int gpiopin_configure(unsigned int pin, gpiopin_direction_t direction)
 {
   unsigned int port;
-  GPIO_InitTypeDef config;
 
 // Split into port and pin components
 
@@ -70,16 +90,21 @@ int gpiopin_configure(unsigned int pin, gpiopin_direction_t direction)
 
 // Configure peripheral clock
 
-  RCC_AHB1PeriphClockCmd(PORTS[port].peripheral, ENABLE);
+  RCC->AHB1ENR |= (1 << port);
 
 // Configure the pin
 
-  GPIO_StructInit(&config);
-  config.GPIO_Pin =  1 << pin;
-  config.GPIO_Mode = direction ? GPIO_Mode_OUT : GPIO_Mode_IN;
-  config.GPIO_Speed = GPIO_Speed_50MHz;
-  config.GPIO_OType = GPIO_OType_PP;
-  config.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(PORTS[port].gpiobase, &config);
+  PORTS[port]->MODER &= ~(3 << pin*2);
+  if (direction == GPIOPIN_OUTPUT)
+    PORTS[port]->MODER |= 1 << pin*2;
+
+  PORTS[port]->OTYPER &= ~(1 << pin);
+
+  PORTS[port]->OSPEEDR &= ~(3 << pin*2);
+  PORTS[port]->OSPEEDR |= 2 << pin*2;
+
+  PORTS[port]->PUPDR &= ~(3 << pin*2);
+  PORTS[port]->PUPDR |= 0 << pin*2;
+
   return 0;
 }
