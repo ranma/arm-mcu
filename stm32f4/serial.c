@@ -124,7 +124,6 @@ int serial_open(char *name, unsigned *subdevice)
   unsigned port;
   unsigned baudrate;
   USART_InitTypeDef USART_config;
-  GPIO_InitTypeDef GPIO_config;
   NVIC_InitTypeDef NVIC_config;
 
   errno_r = 0;
@@ -168,26 +167,25 @@ int serial_open(char *name, unsigned *subdevice)
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-      GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_USART1);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_9;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_Speed = GPIO_Speed_50MHz;
-      GPIO_config.GPIO_OType = GPIO_OType_PP;
-      GPIO_Init(GPIOA, &GPIO_config);
+      GPIOA->AFR[1] &= ~(0xF << 4);
+      GPIOA->AFR[1] |= 7 << 4;
+      GPIOA->MODER &= ~GPIO_MODER_MODER9;
+      GPIOA->MODER |= GPIO_MODER_MODER9_1;
+      GPIOA->OTYPER &= ~GPIO_OTYPER_OT_9;
+      GPIOA->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR9;
+      GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR9_1;
+      GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR9;
 
 // Configure RX pin PA10
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-      GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_USART1);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_10;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
-      GPIO_Init(GPIOA, &GPIO_config);
+      GPIOA->AFR[1] &= ~(0xF << 8);
+      GPIOA->AFR[1] |= 7 << 8;
+      GPIOA->MODER &= ~GPIO_MODER_MODER10;
+      GPIOA->MODER |= GPIO_MODER_MODER10_1;
+      GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR10;
+      GPIOA->PUPDR |= GPIO_PUPDR_PUPDR10_0;
 
 // Configure USART1
 
@@ -227,26 +225,25 @@ int serial_open(char *name, unsigned *subdevice)
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-      GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_2;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_Speed = GPIO_Speed_50MHz;
-      GPIO_config.GPIO_OType = GPIO_OType_PP;
-      GPIO_Init(GPIOA, &GPIO_config);
+      GPIOA->AFR[0] &= ~(0xF << 8);
+      GPIOA->AFR[0] |= 7 << 8;
+      GPIOA->MODER &= ~GPIO_MODER_MODER2;
+      GPIOA->MODER |= GPIO_MODER_MODER2_1;
+      GPIOA->OTYPER &= ~GPIO_OTYPER_OT_2;
+      GPIOA->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR2;
+      GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR2_1;
+      GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR2;
 
 // Configure RX pin on PA3
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-      GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_3;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
-      GPIO_Init(GPIOA, &GPIO_config);
+      GPIOA->AFR[0] &= ~(0xF << 12);
+      GPIOA->AFR[0] |= 7 << 12;
+      GPIOA->MODER &= ~GPIO_MODER_MODER3;
+      GPIOA->MODER |= GPIO_MODER_MODER3_1;
+      GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR3;
+      GPIOA->PUPDR |= GPIO_PUPDR_PUPDR3_0;
 
 // Configure USART2
 
@@ -286,26 +283,25 @@ int serial_open(char *name, unsigned *subdevice)
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
 
-      GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_USART3);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_10;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_Speed = GPIO_Speed_50MHz;
-      GPIO_config.GPIO_OType = GPIO_OType_PP;
-      GPIO_Init(GPIOB, &GPIO_config);
+      GPIOA->AFR[1] &= ~(0xF << 8);
+      GPIOA->AFR[1] |= 7 << 8;
+      GPIOB->MODER &= ~GPIO_MODER_MODER10;
+      GPIOB->MODER |= GPIO_MODER_MODER10_1;
+      GPIOB->OTYPER &= ~GPIO_OTYPER_OT_10;
+      GPIOB->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR10;
+      GPIOB->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR10_1;
+      GPIOB->PUPDR &= ~GPIO_PUPDR_PUPDR10;
 
 // Configure RX pin on PB11
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
 
-      GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF_USART3);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_11;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
-      GPIO_Init(GPIOB, &GPIO_config);
+      GPIOA->AFR[1] &= ~(0xF << 12);
+      GPIOA->AFR[1] |= 7 << 12;
+      GPIOB->MODER &= ~GPIO_MODER_MODER11;
+      GPIOB->MODER |= GPIO_MODER_MODER11_1;
+      GPIOB->PUPDR &= ~GPIO_PUPDR_PUPDR11;
+      GPIOB->PUPDR |= GPIO_PUPDR_PUPDR11_0;
 
 // Configure USART3
 
@@ -345,26 +341,25 @@ int serial_open(char *name, unsigned *subdevice)
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-      GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_UART4);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_0;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_Speed = GPIO_Speed_50MHz;
-      GPIO_config.GPIO_OType = GPIO_OType_PP;
-      GPIO_Init(GPIOA, &GPIO_config);
+      GPIOA->AFR[0] &= ~(0xF << 0);
+      GPIOA->AFR[0] |= 8 << 0;
+      GPIOA->MODER &= ~GPIO_MODER_MODER0;
+      GPIOA->MODER |= GPIO_MODER_MODER0_1;
+      GPIOA->OTYPER &= ~GPIO_OTYPER_OT_0;
+      GPIOA->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR0;
+      GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR0_1;
+      GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR0;
 
 // Configure RX pin on PA1
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-      GPIO_PinAFConfig(GPIOA, GPIO_PinSource1, GPIO_AF_UART4);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_1;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
-      GPIO_Init(GPIOA, &GPIO_config);
+      GPIOA->AFR[0] &= ~(0xF << 4);
+      GPIOA->AFR[0] |= 8 << 4;
+      GPIOA->MODER &= ~GPIO_MODER_MODER1;
+      GPIOA->MODER |= GPIO_MODER_MODER1_1;
+      GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR1;
+      GPIOA->PUPDR |= GPIO_PUPDR_PUPDR1_0;
 
 // Configure UART4
 
@@ -404,26 +399,25 @@ int serial_open(char *name, unsigned *subdevice)
 
       RCC->AHB1ENR|= RCC_AHB1ENR_GPIOCEN;
 
-      GPIO_PinAFConfig(GPIOC, GPIO_PinSource12, GPIO_AF_UART5);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_12;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_Speed = GPIO_Speed_50MHz;
-      GPIO_config.GPIO_OType = GPIO_OType_PP;
-      GPIO_Init(GPIOC, &GPIO_config);
+      GPIOA->AFR[1] &= ~(0xF << 16);
+      GPIOA->AFR[1] |= 8 << 16;
+      GPIOC->MODER &= ~GPIO_MODER_MODER12;
+      GPIOC->MODER |= GPIO_MODER_MODER12_1;
+      GPIOC->OTYPER &= ~GPIO_OTYPER_OT_12;
+      GPIOC->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR12;
+      GPIOC->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR12_1;
+      GPIOC->PUPDR &= ~GPIO_PUPDR_PUPDR12;
 
 // Configure RX pin on PD2
 
       RCC->AHB1ENR|= RCC_AHB1ENR_GPIODEN;
 
-      GPIO_PinAFConfig(GPIOD, GPIO_PinSource2, GPIO_AF_UART5);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_2;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
-      GPIO_Init(GPIOD, &GPIO_config);
+      GPIOA->AFR[0] &= ~(0xF << 8);
+      GPIOA->AFR[0] |= 8 << 8;
+      GPIOD->MODER &= ~GPIO_MODER_MODER2;
+      GPIOD->MODER |= GPIO_MODER_MODER2_1;
+      GPIOD->PUPDR &= ~GPIO_PUPDR_PUPDR2;
+      GPIOD->PUPDR |= GPIO_PUPDR_PUPDR2_0;
 
 // Configure UART5
 
@@ -464,51 +458,49 @@ int serial_open(char *name, unsigned *subdevice)
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-      GPIO_PinAFConfig(GPIOA, GPIO_PinSource11, GPIO_AF_USART6);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_11;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_Speed = GPIO_Speed_50MHz;
-      GPIO_config.GPIO_OType = GPIO_OType_PP;
-      GPIO_Init(GPIOA, &GPIO_config);
+      GPIOA->AFR[1] &= ~(0xF << 12);
+      GPIOA->AFR[1] |= 8 << 12;
+      GPIOA->MODER &= ~GPIO_MODER_MODER11;
+      GPIOA->MODER |= GPIO_MODER_MODER11_1;
+      GPIOA->OTYPER &= ~GPIO_OTYPER_OT_11;
+      GPIOA->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR11;
+      GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR11_1;
+      GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR11;
 
 // Configure RX pin on PA12 (aka Arduino D0, wire wrap CN10 pin 37 to CN 10 pin 12)
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-      GPIO_PinAFConfig(GPIOA, GPIO_PinSource12, GPIO_AF_USART6);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_12;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
-      GPIO_Init(GPIOA, &GPIO_config);
+      GPIOA->AFR[1] &= ~(0xF << 16);
+      GPIOA->AFR[1] |= 8 << 16;
+      GPIOA->MODER &= ~GPIO_MODER_MODER12;
+      GPIOA->MODER |= GPIO_MODER_MODER12_1;
+      GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR12;
+      GPIOA->PUPDR |= GPIO_PUPDR_PUPDR12_0;
 #else
 // Configure TX pin on PC6
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
 
-      GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_USART6);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_6;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_Speed = GPIO_Speed_50MHz;
-      GPIO_config.GPIO_OType = GPIO_OType_PP;
-      GPIO_Init(GPIOC, &GPIO_config);
+      GPIOA->AFR[0] &= ~(0xF << 24);
+      GPIOA->AFR[0] |= 8 << 24;
+      GPIOC->MODER &= ~GPIO_MODER_MODER6;
+      GPIOC->MODER |= GPIO_MODER_MODER6_1;
+      GPIOC->OTYPER &= ~GPIO_OTYPER_OT_6;
+      GPIOC->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR6;
+      GPIOC->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR6_1;
+      GPIOC->PUPDR &= ~GPIO_PUPDR_PUPDR6;
 
 // Configure RX pin on PC7
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
 
-      GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_USART6);
-
-      GPIO_StructInit(&GPIO_config);
-      GPIO_config.GPIO_Pin = GPIO_Pin_7;
-      GPIO_config.GPIO_Mode = GPIO_Mode_AF;
-      GPIO_config.GPIO_PuPd = GPIO_PuPd_UP;
-      GPIO_Init(GPIOC, &GPIO_config);
+      GPIOA->AFR[0] &= ~(0xF << 28);
+      GPIOA->AFR[0] |= 8 << 28;
+      GPIOC->MODER &= ~GPIO_MODER_MODER7;
+      GPIOC->MODER |= GPIO_MODER_MODER7_1;
+      GPIOC->PUPDR &= ~GPIO_PUPDR_PUPDR7;
+      GPIOC->PUPDR |= GPIO_PUPDR_PUPDR7_0;
 #endif
 
 // Configure USART6
