@@ -124,7 +124,6 @@ int serial_open(char *name, unsigned *subdevice)
   unsigned port;
   unsigned baudrate;
   USART_InitTypeDef USART_config;
-  NVIC_InitTypeDef NVIC_config;
 
   errno_r = 0;
 
@@ -199,12 +198,8 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Enable USART1 interrupts
 
-      NVIC_config.NVIC_IRQChannel = USART1_IRQn;
-      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
-      NVIC_config.NVIC_IRQChannelSubPriority = 8;
-      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
-      NVIC_Init(&NVIC_config);
-
+      NVIC->IP[USART1_IRQn] = 0x88;
+      NVIC->ISER[USART1_IRQn / 32] = 1 << USART1_IRQn % 32;
       USART1->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
@@ -257,12 +252,8 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Enable USART2 interrupts
 
-      NVIC_config.NVIC_IRQChannel = USART2_IRQn;
-      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
-      NVIC_config.NVIC_IRQChannelSubPriority = 8;
-      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
-      NVIC_Init(&NVIC_config);
-
+      NVIC->IP[USART2_IRQn] = 0x88;
+      NVIC->ISER[USART2_IRQn / 32] = 1 << USART2_IRQn % 32;
       USART2->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
@@ -315,12 +306,8 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Enable USART3 interrupts
 
-      NVIC_config.NVIC_IRQChannel = USART3_IRQn;
-      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
-      NVIC_config.NVIC_IRQChannelSubPriority = 8;
-      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
-      NVIC_Init(&NVIC_config);
-
+      NVIC->IP[USART3_IRQn] = 0x88;
+      NVIC->ISER[USART3_IRQn / 32] = 1 << USART3_IRQn % 32;
       USART3->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
@@ -373,12 +360,8 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Enable UART4 interrupts
 
-      NVIC_config.NVIC_IRQChannel = UART4_IRQn;
-      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
-      NVIC_config.NVIC_IRQChannelSubPriority = 8;
-      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
-      NVIC_Init(&NVIC_config);
-
+      NVIC->IP[UART4_IRQn] = 0x88;
+      NVIC->ISER[UART4_IRQn / 32] = 1 << UART4_IRQn % 32;
       UART4->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
@@ -431,12 +414,8 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Enable UART5 interrupts
 
-      NVIC_config.NVIC_IRQChannel = UART5_IRQn;
-      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
-      NVIC_config.NVIC_IRQChannelSubPriority = 8;
-      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
-      NVIC_Init(&NVIC_config);
-
+      NVIC->IP[UART5_IRQn] = 0x88;
+      NVIC->ISER[UART5_IRQn / 32] = 1 << UART5_IRQn % 32;
       UART5->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
@@ -515,12 +494,8 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Enable USART6 interrupts
 
-      NVIC_config.NVIC_IRQChannel = USART6_IRQn;
-      NVIC_config.NVIC_IRQChannelPreemptionPriority = 8;
-      NVIC_config.NVIC_IRQChannelSubPriority = 8;
-      NVIC_config.NVIC_IRQChannelCmd = ENABLE;
-      NVIC_Init(&NVIC_config);
-
+      NVIC->IP[USART6_IRQn] = 0x88;
+      NVIC->ISER[USART6_IRQn / 32] = 1 << USART6_IRQn % 32;
       USART6->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
