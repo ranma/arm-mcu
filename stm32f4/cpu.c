@@ -28,6 +28,10 @@ static const char revision[] = "$Id$";
 
 void cpu_init(unsigned long int frequency)
 {
+  // AIRCR.PRIGROUP=3 (4 bits priority, 4 bits subpriority)
+  SCB->AIRCR &= SCB_AIRCR_PRIGROUP_Msk;
+  SCB->AIRCR |= 3 << SCB_AIRCR_PRIGROUP_Pos;
+
   SystemInit();
   SystemCoreClockUpdate();
 }
