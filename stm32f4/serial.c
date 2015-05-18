@@ -28,6 +28,7 @@
 
 static const char revision[] = "$Id$";
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -92,6 +93,135 @@ static int InitializeRingBuffers(unsigned port)
   return 0;
 }
 
+static unsigned CalcBRR(unsigned port, unsigned baudrate)
+{
+  unsigned BAUDCLOCK = SystemCoreClock;
+  unsigned divisor;
+  unsigned fract;
+
+  // Account for AHB divider
+
+  switch (RCC->CFGR & RCC_CFGR_HPRE)
+  {
+    case RCC_CFGR_HPRE_DIV1 :
+      break;
+
+    case RCC_CFGR_HPRE_DIV2 :
+      BAUDCLOCK /= 2;
+      break;
+
+    case RCC_CFGR_HPRE_DIV4 :
+      BAUDCLOCK /= 4;
+      break;
+
+    case RCC_CFGR_HPRE_DIV8 :
+      BAUDCLOCK /= 8;
+      break;
+
+    case RCC_CFGR_HPRE_DIV16 :
+      BAUDCLOCK /= 16;
+      break;
+
+    case RCC_CFGR_HPRE_DIV64 :
+      BAUDCLOCK /= 64;
+      break;
+
+    case RCC_CFGR_HPRE_DIV128 :
+      BAUDCLOCK /= 128;
+      break;
+
+    case RCC_CFGR_HPRE_DIV256 :
+      BAUDCLOCK /= 256;
+      break;
+
+    case RCC_CFGR_HPRE_DIV512 :
+      BAUDCLOCK /= 512;
+      break;
+
+    default :
+      assert(false);
+      break;
+  }
+
+  // Account for APBx divider
+
+  switch (port)
+  {
+    case 0 :
+    case 5 :
+      // Serial ports on APB2
+      switch (RCC->CFGR & RCC_CFGR_PPRE2)
+      {
+        case RCC_CFGR_PPRE2_DIV1 :
+          break;
+
+        case RCC_CFGR_PPRE2_DIV2 :
+          BAUDCLOCK /= 2;
+          break;
+
+        case RCC_CFGR_PPRE2_DIV4 :
+          BAUDCLOCK /= 4;
+          break;
+
+        case RCC_CFGR_PPRE2_DIV8 :
+          BAUDCLOCK /= 8;
+          break;
+
+        case RCC_CFGR_PPRE2_DIV16 :
+          BAUDCLOCK /= 16;
+          break;
+
+        default :
+          assert(false);
+          break;
+      }
+      break;
+
+    case 1 :
+    case 2 :
+    case 3 :
+    case 4 :
+      // Serial ports on APB1
+      switch (RCC->CFGR & RCC_CFGR_PPRE1)
+      {
+        case RCC_CFGR_PPRE1_DIV1 :
+          break;
+
+        case RCC_CFGR_PPRE1_DIV2 :
+          BAUDCLOCK /= 2;
+          break;
+
+        case RCC_CFGR_PPRE1_DIV4 :
+          BAUDCLOCK /= 4;
+          break;
+
+        case RCC_CFGR_PPRE1_DIV8 :
+          BAUDCLOCK /= 8;
+          break;
+
+        case RCC_CFGR_PPRE1_DIV16 :
+          BAUDCLOCK /= 16;
+          break;
+
+        default :
+          assert(false);
+          break;
+      }
+      break;
+  }
+
+  // Account for sampling interval
+
+  BAUDCLOCK /= 8;
+
+  // Calculate baud rate divisor and fractional part
+
+  divisor = BAUDCLOCK / baudrate;
+  fract   = (BAUDCLOCK % baudrate)*16 / baudrate;
+
+  return (divisor << 4) + fract;
+}
+
 /* Map serial port device name to port number */
 
 int serial_name_to_port(char *name)
@@ -123,7 +253,6 @@ int serial_open(char *name, unsigned *subdevice)
 {
   unsigned port;
   unsigned baudrate;
-  USART_InitTypeDef USART_config;
 
   errno_r = 0;
 
@@ -188,19 +317,16 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Configure USART1
 
-      USART_StructInit(&USART_config);
-      USART_config.USART_BaudRate = baudrate;
-      USART_Init(USART1, &USART_config);
-
-// Enable USART1
-
-      USART_Cmd(USART1, ENABLE);
+      USART1->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
+      USART1->CR2 = 0x0000;
+      USART1->CR3 = 0x0000;
+      USART1->BRR = CalcBRR(port, baudrate);
+      USART1->GTPR = 0x0000;
 
 // Enable USART1 interrupts
 
       NVIC->IP[USART1_IRQn] = 0x88;
       NVIC->ISER[USART1_IRQn / 32] = 1 << USART1_IRQn % 32;
-      USART1->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
 
@@ -242,19 +368,16 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Configure USART2
 
-      USART_StructInit(&USART_config);
-      USART_config.USART_BaudRate = baudrate;
-      USART_Init(USART2, &USART_config);
-
-// Enable USART2
-
-      USART_Cmd(USART2, ENABLE);
+      USART2->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
+      USART2->CR2 = 0x0000;
+      USART2->CR3 = 0x0000;
+      USART2->BRR = CalcBRR(port, baudrate);
+      USART2->GTPR = 0x0000;
 
 // Enable USART2 interrupts
 
       NVIC->IP[USART2_IRQn] = 0x88;
       NVIC->ISER[USART2_IRQn / 32] = 1 << USART2_IRQn % 32;
-      USART2->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
 
@@ -296,19 +419,16 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Configure USART3
 
-      USART_StructInit(&USART_config);
-      USART_config.USART_BaudRate = baudrate;
-      USART_Init(USART3, &USART_config);
-
-// Enable USART3
-
-      USART_Cmd(USART3, ENABLE);
+      USART3->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
+      USART3->CR2 = 0x0000;
+      USART3->CR3 = 0x0000;
+      USART3->BRR = CalcBRR(port, baudrate);
+      USART3->GTPR = 0x0000;
 
 // Enable USART3 interrupts
 
       NVIC->IP[USART3_IRQn] = 0x88;
       NVIC->ISER[USART3_IRQn / 32] = 1 << USART3_IRQn % 32;
-      USART3->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
 
@@ -350,19 +470,16 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Configure UART4
 
-      USART_StructInit(&USART_config);
-      USART_config.USART_BaudRate = baudrate;
-      USART_Init(UART4, &USART_config);
-
-// Enable UART4
-
-      USART_Cmd(UART4, ENABLE);
+      USART4->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
+      USART4->CR2 = 0x0000;
+      USART4->CR3 = 0x0000;
+      USART4->BRR = CalcBRR(port, baudrate);
+      USART1->GTPR = 0x0000;
 
 // Enable UART4 interrupts
 
       NVIC->IP[UART4_IRQn] = 0x88;
       NVIC->ISER[UART4_IRQn / 32] = 1 << UART4_IRQn % 32;
-      UART4->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
 
@@ -404,19 +521,16 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Configure UART5
 
-      USART_StructInit(&USART_config);
-      USART_config.USART_BaudRate = baudrate;
-      USART_Init(UART5, &USART_config);
-
-// Enable UART5
-
-      USART_Cmd(UART5, ENABLE);
+      USART5->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
+      USART5->CR2 = 0x0000;
+      USART5->CR3 = 0x0000;
+      USART5->BRR = CalcBRR(port, baudrate);
+      USART5->GTPR = 0x0000;
 
 // Enable UART5 interrupts
 
       NVIC->IP[UART5_IRQn] = 0x88;
       NVIC->ISER[UART5_IRQn / 32] = 1 << UART5_IRQn % 32;
-      UART5->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
 
@@ -484,19 +598,16 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Configure USART6
 
-      USART_StructInit(&USART_config);
-      USART_config.USART_BaudRate = baudrate;
-      USART_Init(USART6, &USART_config);
-
-// Enable USART6
-
-      USART_Cmd(USART6, ENABLE);
+      USART6->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
+      USART6->CR2 = 0x0000;
+      USART6->CR3 = 0x0000;
+      USART6->BRR = CalcBRR(port, baudrate);
+      USART6->GTPR = 0x0000;
 
 // Enable USART6 interrupts
 
       NVIC->IP[USART6_IRQn] = 0x88;
       NVIC->ISER[USART6_IRQn / 32] = 1 << USART6_IRQn % 32;
-      USART6->CR1 |= USART_CR1_RXNEIE;
       break;
 #endif
 
