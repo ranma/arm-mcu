@@ -30,8 +30,9 @@ include $(ARMSRC)/include/ARM.mk
 
 .PHONY: clean reallyclean distclean
 
-clean: ARM_mk_clean
+clean:
+	rm -f *.bin *.elf *.hex *.map *.o
 
-reallyclean: clean
+reallyclean: clean ARM_mk_clean
 
 distclean: reallyclean
