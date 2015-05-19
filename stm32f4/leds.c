@@ -41,7 +41,7 @@ void LEDS_initialize(void)
   gpiopin_configure(GPIOPIN10, GPIOPIN_OUTPUT);		// PA10
 #endif
 
-#ifdef MINI_M4_STM32
+#ifdef STM32_M4_MINI
   gpiopin_configure(GPIOPIN44, GPIOPIN_OUTPUT);		// PC12, yellow
   gpiopin_configure(GPIOPIN45, GPIOPIN_OUTPUT);		// PC13, red
 #endif
@@ -71,7 +71,7 @@ unsigned long int LEDS_get(void)
   result += GPIOPIN10IN;
 #endif
 
-#ifdef MINI_M4_STM32
+#ifdef STM32_M4_MINI
   result += GPIOPIN44IN;
   result += GPIOPIN45IN << 1;
 #endif
@@ -99,7 +99,7 @@ void LEDS_set(unsigned long int mask)
   GPIOPIN10OUT = mask;
 #endif
 
-#ifdef MINI_M4_STM32
+#ifdef STM32_M4_MINI
   GPIOPIN44OUT = mask;
   GPIOPIN45OUT = mask >> 1;
 #endif

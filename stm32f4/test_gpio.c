@@ -97,7 +97,7 @@ int main(void)
   }
 #endif
 
-#ifdef MINI_M4_STM32
+#ifdef STM32_M4_MINI
   gpiopin_configure(GPIOPIN44, GPIOPIN_OUTPUT);		// PC12
   gpiopin_configure(GPIOPIN45, GPIOPIN_OUTPUT);		// PC13
 
