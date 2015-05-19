@@ -279,7 +279,7 @@ int serial_open(char *name, unsigned *subdevice)
 
   switch (port)
   {
-#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef USART1
     case 0 : // USART1
 
 // Initialize ring buffers
@@ -330,7 +330,7 @@ int serial_open(char *name, unsigned *subdevice)
       break;
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef USART2
     case 1 : // USART2
 
 // Initialize ring buffers
@@ -381,7 +381,7 @@ int serial_open(char *name, unsigned *subdevice)
       break;
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef USART3
     case 2 : // USART3
 
 // Initialize ring buffers
@@ -432,7 +432,7 @@ int serial_open(char *name, unsigned *subdevice)
       break;
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef UART4
     case 3 : // UART4
 
 // Initialize ring buffers
@@ -470,11 +470,11 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Configure UART4
 
-      USART4->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
-      USART4->CR2 = 0x0000;
-      USART4->CR3 = 0x0000;
-      USART4->BRR = CalcBRR(port, baudrate);
-      USART1->GTPR = 0x0000;
+      UART4->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
+      UART4->CR2 = 0x0000;
+      UART4->CR3 = 0x0000;
+      UART4->BRR = CalcBRR(port, baudrate);
+      UART4->GTPR = 0x0000;
 
 // Enable UART4 interrupts
 
@@ -483,7 +483,7 @@ int serial_open(char *name, unsigned *subdevice)
       break;
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef UART5
     case 4 : // UART5
 
 // Initialize ring buffers
@@ -521,11 +521,11 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Configure UART5
 
-      USART5->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
-      USART5->CR2 = 0x0000;
-      USART5->CR3 = 0x0000;
-      USART5->BRR = CalcBRR(port, baudrate);
-      USART5->GTPR = 0x0000;
+      UART5->CR1 = USART_CR1_OVER8|USART_CR1_UE|USART_CR1_RXNEIE|USART_CR1_TE|USART_CR1_RE;
+      UART5->CR2 = 0x0000;
+      UART5->CR3 = 0x0000;
+      UART5->BRR = CalcBRR(port, baudrate);
+      UART5->GTPR = 0x0000;
 
 // Enable UART5 interrupts
 
@@ -534,7 +534,7 @@ int serial_open(char *name, unsigned *subdevice)
       break;
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef USART3
     case 5 : //  USART6
 
 // Initialize ring buffers
@@ -802,7 +802,7 @@ int serial_write(unsigned port, char *buf, unsigned count)
 
 //*************** UART interrupt service routines follow ****************
 
-#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef USART1
 #define USART1_DR	(*((volatile unsigned *) 0x40011004))
 #define USART1_RXNE	(*((volatile unsigned *) 0x42220014))
 #define USART1_TXE	(*((volatile unsigned *) 0x4222001C))
@@ -849,7 +849,7 @@ void USART1_IRQHandler(void)
 }
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef USART2
 #define USART2_DR	(*((volatile unsigned *) 0x40004404))
 #define USART2_RXNE	(*((volatile unsigned *) 0x42088014))
 #define USART2_TXE	(*((volatile unsigned *) 0x4208801C))
@@ -896,7 +896,7 @@ void USART2_IRQHandler(void)
 }
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef USART3
 #define USART3_DR	(*((volatile unsigned *) 0x40004804))
 #define USART3_RXNE	(*((volatile unsigned *) 0x42090014))
 #define USART3_TXE	(*((volatile unsigned *) 0x4209001C))
@@ -943,7 +943,7 @@ void USART3_IRQHandler(void)
 }
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef UART4
 #define UART4_DR	(*((volatile unsigned *) 0x40004C04))
 #define UART4_RXNE	(*((volatile unsigned *) 0x42098014))
 #define UART4_TXE	(*((volatile unsigned *) 0x4209801C))
@@ -990,7 +990,7 @@ void UART4_IRQHandler(void)
 }
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef UART5
 #define UART5_DR	(*((volatile unsigned *) 0x40005004))
 #define UART5_RXNE	(*((volatile unsigned *) 0x420A0014))
 #define UART5_TXE	(*((volatile unsigned *) 0x420A001C))
@@ -1037,7 +1037,7 @@ void UART5_IRQHandler(void)
 }
 #endif
 
-#if defined(STM32F40_41xxx) || defined(STM32F401xx) || defined(STM32F411xE) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx)
+#ifdef USART6
 #define USART6_DR	(*((volatile unsigned *) 0x40011404))
 #define USART6_RXNE	(*((volatile unsigned *) 0x42228014))
 #define USART6_TXE	(*((volatile unsigned *) 0x4222801C))
