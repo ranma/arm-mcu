@@ -83,7 +83,7 @@ endif
 
 ifeq ($(BOARDNAME), NUCLEO_F411RE)
 MCU		= stm32f411re
-BOARDFLAGS	+= -DSTM32F411xE -DHSE_VALUE=8000000
+BOARDFLAGS	+= -DSTM32F411xE -DHSE_VALUE=8000000 -DHSE_BYPASS=true
 CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
 OPENOCDIF	= stlink-v2-1
 endif
@@ -95,7 +95,6 @@ endif
 # Build processor dependent support library
 
 include $(MCUDIR)/CMSIS/cmsis.mk
-#include $(MCUDIR)/libs/stm32f4libs.mk
 #include $(MCUDIR)/usb_serial/usb_serial.mk
 
 LIBOBJS		= $(MCU).o cpu.o gpiopins.o leds.o serial.o $(EXTRALIBOBJS)
