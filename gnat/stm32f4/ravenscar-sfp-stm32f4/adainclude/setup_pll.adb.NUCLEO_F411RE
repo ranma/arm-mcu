@@ -221,7 +221,7 @@ procedure Setup_Pll is
       --  Must be done before increasing the frequency, otherwise the CPU
       --  won't be able to fetch new instructions.
 
-      FLASH.ACR := FLASH_ACR.LATENCY_5WS or FLASH_ACR.ICEN or FLASH_ACR.DCEN
+      FLASH.ACR := FLASH_ACR.LATENCY_3WS or FLASH_ACR.ICEN or FLASH_ACR.DCEN
         or FLASH_ACR.PRFTEN;
 
       --  Configure derived clocks
