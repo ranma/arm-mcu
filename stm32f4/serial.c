@@ -534,7 +534,7 @@ int serial_open(char *name, unsigned *subdevice)
       break;
 #endif
 
-#ifdef USART3
+#ifdef USART6
     case 5 : //  USART6
 
 // Initialize ring buffers
