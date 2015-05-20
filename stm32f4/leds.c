@@ -81,27 +81,27 @@ unsigned long int LEDS_get(void)
 #endif
 
 #ifdef LED2_INPUT
-  result += LED2_INPUT << 1;
+  result += LED2_INPUT << 2;
 #endif
 
 #ifdef LED3_INPUT
-  result += LED3_INPUT << 1;
+  result += LED3_INPUT << 3;
 #endif
 
 #ifdef LED4_INPUT
-  result += LED4_INPUT << 1;
+  result += LED4_INPUT << 4;
 #endif
 
 #ifdef LED5_INPUT
-  result += LED5_INPUT << 1;
+  result += LED5_INPUT << 5;
 #endif
 
 #ifdef LED6_INPUT
-  result += LED6_INPUT << 1;
+  result += LED6_INPUT << 6;
 #endif
 
 #ifdef LED7_INPUT
-  result += LED7_INPUT << 1;
+  result += LED7_INPUT << 7;
 #endif
 
   return result;
