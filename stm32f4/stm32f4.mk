@@ -42,60 +42,13 @@ CPUFLAGS	+= -mfloat-abi=hard -mfpu=fpv4-sp-d16
 RMAKEFLAGS	+= WITH_FPU=$(WITH_FPU)
 endif
 
-# Board specific macro definitions
+# Include subordinate makefiles
 
-ifeq ($(BOARDNAME), STM32F4_DISCOVERY)
-MCU		= stm32f407vg
-BOARDFLAGS	+= -DSTM32F407xx -DHSE_PLL -DHSE_VALUE=8000000
-CONSOLEFLAGS	?= -DCONSOLE_USB
-#CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
-endif
-
-ifeq ($(BOARDNAME), STM32F4_DISCOVERY_SHIELD)
-# STM32F4-Discovery plugged into MikroElektronika STM32F4 Discovery Shield,
-# which has an FT232RL connected to USART2
-MCU		= stm32f407vg
-BOARDFLAGS	+= -DSTM32F407xx -DHSE_PLL -DHSE_VALUE=8000000 -DSTM32F4_DISCOVERY
-CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
-#CONSOLEFLAGS	?= -DCONSOLE_USB
-endif
-
-ifeq ($(BOARDNAME), FEZ_CERB40)
-MCU		= stm32f405rg
-BOARDFLAGS	+= -DSTM32F405xx -DHSE_PLL -DHSE_VALUE=12000000
-CONSOLEFLAGS	?= -DCONSOLE_USB
-#CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
-endif
-
-ifeq ($(BOARDNAME), NETDUINOPLUS2)
-MCU		= stm32f405rg
-BOARDFLAGS	+= -DSTM32F405xx -DHSE_PLL -DHSE_VALUE=25000000
-CONSOLEFLAGS	?= -DCONSOLE_USB
-#CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
-endif
-
-ifeq ($(BOARDNAME), STM32_M4_MINI)
-MCU		= stm32f415rg
-BOARDFLAGS	+= -DSTM32F415xx -DHSE_PLL -DHSE_VALUE=16000000
-CONSOLEFLAGS	?= -DCONSOLE_USB
-#CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
-endif
-
-ifeq ($(BOARDNAME), NUCLEO_F411RE)
-MCU		= stm32f411re
-BOARDFLAGS	+= -DSTM32F411xE -DHSE_PLL -DHSE_VALUE=8000000 -DHSE_BYPASS
-CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
-OPENOCDIF	= stlink-v2-1
-endif
-
-# Phony targets
-
-.PHONY:		clean_$(MCU) reallyclean_$(MCU) distclean_$(MCU) lib
-
-# Build processor dependent support library
-
+include $(MCUDIR)/boards.mk
 include $(MCUDIR)/CMSIS/cmsis.mk
 #include $(MCUDIR)/usb_serial/usb_serial.mk
+
+# Build processor dependent support library
 
 LIBOBJS		= $(MCU).o cpu.o gpiopins.o leds.o serial.o $(EXTRALIBOBJS)
 
