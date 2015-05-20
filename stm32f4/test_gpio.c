@@ -59,7 +59,11 @@ int main(void)
   for (i = 0;; i++)
   {
 #ifdef BUTTON0_INPUT
+#ifdef BUTTON0_ACTIVELOW
+    if (!BUTTON0_INPUT)
+#else
     if (BUTTON0_INPUT)
+#endif
     {
     // BUTTON0 pressed; flash LED's faster
 #ifdef LED3_OUTPUT
@@ -82,7 +86,11 @@ int main(void)
 #endif
 
 #ifdef BUTTON1_INPUT
+#ifdef BUTTON1_ACTIVELOW
+    if (!BUTTON1_INPUT)
+#else
     if (BUTTON1_INPUT)
+#endif
     {
     // BUTTON1 pressed; flash LED's slower
 #ifdef LED3_OUTPUT
