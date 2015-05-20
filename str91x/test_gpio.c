@@ -1,4 +1,4 @@
-/* Simple bit twiddler test program for the STR91x ARM MCU */
+/* Simple LED test program for the STR91x ARM MCU */
 
 // $Id$
 

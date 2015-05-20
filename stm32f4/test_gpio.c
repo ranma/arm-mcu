@@ -1,4 +1,4 @@
-/* Simple bit twiddler test program */
+/* Simple LED test program */
 
 // $Id$
 
