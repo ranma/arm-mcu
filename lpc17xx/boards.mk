@@ -1,8 +1,8 @@
-# Processor dependent make definitions
+# Board dependent make definitions
 
 # $Id$
 
-# Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
+# Copyright (C)2015, Philip Munts, President, Munts AM Corp.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,35 +22,21 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-MCU		= $(MCUFAMILY)
+# Board specific macro definitions
 
-CPUFLAGS	+= -mcpu=cortex-m3 -mthumb -DCORTEX_M3
-FLASHWRITEADDR	?= 0x00000000
-TEXTBASE	?= 0x00000000
+ifeq ($(BOARDNAME), MBED_LPC1768)
+CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+endif
 
-CFLAGS		+= -DLPC17XX
-LDFLAGS		+= -Ttext $(TEXTBASE)
-
+ifeq ($(BOARDNAME), BLUEBOARD_LPC1768_H)
+CONSOLEFLAGS	?= -DCONSOLE_USB
+#CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+JLINKMCU	= lpc1768
 JLINKGDBIF	= -if SWD
+endif
 
-# Include subordinate makefiles
-
-include $(MCUDIR)/boards.mk
-include $(MCUDIR)/CMSIS/CMSIS.mk
-include $(MCUDIR)/usb_serial/usb_serial.mk
-
-# Build processor dependent support library
-
-LIBOBJS		= $(MCU).o cpu.o gpiopins.o leds.o serial.o $(EXTRALIBOBJS)
-
-lib$(MCU).a: $(LIBOBJS)
-	$(AR) crs lib$(MCU).a $(LIBOBJS)
-	$(MAKE) $(LIBTARGETS)
-
-# Clean out working files
-
-clean_$(MCU):
-
-reallyclean_$(MCU): clean_$(MCU)
-
-distclean_$(MCU): reallyclean_$(MCU)
+ifeq ($(BOARDNAME), LPC1768_MINI_DK2)
+CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+JLINKMCU	= lpc1768
+JLINKGDBIF	= -if SWD
+endif
