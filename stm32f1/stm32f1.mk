@@ -26,47 +26,21 @@ CPUFLAGS	+= -mcpu=cortex-m3 -mthumb -DCORTEX_M3
 FLASHWRITEADDR	?= 0x08000000
 TEXTBASE	?= 0x00000000
 
-CFLAGS		+= -DSTM32F10X
+CFLAGS		+= -DSTM32F1XX
 LDFLAGS		+= -Ttext $(TEXTBASE)
 
 JLINKGDBIF	= -if SWD
 
-OPENOCDCFG	= $(MCUDIR)/stm32f1.openocd
-OPENOCDFLASH	= $(MCUDIR)/stm32f1.flashocd
+OPENOCDCFG	= $(MCUDIR)/$(MCUFAMILY).openocd
+OPENOCDFLASH	= $(MCUDIR)/$(MCUFAMILY).flashocd
 OPENOCDIF	= stlink-v2
 
 STLINKCLIIF	= -c SWD
 
-# Board specific macro definitions
+# Include subordinate makefiles
 
-ifeq ($(BOARDNAME), OLIMEX_STM32_P103)
-MCU		= stm32f103rb
-CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com2:115200,n,8,1"'
-endif
-
-ifeq ($(BOARDNAME), OLIMEX_STM32_P107)
-MCU		= stm32f107rb
-CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com3:115200,n,8,1"'
-endif
-
-ifeq ($(BOARDNAME), STM32_VALUE_LINE_DISCOVERY)
-MCU		= stm32f100rb
-CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
-IOFLAGS		+= -DMAX_DEVICES=3
-endif
-
-ifeq ($(BOARDNAME), W5200E01_M3)
-MCU		= stm32f103c8
-CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
-endif
-
-# Include MCU specific make file
-
+include $(MCUDIR)/boards.mk
 include $(MCUDIR)/$(MCU).mk
-
-# Phony targets
-
-.PHONY:		clean_$(MCU) reallyclean_$(MCU) distclean_$(MCU)
 
 # Build processor dependent support library
 
