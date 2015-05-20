@@ -1,8 +1,8 @@
-# Processor dependent make definitions
+# Board dependent make definitions
 
 # $Id$
 
-# Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
+# Copyright (C)2015, Philip Munts, President, Munts AM Corp.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,32 +22,19 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-CPUFLAGS	+= -mcpu=cortex-m0 -mthumb -DCORTEX_M0
-FLASHWRITEADDR	?= 0x00000000
-TEXTBASE	?= 0x00000000
+# Board specific macro definitions
 
-CFLAGS		+= -DLPC11XX
-LDFLAGS		+= -Ttext $(TEXTBASE)
+ifeq ($(BOARDNAME), PROTOBOARD_LPC1114FN28)
+CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+IOFLAGS		+= -DMAX_DEVICES=3
+MCU		= LPC1114FN28
+JLINKMCU	= LPC1114/102
+endif
 
-JLINKGDBIF	= -if SWD
-
-# Include subordinate makefiles
-
-include $(MCUDIR)/boards.mk
-include $(MCUDIR)/CMSIS/CMSIS.mk
-
-# Build processor dependent support library
-
-LIBOBJS		= $(MCU).o adc.o cpu.o gpio.o leds.o pwm.o serial.o timer.o spi.o $(EXTRALIBOBJS)
-
-lib$(MCU).a: $(LIBOBJS)
-	$(AR) crs lib$(MCU).a $(LIBOBJS)
-	$(MAKE) $(LIBTARGETS)
-
-# Clean out working files
-
-clean_$(MCU):
-
-reallyclean_$(MCU): clean_$(MCU)
-
-distclean_$(MCU): reallyclean_$(MCU)
+ifeq ($(BOARDNAME), RASPBERRYPI_LPC1114)
+BOARDFLAGS	+= -DLED0_PIN=PIO0_7
+CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+IOFLAGS		+= -DMAX_DEVICES=3
+MCU		= LPC1114FN28
+JLINKMCU	= LPC1114/102
+endif
