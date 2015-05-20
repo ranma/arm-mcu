@@ -36,7 +36,7 @@ static const char revision[] = "$Id$";
 // Initialize an A/D input pin
 //   Returns 0 on success or nonzero on failure and sets errno
 
-int adc_init(unsigned int channel)
+int adc_init(void *subsystem, unsigned int channel)
 {
   errno_r = 0;
 
@@ -105,7 +105,7 @@ int adc_init(unsigned int channel)
 // Read an A/D input
 //   Returns unsigned 16-bit result, right-justified, or zero on error
 
-uint16_t adc_read(unsigned int channel)
+uint16_t adc_read(void *subsystem, unsigned int channel)
 {
   errno_r = 0;
 

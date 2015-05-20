@@ -60,8 +60,8 @@ int main(void)
 
 // Initialize A/D inputs
 
-  for (channel = 0; channel <= 7; channel++)
-    if (adc_init(channel) < 0)
+  for (channel = 0; channel < MAX_CHANNELS; channel++)
+    if (adc_init(NULL, channel) < 0)
       printf("ERROR: adc_init() for channel %d failed, %s\n", channel, strerror(errno));
 
   putchar('\n');
@@ -69,12 +69,14 @@ int main(void)
   for (;;)
   {
     for (channel = 0; channel < MAX_CHANNELS; channel++)
-      results[channel] = adc_read(channel);
+      results[channel] = adc_read(NULL, channel);
 
     for (channel = 0; channel < MAX_CHANNELS; channel++)
       printf("%05d ", results[channel]);
 
     putchar('\r');
+    fflush(stdout);
+
     sleep(1);
   }
 }
