@@ -32,71 +32,103 @@ int main(void)
 
   cpu_init(DEFAULT_CPU_FREQ);
 
-// Flash MBED-LPC1768 LED's
-
-#ifdef MBED_LPC1768
-  gpiopin_configure(GPIOPIN50, GPIOPIN_OUTPUT);
-  gpiopin_configure(GPIOPIN52, GPIOPIN_OUTPUT);
-  gpiopin_configure(GPIOPIN53, GPIOPIN_OUTPUT);
-  gpiopin_configure(GPIOPIN55, GPIOPIN_OUTPUT);
-
-  for (i = 0;; i++)
-  {
-    GPIOPIN50OUT = i >> 22;
-    GPIOPIN52OUT = i >> 21;
-    GPIOPIN53OUT = i >> 20;
-    GPIOPIN55OUT = i >> 19;
-  }
+#ifdef BUTTON0_PIN
+  gpiopin_configure(BUTTON0_PIN, GPIOPIN_INPUT);
 #endif
 
-// Flash BlueBoard LPC1768-H test LED
+#ifdef BUTTON1_PIN
+  gpiopin_configure(BUTTON1_PIN, GPIOPIN_INPUT);
+#endif
 
-#ifdef BLUEBOARD_LPC1768_H
-  gpiopin_configure(GPIOPIN61, GPIOPIN_OUTPUT);	// Test LED D8
-  gpiopin_configure(GPIOPIN74, GPIOPIN_INPUT);	// Push button SW2
+#ifdef LED0_PIN
+  gpiopin_configure(LED0_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED1_PIN
+  gpiopin_configure(LED1_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED2_PIN
+  gpiopin_configure(LED2_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED3_PIN
+  gpiopin_configure(LED3_PIN, GPIOPIN_OUTPUT);
+#endif
 
   for (i = 0;; i++)
   {
-    // Flash faster if button is pressed
-
-    if (!GPIOPIN74IN)
+#ifdef BUTTON0_INPUT
+#ifdef BUTTON0_ACTIVELOW
+    if (!BUTTON0_INPUT)
+#else
+    if (BUTTON0_INPUT)
+#endif
     {
-      GPIOPIN61OUT = i >> 18;
+    // BUTTON0 pressed; flash LED's faster
+#ifdef LED3_OUTPUT
+      LED3_OUTPUT = i >> 18;
+#endif
+
+#ifdef LED2_OUTPUT
+      LED2_OUTPUT = i >> 19;
+#endif
+
+#ifdef LED1_OUTPUT
+      LED1_OUTPUT = i >> 20;
+#endif
+
+#ifdef LED0_OUTPUT
+      LED0_OUTPUT = i >> 21;
+#endif
     }
-
-    // Flash LED at normal rate
-
     else
-    {
-      GPIOPIN61OUT = i >> 20;
-    }
-  }
 #endif
 
-// Flash LPC1768-Mini-DK2 test LEDs
-
-#ifdef LPC1768_MINI_DK2
-  gpiopin_configure(GPIOPIN121, GPIOPIN_OUTPUT);	// Test LED LD2
-  gpiopin_configure(GPIOPIN122, GPIOPIN_OUTPUT);	// Test LED LD3
-  gpiopin_configure(GPIOPIN75, GPIOPIN_INPUT);		// Push button KEY1
-
-  for (i = 0;; i++)
-  {
-    // Flash faster if button is pressed
-
-    if (!GPIOPIN75IN)
+#ifdef BUTTON1_INPUT
+#ifdef BUTTON1_ACTIVELOW
+    if (!BUTTON1_INPUT)
+#else
+    if (BUTTON1_INPUT)
+#endif
     {
-      GPIOPIN121OUT = i >> 18;
-      GPIOPIN122OUT = i >> 19;
+    // BUTTON1 pressed; flash LED's slower
+#ifdef LED3_OUTPUT
+      LED3_OUTPUT = i >> 20;
+#endif
+
+#ifdef LED2_OUTPUT
+      LED2_OUTPUT = i >> 21;
+#endif
+
+#ifdef LED1_OUTPUT
+      LED1_OUTPUT = i >> 22;
+#endif
+
+#ifdef LED0_OUTPUT
+      LED0_OUTPUT = i >> 23;
+#endif
     }
-
-    // Flash LED at normal rate
-
     else
+#endif
+
+    // Flash LED's at normal speed
     {
-      GPIOPIN121OUT = i >> 19;
-      GPIOPIN122OUT = i >> 20;
+#ifdef LED3_OUTPUT
+      LED3_OUTPUT = i >> 19;
+#endif
+
+#ifdef LED2_OUTPUT
+      LED2_OUTPUT = i >> 20;
+#endif
+
+#ifdef LED1_OUTPUT
+      LED1_OUTPUT = i >> 21;
+#endif
+
+#ifdef LED0_OUTPUT
+      LED0_OUTPUT = i >> 22;
+#endif
     }
   }
-#endif
 }

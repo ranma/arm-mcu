@@ -30,20 +30,36 @@ static const char revision[] = "$Id$";
 
 void LEDS_initialize(void)
 {
-#ifdef MBED_LPC1768
-  gpiopin_configure(GPIOPIN50, GPIOPIN_OUTPUT);
-  gpiopin_configure(GPIOPIN52, GPIOPIN_OUTPUT);
-  gpiopin_configure(GPIOPIN53, GPIOPIN_OUTPUT);
-  gpiopin_configure(GPIOPIN55, GPIOPIN_OUTPUT);
+#ifdef LED0_PIN
+  gpiopin_configure(LED0_PIN, GPIOPIN_OUTPUT);
 #endif
 
-#ifdef BLUEBOARD_LPC1768_H
-  gpiopin_configure(GPIOPIN61, GPIOPIN_OUTPUT);
+#ifdef LED1_PIN
+  gpiopin_configure(LED1_PIN, GPIOPIN_OUTPUT);
 #endif
 
-#ifdef LPC1768_MINI_DK2
-  gpiopin_configure(GPIOPIN121, GPIOPIN_OUTPUT);
-  gpiopin_configure(GPIOPIN122, GPIOPIN_OUTPUT);
+#ifdef LED2_PIN
+  gpiopin_configure(LED2_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED3_PIN
+  gpiopin_configure(LED3_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED4_PIN
+  gpiopin_configure(LED4_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED5_PIN
+  gpiopin_configure(LED5_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED6_PIN
+  gpiopin_configure(LED6_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED7_PIN
+  gpiopin_configure(LED7_PIN, GPIOPIN_OUTPUT);
 #endif
 
   LEDS_set(0);						// Turn off all LEDs at startup
@@ -56,20 +72,68 @@ unsigned long int LEDS_get(void)
 {
   unsigned long int result = 0;
 
-#ifdef MBED_LPC1768
-  result += GPIOPIN55OUT;
-  result += GPIOPIN53OUT << 1;
-  result += GPIOPIN52OUT << 2;
-  result += GPIOPIN50OUT << 3;
+#ifdef LED0_INPUT
+#ifdef LED0_ACTIVELOW
+  result += !LED0_INPUT;
+#else
+  result += LED0_INPUT;
+#endif
 #endif
 
-#ifdef BLUEBOARD_LPC1768_H
-  result += GPIOPIN61IN;
+#ifdef LED1_INPUT
+#ifdef LED1_ACTIVELOW
+  result += !LED1_INPUT << 1;
+#else
+  result += LED1_INPUT << 1;
+#endif
 #endif
 
-#ifdef LPC1768_MINI_DK2
-  result += !GPIOPIN121IN;
-  result += !GPIOPIN122IN << 1;
+#ifdef LED2_INPUT
+#ifdef LED2_ACTIVELOW
+  result += !LED2_INPUT << 2;
+#else
+  result += LED2_INPUT << 2;
+#endif
+#endif
+
+#ifdef LED3_INPUT
+#ifdef LED3_ACTIVELOW
+  result += !LED3_INPUT << 3;
+#else
+  result += LED3_INPUT << 3;
+#endif
+#endif
+
+#ifdef LED4_INPUT
+#ifdef LED4_ACTIVELOW
+  result += !LED4_INPUT << 4;
+#else
+  result += LED4_INPUT << 4;
+#endif
+#endif
+
+#ifdef LED5_INPUT
+#ifdef LED5_ACTIVELOW
+  result += !LED5_INPUT << 5;
+#else
+  result += LED5_INPUT << 5;
+#endif
+#endif
+
+#ifdef LED6_INPUT
+#ifdef LED6_ACTIVELOW
+  result += !LED6_INPUT << 6;
+#else
+  result += LED6_INPUT << 6;
+#endif
+#endif
+
+#ifdef LED7_INPUT
+#ifdef LED7_ACTIVELOW
+  result += !LED7_INPUT << 7;
+#else
+  result += LED7_INPUT << 7;
+#endif
 #endif
 
   return result;
@@ -80,19 +144,67 @@ unsigned long int LEDS_get(void)
 
 void LEDS_set(unsigned long int mask)
 {
-#ifdef MBED_LPC1768
-  GPIOPIN55OUT = mask;
-  GPIOPIN53OUT = mask >> 1;
-  GPIOPIN52OUT = mask >> 2;
-  GPIOPIN50OUT = mask >> 3;
+#ifdef LED0_OUTPUT
+#ifdef LED0_ACTIVELOW
+  LED0_OUTPUT = ~mask;
+#else
+  LED0_OUTPUT = mask;
+#endif
 #endif
 
-#ifdef BLUEBOARD_LPC1768_H
-  GPIOPIN61OUT = mask;
+#ifdef LED1_OUTPUT
+#ifdef LED1_ACTIVELOW
+  LED1_OUTPUT = ~mask >> 1;
+#else
+  LED1_OUTPUT = mask >> 1;
+#endif
 #endif
 
-#ifdef LPC1768_MINI_DK2
-  GPIOPIN121OUT = ~mask;
-  GPIOPIN122OUT = ~mask >> 1;
+#ifdef LED2_OUTPUT
+#ifdef LED2_ACTIVELOW
+  LED2_OUTPUT = ~mask >> 2;
+#else
+  LED2_OUTPUT = mask >> 2;
+#endif
+#endif
+
+#ifdef LED3_OUTPUT
+#ifdef LED3_ACTIVELOW
+  LED3_OUTPUT = ~mask >> 3;
+#else
+  LED3_OUTPUT = mask >> 3;
+#endif
+#endif
+
+#ifdef LED4_OUTPUT
+#ifdef LED4_ACTIVELOW
+  LED4_OUTPUT = ~mask >> 4;
+#else
+  LED4_OUTPUT = mask >> 4;
+#endif
+#endif
+
+#ifdef LED5_OUTPUT
+#ifdef LED5_ACTIVELOW
+  LED5_OUTPUT = ~mask >> 5;
+#else
+  LED5_OUTPUT = mask >> 5;
+#endif
+#endif
+
+#ifdef LED6_OUTPUT
+#ifdef LED6_ACTIVELOW
+  LED6_OUTPUT = ~mask >> 6;
+#else
+  LED6_OUTPUT = mask >> 6;
+#endif
+#endif
+
+#ifdef LED7_OUTPUT
+#ifdef LED7_ACTIVELOW
+  LED7_OUTPUT = ~mask >> 7;
+#else
+  LED7_OUTPUT = mask >> 7;
+#endif
 #endif
 }
