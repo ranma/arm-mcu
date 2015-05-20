@@ -67,19 +67,35 @@ int main(void)
     {
     // BUTTON0 pressed; flash LED's faster
 #ifdef LED3_OUTPUT
+#ifdef LED3_ACTIVELOW
+      LED3_OUTPUT = ~i >> 18;
+#else
       LED3_OUTPUT = i >> 18;
+#endif
 #endif
 
 #ifdef LED2_OUTPUT
+#ifdef LED2_ACTIVELOW
+      LED2_OUTPUT = ~i >> 19;
+#else
       LED2_OUTPUT = i >> 19;
+#endif
 #endif
 
 #ifdef LED1_OUTPUT
+#ifdef LED1_ACTIVELOW
+      LED1_OUTPUT = ~i >> 20;
+#else
       LED1_OUTPUT = i >> 20;
+#endif
 #endif
 
 #ifdef LED0_OUTPUT
+#ifdef LED0_ACTIVELOW
+      LED0_OUTPUT = ~i >> 21;
+#else
       LED0_OUTPUT = i >> 21;
+#endif
 #endif
     }
     else
@@ -94,19 +110,35 @@ int main(void)
     {
     // BUTTON1 pressed; flash LED's slower
 #ifdef LED3_OUTPUT
+#ifdef LED3_ACTIVELOW
+      LED3_OUTPUT = ~i >> 20;
+#else
       LED3_OUTPUT = i >> 20;
+#endif
 #endif
 
 #ifdef LED2_OUTPUT
+#ifdef LED2_ACTIVELOW
+      LED2_OUTPUT = ~i >> 21;
+#else
       LED2_OUTPUT = i >> 21;
+#endif
 #endif
 
 #ifdef LED1_OUTPUT
+#ifdef LED1_ACTIVELOW
+      LED1_OUTPUT = ~i >> 22;
+#else
       LED1_OUTPUT = i >> 22;
+#endif
 #endif
 
 #ifdef LED0_OUTPUT
+#ifdef LED0_ACTIVELOW
+      LED0_OUTPUT = ~i >> 23;
+#else
       LED0_OUTPUT = i >> 23;
+#endif
 #endif
     }
     else
@@ -115,19 +147,35 @@ int main(void)
     // Flash LED's at normal speed
     {
 #ifdef LED3_OUTPUT
+#ifdef LED3_ACTIVELOW
+      LED3_OUTPUT = ~i >> 19;
+#else
       LED3_OUTPUT = i >> 19;
+#endif
 #endif
 
 #ifdef LED2_OUTPUT
+#ifdef LED2_ACTIVELOW
+      LED2_OUTPUT = ~i >> 20
+#else
       LED2_OUTPUT = i >> 20;
+#endif
 #endif
 
 #ifdef LED1_OUTPUT
+#ifdef LED1_ACTIVELOW
+      LED1_OUTPUT = ~i >> 21;
+#else
       LED1_OUTPUT = i >> 21;
+#endif
 #endif
 
 #ifdef LED0_OUTPUT
+#ifdef LED0_ACTIVELOW
+      LED0_OUTPUT = ~i >> 18;
+#else
       LED0_OUTPUT = i >> 22;
+#endif
 #endif
     }
   }
