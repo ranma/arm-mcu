@@ -31,6 +31,10 @@ TEXTBASE	?= 0x00000000
 CFLAGS		+=
 LDFLAGS		+= -Wl,--section-start=startup=$(TEXTBASE)
 
+# Include subordinate makefiles
+
+include $(MCUDIR)/boards.mk
+
 # Build processor dependent support library
 
 LIBOBJS		= $(MCU).o cpu.o leds.o serial.o $(EXTRALIBOBJS)
