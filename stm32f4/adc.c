@@ -26,7 +26,7 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
-#define MAX_ADC_CHANNELS	18
+#define MAX_ADC_CHANNELS	16
 
 // Initialize an A/D input pin
 //   Returns 0 on success or nonzero on failure and sets errno
@@ -96,11 +96,86 @@ int adc_init(void *subsystem, unsigned int channel)
 
 // Configure the analog input
 
-  switch (channel)
-  {
-    default :
-      break;
-  }
+#ifdef ADC1
+  if (ADCsubsystem == ADC1)
+    switch (channel)
+    {
+      case 0 :	// PA0
+        GPIOA->MODER |= 3 << 0;
+        GPIOA->PUPDR &= ~(3 << 0);
+        break;
+
+      case 1 :	// PA1
+        GPIOA->MODER |= 3 << 1;
+        GPIOA->PUPDR &= ~(3 << 1);
+        break;
+
+      case 2 :	// PA2
+        GPIOA->MODER |= 3 << 2;
+        GPIOA->PUPDR &= ~(3 << 2);
+        break;
+  
+      case 3 :	// PA3
+        GPIOA->MODER |= 3 << 3;
+        GPIOA->PUPDR &= ~(3 << 3);
+        break;
+
+      case 4 :	// PA4
+        GPIOA->MODER |= 3 << 4;
+        GPIOA->PUPDR &= ~(3 << 4);
+        break;
+
+      case 5 :	// PA5
+        GPIOA->MODER |= 3 << 5;
+        GPIOA->PUPDR &= ~(3 << 5);
+        break;
+
+      case 6 :	// PA6
+        GPIOA->MODER |= 3 << 6;
+        GPIOA->PUPDR &= ~(3 << 6);
+        break;
+
+      case 7 :	// PA7
+        GPIOA->MODER |= 3 << 7;
+        GPIOA->PUPDR &= ~(3 << 7);
+        break;
+
+      case 8 :	// PB0
+        GPIOB->MODER |= 3 << 0;
+        GPIOB->PUPDR &= ~(3 << 0);
+
+      case 9 :	// PB1
+        GPIOB->MODER |= 3 << 1;
+        GPIOB->PUPDR &= ~(3 << 1);
+
+      case 10 :	// PC0
+        GPIOC->MODER |= 3 << 0;
+        GPIOC->PUPDR &= ~(3 << 0);
+
+      case 11 :	// PC1
+        GPIOC->MODER |= 3 << 1;
+        GPIOC->PUPDR &= ~(3 << 1);
+
+      case 12 :	// PC2
+        GPIOC->MODER |= 3 << 2;
+        GPIOC->PUPDR &= ~(3 << 2);
+
+      case 13 :	// PC3
+        GPIOC->MODER |= 3 << 3;
+        GPIOC->PUPDR &= ~(3 << 3);
+
+      case 14 :	// PC4
+        GPIOC->MODER |= 3 << 4;
+        GPIOC->PUPDR &= ~(3 << 4);
+
+      case 15 :	// PC5
+        GPIOC->MODER |= 3 << 5;
+        GPIOC->PUPDR &= ~(3 << 5);
+
+      default :
+        break;
+    }
+#endif
 
   return 0;
 }
