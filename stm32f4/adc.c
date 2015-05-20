@@ -43,16 +43,6 @@ int adc_init(void *subsystem, unsigned int channel)
     ADCsubsystem = ADC1;
 #endif
 
-#ifdef ADC2
-  if (subsystem == ADC2)
-    ADCsubsystem = ADC2;
-#endif
-
-#ifdef ADC3
-  if (subsystem == ADC3)
-    ADCsubsystem = ADC3;
-#endif
-
   if (ADCsubsystem == NULL)
   {
     errno_r = ENODEV;
@@ -74,16 +64,6 @@ int adc_init(void *subsystem, unsigned int channel)
 #ifdef ADC1
   if (ADCsubsystem == ADC1)
     RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
-#endif
-
-#ifdef ADC2
-  if (ADCsubsystem == ADC2)
-    RCC->APB2ENR |= RCC_APB2ENR_ADC2EN;
-#endif
-
-#ifdef ADC3
-  if (ADCsubsystem == ADC3)
-    RCC->APB2ENR |= RCC_APB2ENR_ADC3EN;
 #endif
 
 // Configure ADC subsystem
@@ -193,16 +173,6 @@ uint16_t adc_read(void * subsystem, unsigned int channel)
 #ifdef ADC1
   if ((subsystem == NULL) || (subsystem == ADC1))
     ADCsubsystem = ADC1;
-#endif
-
-#ifdef ADC2
-  if (subsystem == ADC2)
-    ADCsubsystem = ADC2;
-#endif
-
-#ifdef ADC3
-  if (subsystem == ADC3)
-    ADCsubsystem = ADC3;
 #endif
 
   if (ADCsubsystem == NULL)
