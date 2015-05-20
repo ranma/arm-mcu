@@ -1,8 +1,8 @@
-# Processor dependent make definitions
+# Board dependent make definitions
 
 # $Id$
 
-# Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
+# Copyright (C)2015, Philip Munts, President, Munts AM Corp.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,33 +22,10 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-CPUFLAGS	+= -mcpu=arm7tdmi
-FLASHWRITEADDR	?= 0x00100000
-TEXTBASE	?= 0x00000000
+# Board specific macro definitions
 
-AT91LIB		= $(MCUDIR)/at91lib
-
-CFLAGS		+= -I$(AT91LIB)
-LDFLAGS		+= -Wl,--section-start=startup=$(TEXTBASE)
-
-# Include subordinate makefiles
-
-include $(MCUDIR)/boards.mk
-
-# Build processor dependent support library
-
-LIBOBJS		= $(MCU).o cpu.o leds.o serial.o $(EXTRALIBOBJS)
-
-lib$(MCU).a: $(LIBOBJS)
-	$(AR) crs lib$(MCU).a $(LIBOBJS)
-	for F in $(AT91LIB)/*.c $(AT91LIB)/utility/*.c ; do $(MAKE) $${F%.c}.o ; done
-	$(AR) crs lib$(MCU).a $(AT91LIB)/*.o $(AT91LIB)/utility/*.o
-	$(MAKE) $(LIBTARGETS)
-
-# Clean out working files
-
-clean_$(MCU):
-
-reallyclean_$(MCU): clean_$(MCU)
-
-distclean_$(MCU): reallyclean_$(MCU)
+ifeq ($(BOARDNAME), OLIMEX_SAM7_P256)
+CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+MCU		= at91sam7s
+JLINKMCU	= at91sam7s512
+endif
