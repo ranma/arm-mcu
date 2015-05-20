@@ -1,8 +1,8 @@
-# Processor dependent make definitions
+# Board dependent make definitions
 
 # $Id$
 
-# Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
+# Copyright (C)2015, Philip Munts, President, Munts AM Corp.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,27 +22,13 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-MCU		= $(MCUFAMILY)
+# Board specific macro definitions
 
-CPUFLAGS	+= -mcpu=arm7tdmi
-FLASHWRITEADDR	?= 0x00000000
-TEXTBASE	?= 0x00000000
+ifeq ($(BOARDNAME), MBED_LPC2368)
+CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+endif
 
-CFLAGS		+=
-LDFLAGS		+= -Wl,--section-start=startup=$(TEXTBASE)
-
-# Build processor dependent support library
-
-LIBOBJS		= $(MCU).o cpu.o leds.o serial.o $(EXTRALIBOBJS)
-
-lib$(MCU).a: $(LIBOBJS)
-	$(AR) crs lib$(MCU).a $(LIBOBJS)
-	$(MAKE) $(LIBTARGETS)
-
-# Clean out working files
-
-clean_$(MCU):
-
-reallyclean_$(MCU): clean_$(MCU)
-
-distclean_$(MCU): reallyclean_$(MCU)
+ifeq ($(BOARDNAME), OLIMEX_LPC_P2378)
+CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+JLINKMCU	= lpc2378
+endif
