@@ -32,98 +32,95 @@ int main(void)
 
   cpu_init(DEFAULT_CPU_FREQ);
 
-#ifdef STM32F4_DISCOVERY
-  gpiopin_configure(GPIOPIN0, GPIOPIN_INPUT);		// PA0
-  gpiopin_configure(GPIOPIN60, GPIOPIN_OUTPUT);		// PD12
-  gpiopin_configure(GPIOPIN61, GPIOPIN_OUTPUT);		// PD13
-  gpiopin_configure(GPIOPIN62, GPIOPIN_OUTPUT);		// PD14
-  gpiopin_configure(GPIOPIN63, GPIOPIN_OUTPUT);		// PD15
+#ifdef BUTTON0_PIN
+  gpiopin_configure(BUTTON0_PIN, GPIOPIN_INPUT);
+#endif
+
+#ifdef BUTTON1_PIN
+  gpiopin_configure(BUTTON1_PIN, GPIOPIN_INPUT);
+#endif
+
+#ifdef LED0_PIN
+  gpiopin_configure(LED0_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED1_PIN
+  gpiopin_configure(LED1_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED2_PIN
+  gpiopin_configure(LED2_PIN, GPIOPIN_OUTPUT);
+#endif
+
+#ifdef LED3_PIN
+  gpiopin_configure(LED3_PIN, GPIOPIN_OUTPUT);
+#endif
 
   for (i = 0;; i++)
   {
-    // Speed up flashing if user button is pressed
-
-    if (GPIOPIN0IN)
+#ifdef BUTTON0_INPUT
+    if (BUTTON0_INPUT)
     {
-      GPIOPIN60OUT = i >> 18;
-      GPIOPIN61OUT = i >> 19;
-      GPIOPIN62OUT = i >> 20;
-      GPIOPIN63OUT = i >> 21;
+    // BUTTON0 pressed; flash LED's faster
+#ifdef LED3_OUTPUT
+      LED3_OUTPUT = i >> 18;
+#endif
+
+#ifdef LED2_OUTPUT
+      LED2_OUTPUT = i >> 19;
+#endif
+
+#ifdef LED1_OUTPUT
+      LED1_OUTPUT = i >> 20;
+#endif
+
+#ifdef LED0_OUTPUT
+      LED0_OUTPUT = i >> 21;
+#endif
     }
+    else
+#endif
+
+#ifdef BUTTON1_INPUT
+    if (BUTTON1_INPUT)
+    {
+    // BUTTON1 pressed; flash LED's slower
+#ifdef LED3_OUTPUT
+      LED3_OUTPUT = i >> 20;
+#endif
+
+#ifdef LED2_OUTPUT
+      LED2_OUTPUT = i >> 21;
+#endif
+
+#ifdef LED1_OUTPUT
+      LED1_OUTPUT = i >> 22;
+#endif
+
+#ifdef LED0_OUTPUT
+      LED0_OUTPUT = i >> 23;
+#endif
+    }
+    else
+#endif
 
     // Flash LED's at normal speed
-
-    else
     {
-      GPIOPIN60OUT = i >> 19;
-      GPIOPIN61OUT = i >> 20;
-      GPIOPIN62OUT = i >> 21;
-      GPIOPIN63OUT = i >> 22;
-    }
-  }
+#ifdef LED3_OUTPUT
+      LED3_OUTPUT = i >> 19;
 #endif
 
-#ifdef FEZ_CERB40
-  gpiopin_configure(GPIOPIN38, GPIOPIN_OUTPUT);		// PC6
-  gpiopin_configure(GPIOPIN39, GPIOPIN_OUTPUT);		// PC7
-  gpiopin_configure(GPIOPIN40, GPIOPIN_OUTPUT);		// PC8
-  gpiopin_configure(GPIOPIN41, GPIOPIN_OUTPUT);		// PC9
-
-  for (i = 0;; i++)
-  {
-    GPIOPIN38OUT = i >> 18;
-    GPIOPIN39OUT = i >> 19;
-    GPIOPIN40OUT = i >> 20;
-    GPIOPIN41OUT = i >> 21;
-  }
+#ifdef LED2_OUTPUT
+      LED2_OUTPUT = i >> 20;
 #endif
 
-#ifdef NETDUINOPLUS2
-  gpiopin_configure(GPIOPIN27, GPIOPIN_INPUT);		// PB11
-  gpiopin_configure(GPIOPIN10, GPIOPIN_OUTPUT);		// PA10
-
-  for (i = 0;; i++)
-  {
-    // Speed up flashing if user button is pressed
-
-    if (GPIOPIN27IN)
-    {
-      GPIOPIN10OUT = i >> 21;
-    }
-    else
-    {
-      GPIOPIN10OUT = i >> 22;
-    }
-  }
+#ifdef LED1_OUTPUT
+      LED1_OUTPUT = i >> 21;
 #endif
 
-#ifdef STM32_M4_MINI
-  gpiopin_configure(GPIOPIN44, GPIOPIN_OUTPUT);		// PC12
-  gpiopin_configure(GPIOPIN45, GPIOPIN_OUTPUT);		// PC13
-
-  for (i = 0;; i++)
-  {
-    GPIOPIN44OUT = i >> 20;
-    GPIOPIN45OUT = i >> 21;
-  }
+#ifdef LED0_OUTPUT
+      LED0_OUTPUT = i >> 22;
 #endif
-
-#ifdef NUCLEO_F411RE
-  gpiopin_configure(GPIOPIN45, GPIOPIN_INPUT);		// PC13
-  gpiopin_configure(GPIOPIN5, GPIOPIN_OUTPUT);		// PA5
-
-  for (i = 0;; i++)
-  {
-    // Speed up flashing if user button is pressed
-
-    if (!GPIOPIN45IN)
-    {
-      GPIOPIN5OUT = i >> 21;
-    }
-    else
-    {
-      GPIOPIN5OUT = i >> 22;
     }
   }
-#endif
 }
