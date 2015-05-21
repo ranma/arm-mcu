@@ -26,9 +26,7 @@ CPUFLAGS	+= -mcpu=arm9tdmi
 FLASHWRITEADDR	?= 0x00000000
 TEXTBASE	?= 0x00000000
 
-FWLIB		= $(MCUDIR)/FWLib
-
-CFLAGS		+= -I$(FWLIB)
+CFLAGS		+= -DSTR91XX
 LDFLAGS		+= -Wl,--section-start=startup=$(TEXTBASE)
 
 # Include subordinate makefiles
