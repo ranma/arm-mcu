@@ -26,9 +26,10 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
-// Some channels on some boards are not available because
-// they conflict with things like the serial console.  This
-// function lets us find out if a particular channel is available.
+#define MAX_ADC_CHANNELS	19
+
+// Some analog input channels on some boards are not available because
+// they conflict with other devicese.
 
 bool adc_channel_forbidden(void *subsystem, unsigned int channel)
 {
@@ -41,6 +42,12 @@ bool adc_channel_forbidden(void *subsystem, unsigned int channel)
     if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
 #endif
 
+#if defined(NETDUINOPLUS2)
+    if ((channel >= 4) && (channel <= 5)) return true;	// Ethernet on PA4 and PA5
+    if ((channel == 7) return true;			// Ethernet on PA7
+    if ((channel >= 8) && (channel <= 9)) return true;	// SD-Card on PB0 and PB1
+#endif
+
 #if defined(NETDUINOPLUS2) && defined(CONSOLE_SERIAL)
     if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
 #endif
@@ -50,12 +57,19 @@ bool adc_channel_forbidden(void *subsystem, unsigned int channel)
     if (channel == 5) return true;			// LED on PA5
 #endif
 
+#if defined(STM32F4_DISCOVERY)
+    if (channel == 0) return true;			// USER button on PA0
+    if ((channel >= 4) && (channel <= 7)) return true;	// Various devices on PA4-7
+    if (channel == 10) return true;			// USB OTG on PC0
+    if (channel == 13) return true;			// MP45DO2 on PC3
+#endif
+
 #if defined(STM32F4_DISCOVERY) && defined(CONSOLE_SERIAL)
     if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
 #endif
 
-#if defined(STM32F4_DISCOVERY_SHIELD)
-    if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
+#if defined(STM32_M4_MINI)
+    if (channel == 13) return true;			// PC3 not connected
 #endif
 
 #if defined(STM32_M4_MINI) && defined(CONSOLE_SERIAL)
