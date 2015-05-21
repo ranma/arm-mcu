@@ -86,38 +86,38 @@ int adc_init(void *subsystem, unsigned int channel)
         break;
 
       case 1 :	// PA1
-        GPIOA->MODER |= 3 << 1;
-        GPIOA->PUPDR &= ~(3 << 1);
-        break;
-
-      case 2 :	// PA2
         GPIOA->MODER |= 3 << 2;
         GPIOA->PUPDR &= ~(3 << 2);
         break;
-  
-      case 3 :	// PA3
-        GPIOA->MODER |= 3 << 3;
-        GPIOA->PUPDR &= ~(3 << 3);
-        break;
 
-      case 4 :	// PA4
+      case 2 :	// PA2
         GPIOA->MODER |= 3 << 4;
         GPIOA->PUPDR &= ~(3 << 4);
         break;
-
-      case 5 :	// PA5
-        GPIOA->MODER |= 3 << 5;
-        GPIOA->PUPDR &= ~(3 << 5);
-        break;
-
-      case 6 :	// PA6
+  
+      case 3 :	// PA3
         GPIOA->MODER |= 3 << 6;
         GPIOA->PUPDR &= ~(3 << 6);
         break;
 
+      case 4 :	// PA4
+        GPIOA->MODER |= 3 << 8;
+        GPIOA->PUPDR &= ~(3 << 8);
+        break;
+
+      case 5 :	// PA5
+        GPIOA->MODER |= 3 << 10;
+        GPIOA->PUPDR &= ~(3 << 10);
+        break;
+
+      case 6 :	// PA6
+        GPIOA->MODER |= 3 << 12;
+        GPIOA->PUPDR &= ~(3 << 12);
+        break;
+
       case 7 :	// PA7
-        GPIOA->MODER |= 3 << 7;
-        GPIOA->PUPDR &= ~(3 << 7);
+        GPIOA->MODER |= 3 << 14;
+        GPIOA->PUPDR &= ~(3 << 14);
         break;
 
       case 8 :	// PB0
@@ -125,32 +125,32 @@ int adc_init(void *subsystem, unsigned int channel)
         GPIOB->PUPDR &= ~(3 << 0);
 
       case 9 :	// PB1
-        GPIOB->MODER |= 3 << 1;
-        GPIOB->PUPDR &= ~(3 << 1);
+        GPIOB->MODER |= 3 << 2;
+        GPIOB->PUPDR &= ~(3 << 2);
 
       case 10 :	// PC0
         GPIOC->MODER |= 3 << 0;
         GPIOC->PUPDR &= ~(3 << 0);
 
       case 11 :	// PC1
-        GPIOC->MODER |= 3 << 1;
-        GPIOC->PUPDR &= ~(3 << 1);
-
-      case 12 :	// PC2
         GPIOC->MODER |= 3 << 2;
         GPIOC->PUPDR &= ~(3 << 2);
 
-      case 13 :	// PC3
-        GPIOC->MODER |= 3 << 3;
-        GPIOC->PUPDR &= ~(3 << 3);
-
-      case 14 :	// PC4
+      case 12 :	// PC2
         GPIOC->MODER |= 3 << 4;
         GPIOC->PUPDR &= ~(3 << 4);
 
+      case 13 :	// PC3
+        GPIOC->MODER |= 3 << 6;
+        GPIOC->PUPDR &= ~(3 << 6);
+
+      case 14 :	// PC4
+        GPIOC->MODER |= 3 << 8;
+        GPIOC->PUPDR &= ~(3 << 8);
+
       case 15 :	// PC5
-        GPIOC->MODER |= 3 << 5;
-        GPIOC->PUPDR &= ~(3 << 5);
+        GPIOC->MODER |= 3 << 10;
+        GPIOC->PUPDR &= ~(3 << 10);
 
       default :
         break;
