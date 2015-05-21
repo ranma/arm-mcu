@@ -32,45 +32,9 @@ static const char revision[] = "$Id$";
 
 #define MAX_CHANNELS	8
 
-// Some channels on some boards are not available because
-// they conflict with things like the serial console
-
-static bool ForbiddenChannel(unsigned channel)
-{
-#ifdef RASPBERRYPI_LPC1114
-  if ((channel < 1) || (channel > 5)) return true;
-#endif
-
-#if defined(FEZ_CERB40) || defined(CONSOLE_SERIAL)
-  if ((channel >= 2) && (channel <= 3)) return true;	// USART2
-#endif
-
-#if defined(NETDUINOPLUS2) || defined(CONSOLE_SERIAL)
-  if ((channel >= 2) && (channel <= 3)) return true;	// USART2
-#endif
-
-#if defined(NUCLEO_F411RE)
-  if ((channel >= 2) && (channel <= 3)) return true;	// USART2
-  if (channel == 5) return true;			// LED
-#endif
-
-#if defined(STM32F4_DISCOVERY) || defined(CONSOLE_SERIAL)
-  if ((channel >= 2) && (channel <= 3)) return true;	// USART2
-#endif
-
-#if defined(STM32F4_DISCOVERY_SHIELD)
-  if ((channel >= 2) && (channel <= 3)) return true;	// USART2
-#endif
-
-#if defined(STM32_M4_MINI) || defined(CONSOLE_SERIAL)
-  if ((channel >= 2) && (channel <= 3)) return true;	// USART2
-#endif
-
-  return false;
-}
-
 int main(void)
 {
+  bool ValidChannels[MAX_CHANNELS];
   unsigned channel;
 
   cpu_init(DEFAULT_CPU_FREQ);
@@ -96,27 +60,17 @@ int main(void)
 
 // Initialize A/D inputs
 
+  memset(ValidChannels, 0, sizeof(ValidChannels));
+
   for (channel = 0; channel < MAX_CHANNELS; channel++)
-  {
-    if (ForbiddenChannel(channel))
-     continue;
-
-    if (adc_init(NULL, channel) < 0)
-      printf("ERROR: adc_init() for channel %d failed, %s\n", channel, strerror(errno));
-  }
-
-  putchar('\n');
-  fflush(stdout);
+    if (adc_init(NULL, channel) == 0)
+      ValidChannels[channel] = true;
 
   for (;;)
   {
     for (channel = 0; channel < MAX_CHANNELS; channel++)
-    {
-      if (ForbiddenChannel(channel))
-        continue;
-
-      printf("ADC%d:%05d ", channel, adc_read(NULL, channel));
-    }
+      if (ValidChannels[channel])
+        printf("ADC%d:%05d ", channel, adc_read(NULL, channel));
 
     putchar('\r');
     fflush(stdout);
