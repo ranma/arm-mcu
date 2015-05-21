@@ -1,8 +1,8 @@
-# Processor dependent make definitions
+# Makefile for STR91x Firmware Library
 
 # $Id$
 
-# Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
+# Copyright (C)2015, Philip Munts, President, Munts AM Corp.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,33 +22,16 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-CPUFLAGS	+= -mcpu=arm9tdmi
-FLASHWRITEADDR	?= 0x00000000
-TEXTBASE	?= 0x00000000
+FWLIBDIR	= $(MCUDIR)/FWLib
 
-FWLIB		= $(MCUDIR)/FWLib
+CFLAGS		+= -I$(FWLIBDIR)/inc
 
-CFLAGS		+= -I$(FWLIB)
-LDFLAGS		+= -Wl,--section-start=startup=$(TEXTBASE)
+.PHONY: fwlib_lib
 
-# Include subordinate makefiles
+fwlib_lib:
+	for F in $(FWLIBDIR)/*.c ; do $(MAKE) $${F%.c}.o ; done
+	$(FIND) $(FWLIBDIR) -type f -name '*.o' -exec $(AR) crs lib$(MCU).a {} ";"
 
-include $(MCUDIR)/boards.mk
-include $(MCUDIR)/FWLib/fwlib.mk
-include $(MCUDIR)/usb_serial/usb_serial.mk
+# Add to target lists
 
-# Build processor dependent support library
-
-LIBOBJS		= $(MCU).o cpu.o leds.o serial.o time.o $(EXTRALIBOBJS)
-
-lib$(MCU).a: $(LIBOBJS)
-	$(AR) crs lib$(MCU).a $(LIBOBJS)
-	$(MAKE) $(LIBTARGETS)
-
-# Clean out working files
-
-clean_$(MCU):
-
-reallyclean_$(MCU): clean_$(MCU)
-
-distclean_$(MCU): reallyclean_$(MCU)
+LIBTARGETS	+= fwlib_lib

@@ -1,4 +1,4 @@
-# Processor dependent make definitions
+# Board dependent make definitions
 
 # $Id$
 
@@ -22,33 +22,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-CPUFLAGS	+= -mcpu=arm9tdmi
-FLASHWRITEADDR	?= 0x00000000
-TEXTBASE	?= 0x00000000
+# Board specific macro definitions
 
-FWLIB		= $(MCUDIR)/FWLib
-
-CFLAGS		+= -I$(FWLIB)
-LDFLAGS		+= -Wl,--section-start=startup=$(TEXTBASE)
-
-# Include subordinate makefiles
-
-include $(MCUDIR)/boards.mk
-include $(MCUDIR)/FWLib/fwlib.mk
-include $(MCUDIR)/usb_serial/usb_serial.mk
-
-# Build processor dependent support library
-
-LIBOBJS		= $(MCU).o cpu.o leds.o serial.o time.o $(EXTRALIBOBJS)
-
-lib$(MCU).a: $(LIBOBJS)
-	$(AR) crs lib$(MCU).a $(LIBOBJS)
-	$(MAKE) $(LIBTARGETS)
-
-# Clean out working files
-
-clean_$(MCU):
-
-reallyclean_$(MCU): clean_$(MCU)
-
-distclean_$(MCU): reallyclean_$(MCU)
+ifeq ($(BOARDNAME), STMICRO_STR910_EVAL)
+CONSOLEFLAGS	?= -DCONSOLE_SERIAL -DCONSOLE_PORT='"com1:115200,n,8,1"'
+MCU		= str912faw44
+endif
