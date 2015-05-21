@@ -26,6 +26,7 @@
 #define _CPU_H
 
 #include <arm.h>
+#include <adc.h>
 #include <device.h>
 #include <gpiopins.h>
 #include <leds.h>
