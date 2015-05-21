@@ -26,7 +26,7 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
-#define MAX_ADC_CHANNELS	19
+#define MAX_ADC_CHANNELS	16
 
 // Some analog input channels on some boards are not available because
 // they conflict with other devicese.
@@ -36,7 +36,7 @@ bool adc_channel_forbidden(void *subsystem, unsigned int channel)
 #ifdef ADC1
   if (subsystem == ADC1)
   {
-    if (channel > 18) return true;
+    if (channel >= MAX_ADC_CHANNELS) return true;
 
 #if defined(FEZ_CERB40) && defined(CONSOLE_SERIAL)
     if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
@@ -121,9 +121,11 @@ int adc_init(void *subsystem, unsigned int channel)
 
   ADCsubsystem->SR  = 0;
   ADCsubsystem->CR1 = 0;
-  ADCsubsystem->CR2 = ADC_CR2_ADON;
+  ADCsubsystem->CR2 = ADC_CR2_ADON;	// A/D is on
+  ADCsubsystem->SMPR1 = 00000333333;	// Sample for 56 cycles
+  ADCsubsystem->SMPR2 = 03333333333;	// Sample for 56 cycles
 
-  ADC->CCR  = ADC_CCR_TSVREFE;
+  ADC->CCR  = ADC_CCR_ADCPRE_0;		// A/D clock is PCLK2/4
 
 // Configure the analog input
 
