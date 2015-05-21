@@ -24,7 +24,7 @@
 
 FWLIBDIR	= $(MCUDIR)/FWLib
 
-CFLAGS		+= -I$(FWLIBDIR)/inc
+CFLAGS		+= -I$(FWLIBDIR)
 
 .PHONY: fwlib_lib
 
