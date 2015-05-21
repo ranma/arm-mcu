@@ -26,34 +26,71 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
-#define MAX_ADC_CHANNELS	16
+// Some channels on some boards are not available because
+// they conflict with things like the serial console.  This
+// function lets us find out if a particular channel is available.
+
+bool adc_channel_forbidden(void *subsystem, unsigned int channel)
+{
+#ifdef ADC1
+  if (subsystem == ADC1)
+  {
+    if (channel > 18) return true;
+
+#if defined(FEZ_CERB40) && defined(CONSOLE_SERIAL)
+    if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
+#endif
+
+#if defined(NETDUINOPLUS2) && defined(CONSOLE_SERIAL)
+    if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
+#endif
+
+#if defined(NUCLEO_F411RE)
+    if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
+    if (channel == 5) return true;			// LED on PA5
+#endif
+
+#if defined(STM32F4_DISCOVERY) && defined(CONSOLE_SERIAL)
+    if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
+#endif
+
+#if defined(STM32F4_DISCOVERY_SHIELD)
+    if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
+#endif
+
+#if defined(STM32_M4_MINI) && defined(CONSOLE_SERIAL)
+    if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
+#endif
+
+    return false;
+  }
+#endif
+
+  return true;
+}
 
 // Initialize an A/D input pin
 //   Returns 0 on success or nonzero on failure and sets errno
 
 int adc_init(void *subsystem, unsigned int channel)
 {
-  ADC_TypeDef *ADCsubsystem = NULL;
+  ADC_TypeDef *ADCsubsystem;
   errno_r = 0;
+
+#ifdef ADC1
+  // Compatibility hack
+  if (subsystem == NULL) subsystem = ADC1;
+#endif
 
 // Validate parameters
 
-#ifdef ADC1
-  if ((subsystem == NULL) || (subsystem == ADC1))
-    ADCsubsystem = ADC1;
-#endif
-
-  if (ADCsubsystem == NULL)
+  if (adc_channel_forbidden(subsystem, channel))
   {
     errno_r = ENODEV;
     return -1;
   }
 
-  if (channel >= MAX_ADC_CHANNELS)
-  {
-    errno_r = ENODEV;
-    return -1;
-  }
+  ADCsubsystem = subsystem;
 
 // Let ADC subsystem out of reset
 
@@ -181,27 +218,23 @@ int adc_init(void *subsystem, unsigned int channel)
 
 uint16_t adc_read(void * subsystem, unsigned int channel)
 {
-  ADC_TypeDef *ADCsubsystem = NULL;
+  ADC_TypeDef *ADCsubsystem ;
   errno_r = 0;
+
+#ifdef ADC1
+  // Compatibility hack
+  if (subsystem == NULL) subsystem = ADC1;
+#endif
 
 // Validate parameters
 
-#ifdef ADC1
-  if ((subsystem == NULL) || (subsystem == ADC1))
-    ADCsubsystem = ADC1;
-#endif
-
-  if (ADCsubsystem == NULL)
+  if (adc_channel_forbidden(subsystem, channel))
   {
     errno_r = ENODEV;
     return -1;
   }
 
-  if (channel >= MAX_ADC_CHANNELS)
-  {
-    errno_r = ENODEV;
-    return 0;
-  }
+  ADCsubsystem = subsystem;
 
 // Select analog input
 
