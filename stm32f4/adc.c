@@ -81,74 +81,90 @@ int adc_init(void *subsystem, unsigned int channel)
     switch (channel)
     {
       case 0 :	// PA0
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
         GPIOA->MODER |= 3 << 0;
         GPIOA->PUPDR &= ~(3 << 0);
         break;
 
       case 1 :	// PA1
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
         GPIOA->MODER |= 3 << 2;
         GPIOA->PUPDR &= ~(3 << 2);
         break;
 
       case 2 :	// PA2
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
         GPIOA->MODER |= 3 << 4;
         GPIOA->PUPDR &= ~(3 << 4);
         break;
   
       case 3 :	// PA3
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
         GPIOA->MODER |= 3 << 6;
         GPIOA->PUPDR &= ~(3 << 6);
         break;
 
       case 4 :	// PA4
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
         GPIOA->MODER |= 3 << 8;
         GPIOA->PUPDR &= ~(3 << 8);
         break;
 
       case 5 :	// PA5
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
         GPIOA->MODER |= 3 << 10;
         GPIOA->PUPDR &= ~(3 << 10);
         break;
 
       case 6 :	// PA6
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
         GPIOA->MODER |= 3 << 12;
         GPIOA->PUPDR &= ~(3 << 12);
         break;
 
       case 7 :	// PA7
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
         GPIOA->MODER |= 3 << 14;
         GPIOA->PUPDR &= ~(3 << 14);
         break;
 
       case 8 :	// PB0
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
         GPIOB->MODER |= 3 << 0;
         GPIOB->PUPDR &= ~(3 << 0);
 
       case 9 :	// PB1
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
         GPIOB->MODER |= 3 << 2;
         GPIOB->PUPDR &= ~(3 << 2);
 
       case 10 :	// PC0
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
         GPIOC->MODER |= 3 << 0;
         GPIOC->PUPDR &= ~(3 << 0);
 
       case 11 :	// PC1
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
         GPIOC->MODER |= 3 << 2;
         GPIOC->PUPDR &= ~(3 << 2);
 
       case 12 :	// PC2
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
         GPIOC->MODER |= 3 << 4;
         GPIOC->PUPDR &= ~(3 << 4);
 
       case 13 :	// PC3
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
         GPIOC->MODER |= 3 << 6;
         GPIOC->PUPDR &= ~(3 << 6);
 
       case 14 :	// PC4
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
         GPIOC->MODER |= 3 << 8;
         GPIOC->PUPDR &= ~(3 << 8);
 
       case 15 :	// PC5
+        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
         GPIOC->MODER |= 3 << 10;
         GPIOC->PUPDR &= ~(3 << 10);
 
