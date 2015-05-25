@@ -83,14 +83,7 @@ int main(void)
   xTaskHandle task3;
 
   cpu_init(DEFAULT_CPU_FREQ);
-
-#ifdef CONSOLE_SERIAL
   serial_stdio(CONSOLE_PORT);
-#endif
-
-#ifdef CONSOLE_SEMIHOSTING
-  semihosting_stdio(CONSOLE_PORT)
-#endif
 
 // Display version information
 

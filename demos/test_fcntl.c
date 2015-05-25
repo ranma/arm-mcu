@@ -85,14 +85,7 @@ int main(void)
   char buf[256];
 
   cpu_init(DEFAULT_CPU_FREQ);
-
-#ifdef CONSOLE_SERIAL
   serial_stdio(CONSOLE_PORT);
-#endif
-
-#ifdef CONSOLE_SEMIHOSTING
-  semihosting_stdio(CONSOLE_PORT)
-#endif
 
   printf("\033[H\033[2J%s fcntl() Test (" __DATE__ " " __TIME__ ")\n\n", MCUFAMILYNAME);
   puts(revision);

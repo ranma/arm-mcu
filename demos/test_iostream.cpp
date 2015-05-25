@@ -41,14 +41,7 @@ int main(void)
   int x, y;
 
   cpu_init(DEFAULT_CPU_FREQ);
-
-#ifdef CONSOLE_SERIAL
   serial_stdio((char *) CONSOLE_PORT);
-#endif
-
-#ifdef CONSOLE_SEMIHOSTING
-  semihosting_stdio((char *) CONSOLE_PORT)
-#endif
 
   cout << CLEARSCREEN; 
   cout << MCUFAMILYNAME;

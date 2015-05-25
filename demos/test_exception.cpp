@@ -49,16 +49,7 @@ int main(void)
 
   cpu_init(DEFAULT_CPU_FREQ);
   systick_init(100);
-
-// Bind standard I/O to hardware
-
-#ifdef CONSOLE_SERIAL
   serial_stdio((char *) CONSOLE_PORT);
-#endif
-
-#ifdef CONSOLE_SEMIHOSTING
-  semihosting_stdio((char *) CONSOLE_PORT)
-#endif
 
 // Display startup banner
 
