@@ -26,10 +26,44 @@ USBSERIALDIR	= $(MCUDIR)/usb_serial
 
 CFLAGS		+= -I$(USBSERIALDIR)
 
+USBCFLAGS	+= -Wall -ffunction-sections
+USBCFLAGS	+= $(OPTFLAGS) $(CPUFLAGS) $(DEBUGFLAGS)
+USBCFLAGS	+= -I$(ARMSRC)/include -I$(MCUDIR)
+USBCFLAGS	+= -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT
+USBCFLAGS	+= -I$(USBSERIALDIR) -I$(USBSERIALDIR)/lib/inc
+
+ifeq ($(BOARDNAME), FEZ_CERB40)
+USBCFLAGS	+= -DSTM32F40_41xxx
+endif
+
+ifeq ($(BOARDNAME), NETDUINOPLUS2)
+USBCFLAGS	+= -DSTM32F40_41xxx
+endif
+
+ifeq ($(BOARDNAME), STM32F4_DISCOVERY)
+USBCFLAGS	+= -DSTM32F40_41xxx
+endif
+
+ifeq ($(BOARDNAME), STM32_F4_MINI)
+USBCFLAGS	+= -DSTM32F40_41xxx
+endif
+
+ifeq ($(BOARDNAME), STM32_F4_CLICKER)
+USBCFLAGS	+= -DSTM32F40_41xxx
+endif
+
+ifeq ($(BOARDNAME), NUCLEO_F411RE)
+USBCFLAGS	+= -DSTM32F411xE
+endif
+
 .PHONY: usb_serial_lib
 
 usb_serial_lib:
-	for F in $(USBSERIALDIR)/*.c ; do $(MAKE) $${F%.c}.o ; done
+	for F in $(USBSERIALDIR)/*.c ; do $(MAKE) CFLAGS="$(USBCFLAGS)" $${F%.c}.o ; done
+	$(MAKE) CFLAGS="$(USBCFLAGS)" $(USBSERIALDIR)/lib/src/misc.o
+	$(MAKE) CFLAGS="$(USBCFLAGS)" $(USBSERIALDIR)/lib/src/stm32f4xx_exti.o
+	$(MAKE) CFLAGS="$(USBCFLAGS)" $(USBSERIALDIR)/lib/src/stm32f4xx_gpio.o
+	$(MAKE) CFLAGS="$(USBCFLAGS)" $(USBSERIALDIR)/lib/src/stm32f4xx_rcc.o
 	$(FIND) $(USBSERIALDIR) -type f -name '*.o' -exec $(AR) crs lib$(MCU).a {} ";"
 
 # Add to target lists
