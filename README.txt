@@ -201,11 +201,18 @@ News
        file descriptor while other operations are delegated to the device
        specific fcntl() handler, if one was provided when the device was
        registered.
+     * 25 May 2015 -- Stopped using the STM32F4 Standard Peripheral
+       Library. Use [19]CMSIS instead. Eliminated USB serial port console
+       support from most targets. It was just too unstable and hard to
+       maintain. It is so much easier to use dedicated a dedicated USB
+       serial port device like the [20]FT232R. Changed STM32F4 makefiles
+       to always use the hardware FPU. With recent versions of newlib,
+       there is no longer a code size penalty from enabling the FPU.
 
 Git Repository
 
-   The source code is hosted on [19]SourceForge at
-   [20]http://sourceforge.net/p/arm-mcu/code.
+   The source code is hosted on [21]SourceForge at
+   [22]http://sourceforge.net/p/arm-mcu/code.
 
    Use one of the following commands to clone it:
 git clone --depth 1 git://git.code.sf.net/p/arm-mcu/code  ARM
@@ -239,7 +246,7 @@ POSSIBILITY OF SUCH DAMAGE.
    respective authors.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [21]phil@munts.net
+   Questions or comments to Philip Munts [23]phil@munts.net
 
    $Id$
 
@@ -266,6 +273,8 @@ References
   16. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF260320
   17. http://launchpad.net/gcc-arm-embedded
   18. https://github.com/texane/stlink
-  19. http://sourceforge.net/
-  20. http://sourceforge.net/p/arm-mcu/code
-  21. mailto:phil@munts.net
+  19. http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
+  20. http://www.ftdichip.com/Products/ICs/FT232R.htm
+  21. http://sourceforge.net/
+  22. http://sourceforge.net/p/arm-mcu/code
+  23. mailto:phil@munts.net
