@@ -99,11 +99,6 @@ int main(void)
   semihosting_stdio(CONSOLE_PORT)
 #endif
 
-#ifdef CONSOLE_USB
-  usb_serial_stdio(NULL);
-  getch();
-#endif
-
   printf("\033[H\033[2J%s WizNet Network Test (" __DATE__ " " __TIME__ ")\n", MCUFAMILYNAME);
   puts(revision);
   printf("\nCPU Freq:%u Hz  Compiler:%s %s %s\n\n", (unsigned int) SystemCoreClock,

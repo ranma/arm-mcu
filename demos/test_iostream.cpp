@@ -50,11 +50,6 @@ int main(void)
   semihosting_stdio((char *) CONSOLE_PORT)
 #endif
 
-#ifdef CONSOLE_USB
-  usb_serial_stdio((char *) NULL);
-  getch();
-#endif
-
   cout << CLEARSCREEN; 
   cout << MCUFAMILYNAME;
   cout << " C++ iostream Test ";

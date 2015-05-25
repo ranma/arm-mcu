@@ -119,54 +119,6 @@ if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
 
 export MCUFAMILY=lpc17xx
 export BOARDNAME=MBED_LPC1768
-export CONSOLEFLAGS=-DCONSOLE_USB
-
-cd ${ARMSRC}/${MCUFAMILY}
-make test_gpio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-cd ${ARMSRC}/demos
-make test_float.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_freertos.bin clean WITH_FREERTOS=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_objects.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_rand.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-
-unset CONSOLEFLAGS
-
-##########################################################################
-
-export MCUFAMILY=lpc17xx
-export BOARDNAME=MBED_LPC1768
-export CONSOLEFLAGS=-DCONSOLE_USB
-export IOFLAGS=-DCONIO_STDIO
-
-cd ${ARMSRC}/${MCUFAMILY}
-make test_gpio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-cd ${ARMSRC}/demos
-make test_float.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_freertos.bin clean WITH_FREERTOS=yes
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_objects.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_rand.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-make test_stdio.bin clean
-if [ $? -ne 0 ]; then echo "BARF" ; exit ; fi
-
-unset CONSOLEFLAGS
-unset IOFLAGS
-
-##########################################################################
-
-export MCUFAMILY=lpc17xx
-export BOARDNAME=MBED_LPC1768
 export IOFLAGS=-DCONIO_STDIO
 
 cd ${ARMSRC}/${MCUFAMILY}

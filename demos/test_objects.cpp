@@ -79,11 +79,6 @@ int main(void)
   semihosting_stdio((char *) CONSOLE_PORT)
 #endif
 
-#ifdef CONSOLE_USB
-  usb_serial_stdio((char *) NULL);
-  getch();
-#endif
-
   printf("\033[H\033[2J%s C++ Object Test (" __DATE__ " " __TIME__ ")\n\n", MCUFAMILYNAME);
   puts(revision);
   printf("\nCPU Freq:%u Hz  Compiler:%s %s %s\n\n", (unsigned int) SystemCoreClock,

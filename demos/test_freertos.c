@@ -92,11 +92,6 @@ int main(void)
   semihosting_stdio(CONSOLE_PORT)
 #endif
 
-#ifdef CONSOLE_USB
-  usb_serial_stdio(NULL);
-  getch();
-#endif
-
 // Display version information
 
   printf("\033[H\033[2J%s FreeRTOS Test (" __DATE__ " " __TIME__ ")\n\n", MCUFAMILYNAME);
