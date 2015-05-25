@@ -44,7 +44,7 @@ bool adc_channel_forbidden(void *subsystem, unsigned int channel)
 
 #if defined(NETDUINOPLUS2)
     if ((channel >= 4) && (channel <= 5)) return true;	// Ethernet on PA4 and PA5
-    if ((channel == 7) return true;			// Ethernet on PA7
+    if (channel == 7) return true;			// Ethernet on PA7
     if ((channel >= 8) && (channel <= 9)) return true;	// SD-Card on PB0 and PB1
 #endif
 
