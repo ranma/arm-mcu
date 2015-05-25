@@ -33,11 +33,7 @@ FREERTOS_PORT	= $(FREERTOS_SRC)/portable/GCC/ARM_CM3
 endif 
 
 ifeq ($(MCUFAMILY), stm32f4)
-ifeq ($(WITH_FPU), yes)
 FREERTOS_PORT	= $(FREERTOS_SRC)/portable/GCC/ARM_CM4F
-else
-FREERTOS_PORT	= $(FREERTOS_SRC)/portable/GCC/ARM_CM3
-endif
 endif 
 
 CFLAGS		+= -DFREERTOS

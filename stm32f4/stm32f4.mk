@@ -22,7 +22,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-CPUFLAGS	+= -mcpu=cortex-m4 -mthumb -DCORTEX_M4
+CPUFLAGS	+= -DCORTEX_M4 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 FLASHWRITEADDR	?= 0x08000000
 TEXTBASE	?= 0x00000000
 
@@ -36,11 +36,6 @@ OPENOCDFLASH	= $(MCUDIR)/$(MCUFAMILY).flashocd
 OPENOCDIF	= stlink-v2
 
 STLINKCLIIF	= -c SWD
-
-ifeq ($(WITH_FPU), yes)
-CPUFLAGS	+= -mfloat-abi=hard -mfpu=fpv4-sp-d16
-RMAKEFLAGS	+= WITH_FPU=$(WITH_FPU)
-endif
 
 # Include subordinate makefiles
 
