@@ -40,11 +40,9 @@ STLINKCLIIF	= -c SWD
 # Include subordinate makefiles
 
 include $(MCUDIR)/boards.mk
-include $(MCUDIR)/$(MCU).mk
+include $(MCUDIR)/libs/stm32f1libs.mk
 
 # Build processor dependent support library
-
-include $(MCUDIR)/libs/stm32f1libs.mk
 
 LIBOBJS		= $(MCU).o cpu.o gpiopins.o leds.o serial.o spi.o $(EXTRALIBOBJS)
 
