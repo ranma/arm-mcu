@@ -42,7 +42,7 @@ static const char revision[] = "$Id$";
 
 #define PINS_PER_GPIO_PORT	16
 
-GPIO_TypeDef *PORTS[] =
+static GPIO_TypeDef * const PORTS[] =
 {
   GPIOA,
   GPIOB,
