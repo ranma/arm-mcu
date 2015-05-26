@@ -370,6 +370,7 @@ int gpiopin_configure(unsigned int pin, gpiopin_direction_t direction);
 #define GPIOPIN63IN	(*((unsigned long int *) 0x4222813C))
 #define GPIOPIN63OUT	(*((unsigned long int *) 0x422281BC))
 
+#ifdef GPIOE
 // PE0 is GPIOPIN64
 #define GPIOPIN64	64
 #define GPIOPIN64IN	(*((unsigned long int *) 0x42230100))
@@ -449,7 +450,9 @@ int gpiopin_configure(unsigned int pin, gpiopin_direction_t direction);
 #define GPIOPIN79	79
 #define GPIOPIN79IN	(*((unsigned long int *) 0x4223013C))
 #define GPIOPIN79OUT	(*((unsigned long int *) 0x422301BC))
+#endif
 
+#ifdef GPIOF
 // PF0 is GPIOPIN80
 #define GPIOPIN80	80
 #define GPIOPIN80IN	(*((unsigned long int *) 0x42238100))
@@ -529,7 +532,9 @@ int gpiopin_configure(unsigned int pin, gpiopin_direction_t direction);
 #define GPIOPIN95	95
 #define GPIOPIN95IN	(*((unsigned long int *) 0x4223813C))
 #define GPIOPIN95OUT	(*((unsigned long int *) 0x422381BC))
+#endif
 
+#ifdef GPIOG
 // PG0 is GPIOPIN96
 #define GPIOPIN96	96
 #define GPIOPIN96IN	(*((unsigned long int *) 0x42240100))
@@ -609,6 +614,7 @@ int gpiopin_configure(unsigned int pin, gpiopin_direction_t direction);
 #define GPIOPIN111	111
 #define GPIOPIN111IN	(*((unsigned long int *) 0x4224013C))
 #define GPIOPIN111OUT	(*((unsigned long int *) 0x422401BC))
+#endif
 
 _END_STD_C
 #endif

@@ -26,28 +26,42 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
-#define MAX_GPIO_PORTS		7
-#define PINS_PER_GPIO_PORT	16
+// Upper and lower halves of each STM32 16-bit GPIO port are handled separately
 
-static const struct
+#if defined(GPIOG)
+#define MAX_GPIO_PORTS		7
+#elif defined(GPIOF)
+#define MAX_GPIO_PORTS		6
+#elif defined(GPIOE)
+#define MAX_GPIO_PORTS		5
+#else
+#define MAX_GPIO_PORTS		4
+#endif
+
+#define PINS_PER_GPIO_PORT	16
+#define GPIO_CONFIG_INPUT	0x00000001
+#define GPIO_CONFIG_OUTPUT	0x0000000B
+
+static GPIO_TypeDef * const PORTS[] =
 {
-  GPIO_TypeDef *gpiobase;
-  unsigned long int peripheral;
-} PORTS[] =
-{
-  { GPIOA, RCC_APB2Periph_GPIOA },
-  { GPIOB, RCC_APB2Periph_GPIOB },
-  { GPIOC, RCC_APB2Periph_GPIOC },
-  { GPIOD, RCC_APB2Periph_GPIOD },
-  { GPIOE, RCC_APB2Periph_GPIOE },
-  { GPIOF, RCC_APB2Periph_GPIOF },
-  { GPIOG, RCC_APB2Periph_GPIOG }
+  GPIOA,
+  GPIOB,
+  GPIOC,
+  GPIOD,
+#ifdef GPIOE
+  GPIOE,
+#endif
+#ifdef GPIOF
+  GPIOF,
+#endif
+#ifdef GPIOG
+  GPIOG,
+#endif
 };
 
 int gpiopin_configure(unsigned int pin, gpiopin_direction_t direction)
 {
   unsigned int port;
-  GPIO_InitTypeDef config;
 
 // Split into port and pin components
 
@@ -68,17 +82,22 @@ int gpiopin_configure(unsigned int pin, gpiopin_direction_t direction)
     return __LINE__ - 3;
   }
 
-// Configure peripheral clocks
+// Enable the peripheral clock
 
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-  RCC_APB2PeriphClockCmd(PORTS[port].peripheral, ENABLE);
+  RCC->APB2ENR |= RCC_APB2ENR_AFIOEN|(1 << (port + 2));
 
 // Configure the pin
 
-  GPIO_StructInit(&config);
-  config.GPIO_Pin =  1 << pin;
-  config.GPIO_Mode = direction ? GPIO_Mode_Out_PP : GPIO_Mode_IN_FLOATING;
-  config.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(PORTS[port].gpiobase, &config);
+  if (pin < 8)
+  {
+    PORTS[port]->CRL &= ~(0xF << (pin*4));
+    PORTS[port]->CRL |= ((direction == GPIOPIN_INPUT) ? GPIO_CONFIG_INPUT : GPIO_CONFIG_OUTPUT) << (pin*4);
+  }
+  else
+  {
+    PORTS[port]->CRH &= ~(0xF << ((pin-8)*4));
+    PORTS[port]->CRH |= ((direction == GPIOPIN_INPUT) ? GPIO_CONFIG_INPUT : GPIO_CONFIG_OUTPUT) << ((pin-8)*4);
+  }
+
   return 0;
 }
