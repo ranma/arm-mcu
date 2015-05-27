@@ -29,6 +29,7 @@ Other Devices
    provided the following files are modified:
 
    stm32f1xxxx.ld The RAM and ROM sizes must match the device.
+   stm32f1xxxx.S  The interrupt vector table must match the device.
 
 Test Platform
 
