@@ -25,13 +25,15 @@ Other Devices
 
 Test Platform
 
-   This framework is validated on the [4]mbed LPC1768, [5]NGX BlueBoard
-   LPC1768-H, and [6]LPC1768-Mini-DK2 development boards.
+   This framework is validated on the following LPC17xx development
+   boards:
+     * [4]mbed LPC1768
+     * [5]LPC1768-Mini-DK2
 
    Tested on 9 August 2013 with gcc 4.8.1.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [7]phil@munts.net
+   Questions or comments to Philip Munts [6]phil@munts.net
 
    $Id$
 
@@ -44,6 +46,5 @@ References
    2. http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
    3. http://ics.nxp.com/support/lpcxpresso
    4. http://mbed.org/handbook/mbed-NXP-LPC1768
-   5. http://shop.ngxtechnologies.com/product_info.php?products_id=65
-   6. http://www.hotmcu.com/lpc1768minidk2-development-board-p-55.html
-   7. mailto:phil@munts.net
+   5. http://www.hotmcu.com/lpc1768minidk2-development-board-p-55.html
+   6. mailto:phil@munts.net
