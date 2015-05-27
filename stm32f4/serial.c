@@ -291,6 +291,31 @@ int serial_open(char *name, unsigned *subdevice)
 
       RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
 
+#ifdef STM32_M4_CLICKER
+// Configure TX pin on PB6
+
+      RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+
+      GPIOB->AFR[0] &= ~(0xF << 24);
+      GPIOB->AFR[0] |= 7 << 24;
+      GPIOB->MODER &= ~GPIO_MODER_MODER6;
+      GPIOB->MODER |= GPIO_MODER_MODER6_1;
+      GPIOB->OTYPER &= ~GPIO_OTYPER_OT_6;
+      GPIOB->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR6;
+      GPIOB->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR6_1;
+      GPIOB->PUPDR &= ~GPIO_PUPDR_PUPDR6;
+
+// Configure RX pin PB7
+
+      RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+
+      GPIOB->AFR[0] &= ~(0xF << 28);
+      GPIOB->AFR[0] |= 7 << 28;
+      GPIOB->MODER &= ~GPIO_MODER_MODER7;
+      GPIOB->MODER |= GPIO_MODER_MODER7_1;
+      GPIOB->PUPDR &= ~GPIO_PUPDR_PUPDR7;
+      GPIOB->PUPDR |= GPIO_PUPDR_PUPDR7_0;
+#else
 // Configure TX pin on PA9
 
       RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
@@ -314,6 +339,7 @@ int serial_open(char *name, unsigned *subdevice)
       GPIOA->MODER |= GPIO_MODER_MODER10_1;
       GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR10;
       GPIOA->PUPDR |= GPIO_PUPDR_PUPDR10_0;
+#endif
 
 // Configure USART1
 
