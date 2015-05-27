@@ -26,8 +26,6 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
-// Upper and lower halves of each STM32 16-bit GPIO port are handled separately
-
 #if defined(GPIOG)
 #define MAX_GPIO_PORTS		7
 #elif defined(GPIOF)
@@ -39,8 +37,9 @@ static const char revision[] = "$Id$";
 #endif
 
 #define PINS_PER_GPIO_PORT	16
-#define GPIO_CONFIG_INPUT	0x00000001
-#define GPIO_CONFIG_OUTPUT	0x0000000B
+
+#define GPIO_CONFIG_INPUT	0x00000004
+#define GPIO_CONFIG_OUTPUT	0x00000003
 
 static GPIO_TypeDef * const PORTS[] =
 {
