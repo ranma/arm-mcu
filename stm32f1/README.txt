@@ -32,13 +32,15 @@ Other Devices
 
 Test Platform
 
-   This framework is validated on the [2]Olimex STM32-P103, [3]Olimex
-   STM32-P107, and [4]STM32 Value Line Discovery development boards.
+   This framework is validated on the following STM32F1xx development
+   boards:
+     * [2]Olimex STM32-P103
+     * [3]Olimex STM32-P107
 
    Tested on 9 August 2013 with gcc 4.8.1.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [5]phil@munts.net
+   Questions or comments to Philip Munts [4]phil@munts.net
 
    $Id$
 
@@ -50,5 +52,4 @@ References
    1. http://www.amazon.com/Definitive-Guide-Cortex-M3-Embedded-Technology/dp/0750685344
    2. http://www.olimex.com/dev/stm32-p103.html
    3. http://www.olimex.com/dev/stm32-p107.html
-   4. http://www.st.com/stm32-discovery
-   5. mailto:phil@munts.net
+   4. mailto:phil@munts.net
