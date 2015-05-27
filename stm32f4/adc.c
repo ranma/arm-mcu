@@ -76,6 +76,11 @@ bool adc_channel_forbidden(void *subsystem, unsigned int channel)
     if ((channel >= 2) && (channel <= 3)) return true;	// USART2 on PA2 and PA3
 #endif
 
+#if defined(STM32_M4_CLICKER)
+    if ((channel >= 1) && (channel <= 3)) return true;	// PA1 to PA3 already used or not connected
+    if ((channel >= 10) && (channel <= 15)) return true;// PC0 to PC5 already used or not connected
+#endif
+
     return false;
   }
 #endif
