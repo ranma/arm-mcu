@@ -36,9 +36,14 @@ Other Devices
 
 Test Platform
 
-   This framework is validated on the [2]STM32F4 Discovery, [3]FEZ Cerb40,
-   [4]Netduino Plus 2, [5]MINI-M4 for STM32, [6]STM32 M4 Clicker, and
-   [7]NUCLEO-F411RE development boards.
+   This framework is validated on the following STM32F4xx development
+   boards:
+     * [2]NUCLEO-F411RE
+     * [3]FEZ Cerb40
+     * [4]Netduino Plus 2
+     * [5]MINI-M4 for STM32
+     * [6]STM32 M4 Clicker
+     * [7]STM32F4 Discovery
 
    Tested on 27 May 2015 with gcc 4.9.2.
      __________________________________________________________________
@@ -53,10 +58,10 @@ Test Platform
 References
 
    1. http://www.amazon.com/Definitive-Guide-Cortex-M3-Embedded-Technology/dp/0750685344
-   2. http://www.st.com/internet/evalboard/product/252419.jsp
+   2. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF260320
    3. http://www.ghielectronics.com/catalog/product/353
    4. http://netduino.com/netduinoplus2/specs.htm
    5. http://www.mikroe.com/mini/stm32
    6. http://www.mikroe.com/stm32/clicker/
-   7. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF260320
+   7. http://www.st.com/internet/evalboard/product/252419.jsp
    8. mailto:phil@munts.net
