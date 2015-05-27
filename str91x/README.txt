@@ -1,4 +1,3 @@
-
                     ST STR91x ARM Microcontroller Framework
 
 Credits
@@ -37,8 +36,8 @@ Other Devices
 
 Test Platform
 
-   This framework is validated on the [4]STMicro STR910-EVAL development
-   board.
+   This framework is validated on the following STR91x development boards:
+     * [4]STMicro STR910-EVAL development board.
 
    Tested on 9 August 2013 with gcc 4.8.1.
 
