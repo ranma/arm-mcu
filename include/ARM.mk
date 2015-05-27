@@ -150,13 +150,6 @@ FREERTOS_DIR	= $(ARMSRC)/FreeRTOS
 include $(FREERTOS_DIR)/FreeRTOS.mk
 endif
 
-# Support for WizNet device drivers
-
-ifeq ($(WITH_WIZNET), yes)
-WIZNET_DIR      = $(ARMSRC)/wiznet
-include $(WIZNET_DIR)/wiznet.mk
-endif
-
 # Clean out working files
 
 ARM_mk_clean:
