@@ -172,7 +172,7 @@ int main(void)
 
 #ifdef LED0_OUTPUT
 #ifdef LED0_ACTIVELOW
-      LED0_OUTPUT = ~i >> 18;
+      LED0_OUTPUT = ~i >> 22;
 #else
       LED0_OUTPUT = i >> 22;
 #endif
