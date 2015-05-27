@@ -25,9 +25,10 @@ Other Devices
 
 Test Platform
 
-   This framework is validated on the [4]Raspberry Pi LPC1114 I/O
-   Processor expansion board and a bare [5]LPC1114FN28/102 plugged into a
-   solderless breadboard.
+   This framework is validated on the following LPC11x development boards:
+     * [4]Raspberry Pi LPC1114 I/O Processor expansion board
+     * Bare [5]LPC1114FN28/102 28-pin DIP plugged into a solderless
+       breadboard.
 
    Tested on 9 August 2013 with gcc 4.8.1.
      __________________________________________________________________
