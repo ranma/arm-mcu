@@ -1,4 +1,4 @@
-               ST STM32F1 Cortex-M3 ARM Microcontroller Framework
+       STMicroelectronics STM32F1 Cortex-M3 ARM Microcontroller Framework
 
 Credits
 
@@ -6,18 +6,21 @@ Credits
    stm32f1xxxx.ld were written by myself based on various examples on the
    Internet and in [1]The Definitive Guide to the ARM Cortex-M3.
 
+   The [2]CMSIS library came from [3]STMicroelectronics, extracted from
+   the [4]STM32CubeF1 software package.
+
    Other files are original works by myself.
 
-Memory Map (STM32F107RB)
+Memory Map (STM32F103RB)
 
-   Code Flash: 0x00000000 to 0x0003FFFF 256 KB
-   Data RAM:   0x20000000 to 0x2000FFFF 64 KB
+   Code Flash: 0x00000000 to 0x0001FFFF 128 KB
+   Data RAM:   0x20000000 to 0x20004FFF 20 KB
 
    The STM32F1 microcontrollers can have any of code flash at 0x08000000,
-   system memory (serial boot loader) at 0x1FFFF000, or data ram at
-   0x20000000 mapped to address 0x00000000, depending on the BOOT0 and
-   BOOT1 pins. This framework assumes BOOT0 is strapped low, mapping code
-   flash to 0x00000000.
+   system ROM (boot loader) at 0x1FFFF000, or data RAM at 0x20000000
+   mapped to address 0x00000000, depending on the BOOT0 and BOOT1 pins.
+   This framework assumes BOOT0 is strapped low, mapping code flash to
+   0x00000000.
 
    This framework assumes a single stack for both thread and handler
    modes, using MSP (Main Stack Pointer) at the top of RAM. The C heap is
@@ -25,23 +28,25 @@ Memory Map (STM32F107RB)
 
 Other Devices
 
-   This framework may be used for other devices in the ST STM32F1 family,
+   This framework may be used for other devices in the STM32F1 family,
    provided the following files are modified:
 
-   stm32f1xxxx.ld The RAM and ROM sizes must match the device.
-   stm32f1xxxx.S  The interrupt vector table must match the device.
+   stm32f1xxxx.ld         The RAM and ROM sizes must match the device.
+   stm32f1xxxx.S          The interrupt vector table must match the device.
+   stm32f1xxxx.debugjlink The memory regions reported to GDB must match
+                          the device.
 
 Test Platform
 
    This framework is validated on the following STM32F1xx development
    boards:
-     * [2]Olimex STM32-P103
-     * [3]Olimex STM32-P107
+     * [5]Olimex STM32-P103
+     * [6]Olimex STM32-P107
 
-   Tested on 9 August 2013 with gcc 4.8.1.
+   Tested on 28 May 2015 with gcc 4.9.2.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [4]phil@munts.net
+   Questions or comments to Philip Munts [7]phil@munts.net
 
    $Id$
 
@@ -51,6 +56,9 @@ Test Platform
 References
 
    1. http://www.amazon.com/Definitive-Guide-Cortex-M3-Embedded-Technology/dp/0750685344
-   2. http://www.olimex.com/dev/stm32-p103.html
-   3. http://www.olimex.com/dev/stm32-p107.html
-   4. mailto:phil@munts.net
+   2. http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
+   3. http://www.st.com/
+   4. http://www.st.com/web/en/catalog/tools/PF260820
+   5. http://www.olimex.com/dev/stm32-p103.html
+   6. http://www.olimex.com/dev/stm32-p107.html
+   7. mailto:phil@munts.net
