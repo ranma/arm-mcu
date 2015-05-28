@@ -54,18 +54,7 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
-#ifdef LPC17XX
-#include <LPC17xx.h>
-#endif
-
-#ifdef STM32F10X
-#include <stm32f10x.h>
-#endif
-
-#ifdef STM32F4XX
-#include <stm32f4xx.h>
-#endif
-
+#include <cpu.h>
 #include <portmacro.h>
 
 /*-----------------------------------------------------------
