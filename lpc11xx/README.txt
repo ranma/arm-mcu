@@ -2,7 +2,7 @@
 
 Credits
 
-   The C run time startup code lpc11xxxx.S and linker script lpc11xxxx.ld
+   The C run time startup code lpc11xxxx.S and linker scripts lpc11xxxx.ld
    were written by myself based on various examples on the Internet and in
    [1]The Definitive Guide to the ARM Cortex-M3.
 
@@ -21,7 +21,10 @@ Other Devices
    This framework may be used for other devices in the NXP LPC11xx family,
    provided the following files are modified:
 
-   lpc11xxxx.ld The RAM size may need be changed.
+   lpc11xxxx.ld The RAM and ROM sizes must match the device.
+   lpc11xxxx.S The interrupt vector table must match the device.
+   lpc11xxxx.debugjlink The memory regions reported to GDB must match the
+   device.
 
 Test Platform
 

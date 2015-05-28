@@ -21,7 +21,10 @@ Other Devices
    This framework may be used for other devices in the NXP LPC17xx family,
    provided the following files are modified:
 
-   lpc17xx.ld The RAM size may need be changed.
+   lpc17xx.ld The RAM and ROM sizes must match the device.
+   lpc17xx.S The interrupt vector table must match the device.
+   lpc17xx.debugjlink The memory regions reported to GDB must match the
+   device.
 
 Test Platform
 
