@@ -56,6 +56,19 @@
 
 #include <assert.h>
 #include <cpu.h>
+
+/* Use the system definition, if there is one */
+#ifdef __NVIC_PRIO_BITS
+	#define configPRIO_BITS       __NVIC_PRIO_BITS
+#else
+	#define configPRIO_BITS       5        /* 32 priority levels */
+#endif
+
+/* The lowest priority. */
+#define configKERNEL_INTERRUPT_PRIORITY 	( 31 << (8 - configPRIO_BITS) )
+/* Priority 5, or 160 as only the top three bits are implemented. */
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( 5 << (8 - configPRIO_BITS) )
+
 #include <portmacro.h>
 
 /*-----------------------------------------------------------
@@ -104,18 +117,6 @@ to exclude the API function. */
 #define INCLUDE_xTaskGetIdleTaskHandle	1
 #define INCLUDE_xTimerGetTimerDaemonTaskHandle	1
 #define INCLUDE_pcTaskGetTaskName	1
-
-/* Use the system definition, if there is one */
-#ifdef __NVIC_PRIO_BITS
-	#define configPRIO_BITS       __NVIC_PRIO_BITS
-#else
-	#define configPRIO_BITS       5        /* 32 priority levels */
-#endif
-
-/* The lowest priority. */
-#define configKERNEL_INTERRUPT_PRIORITY 	( 31 << (8 - configPRIO_BITS) )
-/* Priority 5, or 160 as only the top three bits are implemented. */
-#define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( 5 << (8 - configPRIO_BITS) )
 
 /* Map FreeRTOS interrupt handlers to CMSIS function names */
 
