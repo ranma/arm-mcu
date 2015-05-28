@@ -21,10 +21,10 @@ Other Devices
    This framework may be used for other devices in the NXP LPC11xx family,
    provided the following files are modified:
 
-   lpc11xxxx.ld The RAM and ROM sizes must match the device.
-   lpc11xxxx.S The interrupt vector table must match the device.
+   lpc11xxxx.ld         The RAM and ROM sizes must match the device.
+   lpc11xxxx.S          The interrupt vector table must match the device.
    lpc11xxxx.debugjlink The memory regions reported to GDB must match the
-   device.
+                        device.
 
 Test Platform
 
