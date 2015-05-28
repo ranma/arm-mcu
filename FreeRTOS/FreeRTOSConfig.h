@@ -54,6 +54,7 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
+#include <assert.h>
 #include <cpu.h>
 #include <portmacro.h>
 
@@ -67,7 +68,6 @@
  * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE.
  *----------------------------------------------------------*/
 
-#include <assert.h>
 #define configASSERT(x)			assert(x)
 #define configUSE_PREEMPTION		1
 #define configUSE_IDLE_HOOK		0
@@ -105,30 +105,6 @@ to exclude the API function. */
 #define INCLUDE_xTimerGetTimerDaemonTaskHandle	1
 #define INCLUDE_pcTaskGetTaskName	1
 
-/*-----------------------------------------------------------
- * Ethernet configuration.
- *-----------------------------------------------------------*/
-
-/* MAC address configuration. */
-#define configMAC_ADDR0	0x00
-#define configMAC_ADDR1	0x12
-#define configMAC_ADDR2	0x13
-#define configMAC_ADDR3	0x10
-#define configMAC_ADDR4	0x15
-#define configMAC_ADDR5	0x11
-
-/* IP address configuration. */
-#define configIP_ADDR0		192
-#define configIP_ADDR1		168
-#define configIP_ADDR2		0
-#define configIP_ADDR3		201
-
-/* Netmask configuration. */
-#define configNET_MASK0		255
-#define configNET_MASK1		255
-#define configNET_MASK2		255
-#define configNET_MASK3		0
-
 /* Use the system definition, if there is one */
 #ifdef __NVIC_PRIO_BITS
 	#define configPRIO_BITS       __NVIC_PRIO_BITS
@@ -146,16 +122,8 @@ function does the shifting itself.  Note these priorities need to be equal to
 or lower than configMAX_SYSCALL_INTERRUPT_PRIORITY - therefore the numeric
 value needs to be equal to or greater than 5 (on the Cortex-M3 the lower the
 numeric value the higher the interrupt priority). */
-#define configEMAC_INTERRUPT_PRIORITY		5
-#define configUSB_INTERRUPT_PRIORITY		6
 
-// Use integer only siprintf() to avoid linking floating point libraries
-
-#ifndef portSPRINTF
-#define portSPRINTF siprintf
-#endif
-
-// Map FreeRTOS interrupt handlers to mine
+// Map FreeRTOS interrupt handlers to CMSIS function names
 
 #define xPortSysTickHandler	SysTick_Handler
 #define xPortPendSVHandler	PendSV_Handler
