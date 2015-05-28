@@ -117,13 +117,7 @@ to exclude the API function. */
 /* Priority 5, or 160 as only the top three bits are implemented. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( 5 << (8 - configPRIO_BITS) )
 
-/* Priorities passed to NVIC_SetPriority() do not require shifting as the
-function does the shifting itself.  Note these priorities need to be equal to
-or lower than configMAX_SYSCALL_INTERRUPT_PRIORITY - therefore the numeric
-value needs to be equal to or greater than 5 (on the Cortex-M3 the lower the
-numeric value the higher the interrupt priority). */
-
-// Map FreeRTOS interrupt handlers to CMSIS function names
+/* Map FreeRTOS interrupt handlers to CMSIS function names */
 
 #define xPortSysTickHandler	SysTick_Handler
 #define xPortPendSVHandler	PendSV_Handler
