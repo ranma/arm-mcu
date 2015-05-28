@@ -2,7 +2,7 @@
 
 Credits
 
-   The C run time startup code stm32f1xxxx.S and linker script
+   The C run time startup code stm32f1xxxx.S and linker scripts
    stm32f1xxxx.ld were written by myself based on various examples on the
    Internet and in [1]The Definitive Guide to the ARM Cortex-M3.
 
