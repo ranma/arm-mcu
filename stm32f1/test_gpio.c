@@ -66,11 +66,19 @@ int main(void)
 #endif
     {
     // BUTTON0 pressed; flash LED's faster
-#ifdef LED3_OUTPUT
-#ifdef LED3_ACTIVELOW
-      LED3_OUTPUT = ~i >> 18;
+#ifdef LED0_OUTPUT
+#ifdef LED0_ACTIVELOW
+      LED0_OUTPUT = ~i >> 17;
 #else
-      LED3_OUTPUT = i >> 18;
+      LED0_OUTPUT = i >> 17;
+#endif
+#endif
+
+#ifdef LED1_OUTPUT
+#ifdef LED1_ACTIVELOW
+      LED1_OUTPUT = ~i >> 18;
+#else
+      LED1_OUTPUT = i >> 18;
 #endif
 #endif
 
@@ -82,19 +90,11 @@ int main(void)
 #endif
 #endif
 
-#ifdef LED1_OUTPUT
-#ifdef LED1_ACTIVELOW
-      LED1_OUTPUT = ~i >> 20;
+#ifdef LED3_OUTPUT
+#ifdef LED3_ACTIVELOW
+      LED3_OUTPUT = ~i >> 20;
 #else
-      LED1_OUTPUT = i >> 20;
-#endif
-#endif
-
-#ifdef LED0_OUTPUT
-#ifdef LED0_ACTIVELOW
-      LED0_OUTPUT = ~i >> 21;
-#else
-      LED0_OUTPUT = i >> 21;
+      LED3_OUTPUT = i >> 20;
 #endif
 #endif
     }
@@ -109,11 +109,19 @@ int main(void)
 #endif
     {
     // BUTTON1 pressed; flash LED's slower
-#ifdef LED3_OUTPUT
-#ifdef LED3_ACTIVELOW
-      LED3_OUTPUT = ~i >> 20;
+#ifdef LED0_OUTPUT
+#ifdef LED0_ACTIVELOW
+      LED0_OUTPUT = ~i >> 19;
 #else
-      LED3_OUTPUT = i >> 20;
+      LED0_OUTPUT = i >> 19;
+#endif
+#endif
+
+#ifdef LED1_OUTPUT
+#ifdef LED1_ACTIVELOW
+      LED1_OUTPUT = ~i >> 20;
+#else
+      LED1_OUTPUT = i >> 20;
 #endif
 #endif
 
@@ -125,19 +133,11 @@ int main(void)
 #endif
 #endif
 
-#ifdef LED1_OUTPUT
-#ifdef LED1_ACTIVELOW
-      LED1_OUTPUT = ~i >> 22;
+#ifdef LED3_OUTPUT
+#ifdef LED3_ACTIVELOW
+      LED3_OUTPUT = ~i >> 22;
 #else
-      LED1_OUTPUT = i >> 22;
-#endif
-#endif
-
-#ifdef LED0_OUTPUT
-#ifdef LED0_ACTIVELOW
-      LED0_OUTPUT = ~i >> 23;
-#else
-      LED0_OUTPUT = i >> 23;
+      LED3_OUTPUT = i >> 22;
 #endif
 #endif
     }
@@ -146,35 +146,35 @@ int main(void)
 
     // Flash LED's at normal speed
     {
-#ifdef LED3_OUTPUT
-#ifdef LED3_ACTIVELOW
-      LED3_OUTPUT = ~i >> 19;
+#ifdef LED0_OUTPUT
+#ifdef LED0_ACTIVELOW
+      LED0_OUTPUT = ~i >> 18;
 #else
-      LED3_OUTPUT = i >> 19;
-#endif
-#endif
-
-#ifdef LED2_OUTPUT
-#ifdef LED2_ACTIVELOW
-      LED2_OUTPUT = ~i >> 20
-#else
-      LED2_OUTPUT = i >> 20;
+      LED0_OUTPUT = i >> 18;
 #endif
 #endif
 
 #ifdef LED1_OUTPUT
 #ifdef LED1_ACTIVELOW
-      LED1_OUTPUT = ~i >> 21;
+      LED1_OUTPUT = ~i >> 19;
 #else
-      LED1_OUTPUT = i >> 21;
+      LED1_OUTPUT = i >> 19;
 #endif
 #endif
 
-#ifdef LED0_OUTPUT
-#ifdef LED0_ACTIVELOW
-      LED0_OUTPUT = ~i >> 22;
+#ifdef LED2_OUTPUT
+#ifdef LED2_ACTIVELOW
+      LED2_OUTPUT = ~i >> 20;
 #else
-      LED0_OUTPUT = i >> 22;
+      LED2_OUTPUT = i >> 20;
+#endif
+#endif
+
+#ifdef LED3_OUTPUT
+#ifdef LED3_ACTIVELOW
+      LED3_OUTPUT = ~i >> 21;
+#else
+      LED3_OUTPUT = i >> 21;
 #endif
 #endif
     }
