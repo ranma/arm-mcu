@@ -286,7 +286,8 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Turn on USART1 peripheral clock
 
-      RCC->APB2ENR |= RCC_APB2ENR_AFIOEN|RCC_APB2ENR_USART1EN;
+      RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
+      RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
 
 #ifdef OLIMEX_STM32_P107
 // Configure TX pin on PB6
@@ -343,7 +344,8 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Turn on USART2 peripheral clock
 
-      RCC->APB1ENR |= RCC_APB2ENR_AFIOEN|RCC_APB1ENR_USART2EN;
+      RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
+      RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
 
 #ifdef OLIMEX_STM32_P107
 // Configure TX pin on PD5
@@ -400,9 +402,12 @@ int serial_open(char *name, unsigned *subdevice)
 
 // Turn on USART3 peripheral clock
 
-      RCC->APB1ENR |= RCC_APB2ENR_AFIOEN|RCC_APB1ENR_USART3EN;
+      RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
+      RCC->APB1ENR |= RCC_APB1ENR_USART3EN;
 
 #ifdef OLIMEX_STM32_P107
+      AFIO->MAPR |= AFIO_MAPR_USART3_REMAP;
+
 // Configure TX pin on PD8
 
       RCC->APB2ENR |= RCC_APB2ENR_IOPDEN;
