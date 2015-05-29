@@ -40,7 +40,7 @@ STLINKCLIIF	= -c SWD
 # Include subordinate makefiles
 
 include $(MCUDIR)/boards.mk
-include $(MCUDIR)/CMSIS/cmsis.mk
+include $(MCUDIR)/libs/stm32f1libs.mk
 
 # Build processor dependent support library
 
