@@ -30,13 +30,17 @@ tcl_port 6666
 
 # Adapter configuration
 
+adapter_khz 2000
+
 transport select hla_swd
 
 # Target configuration
 
-hla newtap STM32F4 cpu -expected-id 0x2ba01477
+source [find target/swj-dp.tcl]
 
-target create STM32F4.cpu hla_target -endian little -chain-position STM32F4.cpu
+swj_newdap STM32F4 cpu -irlen 4 -ircapture 0x1 -irmask 0xf -expected-id 0x2ba01477
+
+target create STM32F4.cpu cortex_m -endian little -chain-position STM32F4.cpu
 STM32F4.cpu configure -work-area-phys 0x20000000 -work-area-size 8192 -work-area-backup 0
 
 # Flash configuration
