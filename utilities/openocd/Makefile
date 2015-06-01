@@ -28,7 +28,7 @@
 TEMP		?= /tmp
 
 OPENOCD_NAME	= openocd
-OPENOCD_VER	= 0.8.0
+OPENOCD_VER	= 0.9.0
 OPENOCD_SRC	= $(OPENOCD_NAME)-$(OPENOCD_VER)
 OPENOCD_TARBALL	= $(OPENOCD_SRC).tar.gz
 OPENOCD_DIST	= $(TEMP)/$(OPENOCD_TARBALL)
@@ -58,7 +58,7 @@ source.done: $(OPENOCD_DIST)
 # Compile OpenOCD
 
 compile.done: source.done
-	cd $(OPENOCD_SRC) ; ./configure --prefix=/usr/local --enable-ftdi --enable-legacy-ft2232_libftdi --enable-buspirate
+	cd $(OPENOCD_SRC) ; ./configure --prefix=/usr/local --enable-ftdi --enable-buspirate
 	$(EXTRACONFIG)
 	$(MAKE) -C $(OPENOCD_SRC)
 	$(MAKE) -C $(OPENOCD_SRC) docs
