@@ -34,7 +34,7 @@ OPENOCDIF	?= ftdi/jtagkey2p
 # Start OpenOCD
 
 startocd:
-	$(OPENOCD) -f interface/$(OPENOCDIF).cfg -f $(OPENOCDCFG) >debug.log 2>&1 &
+	$(OPENOCD) -f interface/$(OPENOCDIF).cfg -f target/swj-dp.tcl -f $(OPENOCDCFG) >debug.log 2>&1 &
 
 # Stop OpenOCD
 
