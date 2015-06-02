@@ -43,7 +43,7 @@ jtag newtap STR91x flash -irlen 8 -ircapture 0x1 -irmask 0x1 -expected-id 0x0457
 jtag newtap STR91x cpu   -irlen 4 -ircapture 0x1 -irmask 0xF -expected-id 0x25966041
 jtag newtap STR91x bs    -irlen 5 -ircapture 0x1 -irmask 0x1 -expected-id 0x2457f041
 
-target create STR91x.cpu arm966e -endian little -chain-position STR91x.cpu -variant arm966e
+target create STR91x.cpu arm966e -endian little -chain-position STR91x.cpu
 STR91x.cpu configure -work-area-virt 0 -work-area-phys 0x50000000 -work-area-size 16384 -work-area-backup 0
 
 # Flash configuration
