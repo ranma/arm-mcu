@@ -58,7 +58,7 @@ source.done: $(OPENOCD_DIST)
 # Compile OpenOCD
 
 compile.done: source.done
-	cd $(OPENOCD_SRC) ; ./configure --prefix=/usr/local --enable-ftdi --enable-buspirate
+	cd $(OPENOCD_SRC) ; ./configure --prefix=/usr/local --enable-ftdi --enable-cmsis-dap --enable-buspirate
 	$(EXTRACONFIG)
 	$(MAKE) -C $(OPENOCD_SRC)
 	$(MAKE) -C $(OPENOCD_SRC) docs
