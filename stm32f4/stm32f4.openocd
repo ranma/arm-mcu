@@ -31,6 +31,9 @@ tcl_port 6666
 # Adapter configuration
 
 adapter_khz 4000
+adapter_nsrst_assert_width 100
+adapter_nsrst_delay 100
+reset_config srst_only
 
 # Target configuration
 
