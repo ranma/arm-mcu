@@ -37,7 +37,6 @@ JLINKGDBIF	= -if SWD
 
 include $(MCUDIR)/boards.mk
 include $(MCUDIR)/CMSIS/CMSIS.mk
-include $(MCUDIR)/usb_serial/usb_serial.mk
 
 # Build processor dependent support library
 
