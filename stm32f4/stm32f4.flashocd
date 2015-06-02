@@ -39,10 +39,7 @@ set timeout 10
 spawn /usr/bin/telnet localhost 4444
 expect $prompt
 
-send "reset run\n"
-expect $prompt
-
-send "halt\n"
+send "reset halt\n"
 expect $prompt
 
 send "wait_halt\n"
