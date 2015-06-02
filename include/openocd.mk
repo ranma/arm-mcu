@@ -39,7 +39,7 @@ startocd:
 # Stop OpenOCD
 
 stopocd:
-	-skill `basename $(OPENOCD) .exe`
+	-skill -9 `basename $(OPENOCD) .exe`
 
 # Debug with OpenOCD
 
