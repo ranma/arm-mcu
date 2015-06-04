@@ -34,19 +34,20 @@ Other Devices
    stm32f1xxxx.ld         The RAM and ROM sizes must match the device.
    stm32f1xxxx.S          The interrupt vector table must match the device.
    stm32f1xxxx.debugjlink The memory regions reported to GDB must match
-                          the device.
+   the device.
 
 Test Platform
 
    This framework is validated on the following STM32F1xx development
    boards:
-     * [5]Olimex STM32-P103
-     * [6]Olimex STM32-P107
+     * [5]NUCLEO-F103RB
+     * [6]Olimex STM32-P103
+     * [7]Olimex STM32-P107
 
-   Tested on 28 May 2015 with gcc 4.9.2.
+   Tested on 4 June 2015 with gcc 4.9.2.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [7]phil@munts.net
+   Questions or comments to Philip Munts [8]phil@munts.net
 
    $Id$
 
@@ -59,6 +60,7 @@ References
    2. http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
    3. http://www.st.com/
    4. http://www.st.com/web/en/catalog/tools/PF260820
-   5. http://www.olimex.com/dev/stm32-p103.html
-   6. http://www.olimex.com/dev/stm32-p107.html
-   7. mailto:phil@munts.net
+   5. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF259875
+   6. http://www.olimex.com/dev/stm32-p103.html
+   7. http://www.olimex.com/dev/stm32-p107.html
+   8. mailto:phil@munts.net
