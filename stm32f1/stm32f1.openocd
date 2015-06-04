@@ -1,4 +1,4 @@
-# OpenOCD configuration for STM32F1xx Cortex-M3 ARM MCU using ST-Link
+# OpenOCD configuration for STM32F1xx Cortex-M3 ARM MCU
 
 # $Id$
 
@@ -22,33 +22,19 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+source [find target/stm32f1x.cfg]
+
 # TCP server configuration
 
 gdb_port 3333
 telnet_port 4444
-tcl_port 6666
-
-# Adapter configuration
-
-transport select hla_swd
-
-# Target configuration
-
-hla newtap STM32F1 cpu -expected-id 0x1ba01477
-
-target create STM32F1.cpu hla_target -endian little -chain-position STM32F1.cpu
-STM32F1.cpu configure -work-area-phys 0x20000000 -work-area-size 8192 -work-area-backup 0
-
-# Flash configuration
-
-flash bank STM32F1.flash stm32f1x 0 0 0 0 STM32F1.cpu
 
 # GDB event handlers
 
-STM32F1.cpu configure -event gdb-attach {
+$_TARGETNAME configure -event gdb-attach {
   reset halt
 }
 
-STM32F1.cpu configure -event gdb-detach {
+$_TARGETNAME configure -event gdb-detach {
   resume
 }
