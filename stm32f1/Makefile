@@ -29,9 +29,7 @@ BOARDNAME	?= OLIMEX_STM32_P103
 
 include $(ARMSRC)/include/ARM.mk
 
-.PHONY: lib clean reallyclean distclean
-
-lib: lib$(MCU).a
+lib: ARM_mk_lib
 
 clean: ARM_mk_clean
 

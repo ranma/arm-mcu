@@ -150,6 +150,11 @@ FREERTOS_DIR	= $(ARMSRC)/FreeRTOS
 include $(FREERTOS_DIR)/FreeRTOS.mk
 endif
 
+# Build the MCU dependent support library
+
+ARM_mk_lib:
+	$(MAKE) -C $(MCUDIR) lib$(MCU).a
+
 # Clean out working files
 
 ARM_mk_clean:

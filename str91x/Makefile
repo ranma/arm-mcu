@@ -28,9 +28,7 @@ BOARDNAME	?= STMICRO_STR910_EVAL
 
 include $(ARMSRC)/include/ARM.mk
 
-.PHONY: lib clean reallyclean distclean
-
-lib: lib$(MCU).a
+lib: ARM_mk_lib
 
 clean: ARM_mk_clean
 
