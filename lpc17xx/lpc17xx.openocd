@@ -24,6 +24,8 @@
 
 source [find target/lpc17xx.cfg]
 
+# Adapter configuration
+
 adapter_khz 500
 reset_config trst_and_srst
 
