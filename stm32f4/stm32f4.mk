@@ -35,8 +35,6 @@ OPENOCDCFG	= $(MCUDIR)/$(MCUFAMILY).openocd
 OPENOCDFLASH	= $(MCUDIR)/$(MCUFAMILY).flashocd
 OPENOCDIF	= stlink-v2
 
-STLINKCLIIF	= -c SWD
-
 # Include subordinate makefiles
 
 include $(MCUDIR)/boards.mk
