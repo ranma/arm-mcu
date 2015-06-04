@@ -24,7 +24,7 @@ Other Devices
    lpc17xx.ld         The RAM and ROM sizes must match the device.
    lpc17xx.S          The interrupt vector table must match the device.
    lpc17xx.debugjlink The memory regions reported to GDB must match the
-                      device.
+   device.
 
 Test Platform
 
@@ -33,7 +33,7 @@ Test Platform
      * [4]mbed LPC1768
      * [5]LPC1768-Mini-DK2
 
-   Tested on 9 August 2013 with gcc 4.8.1.
+   Tested on 4 June 2015 with gcc 4.9.2.
      __________________________________________________________________
 
    Questions or comments to Philip Munts [6]phil@munts.net
