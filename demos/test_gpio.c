@@ -28,36 +28,39 @@ static const char revision[] = "$Id$";
 
 int main(void)
 {
-  unsigned long int i;
+  unsigned i;
 
   cpu_init(DEFAULT_CPU_FREQ);
-
-#ifdef LPC1114FN28
-  LPC_IOCON->PIO0_7 = 0xC0;			// PIO0.7 is GPIO
-  LPC_GPIO0->DIR = 0x80;			// P0.7 is output
-#endif
-
-#ifdef PROTOBOARD_LPC1114FN28
-  LPC_IOCON->R_PIO1_0 = 0xC1;			// Configure PIO1 pins for GPIO
-  LPC_IOCON->R_PIO1_1 = 0xC1;
-  LPC_IOCON->R_PIO1_2 = 0xC1;
-  LPC_IOCON->PIO1_4 = 0xC0;
-  LPC_IOCON->PIO1_5 = 0xC0;
-  LPC_IOCON->PIO1_6 = 0xC0;
-  LPC_IOCON->PIO1_7 = 0xC0;
-  LPC_IOCON->PIO1_8 = 0xC0;
-  LPC_IOCON->PIO1_9 = 0xC0;
-  LPC_GPIO1->DIR = 0x3F7;			// P1.0-P1.9 are outputs
-#endif
+  systick_init(100);
+  LEDS_initialize();
 
   for (i = 0;; i++)
   {
-#ifdef LPC1114FN28
-    LPC_GPIO0->DATA = i >> 11;			// Flash LED
+    LEDS_set(i);
+
+#ifdef BUTTON0_INPUT
+#ifdef BUTTON0_ACTIVELOW
+    if (!BUTTON0_INPUT)
+#else
+    if (BUTTON0_INPUT)
+#endif
+      // BUTTON0 pressed; flash LED's faster
+      millisleep(250);
+    else
 #endif
 
-#ifdef PROTOBOARD_LPC1114
-    LPC_GPIO1->DATA = i;			// Toggle P1 GPIO's
+#ifdef BUTTON1_INPUT
+#ifdef BUTTON1_ACTIVELOW
+    if (!BUTTON1_INPUT)
+#else
+    if (BUTTON1_INPUT)
 #endif
+      // BUTTON1 pressed; flash LED's slower
+      millisleep(1000);
+    else
+#endif
+
+      // Flash LED's at normal speed
+      millisleep(500);
   }
 }
