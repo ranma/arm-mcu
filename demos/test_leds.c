@@ -34,6 +34,14 @@ int main(void)
   systick_init(100);
   LEDS_initialize();
 
+#ifdef BUTTON0_PIN
+  gpiopin_configure(BUTTON0_PIN, GPIOPIN_INPUT);
+#endif
+
+#ifdef BUTTON1_PIN
+  gpiopin_configure(BUTTON1_PIN, GPIOPIN_INPUT);
+#endif
+
   for (i = 0;; i++)
   {
     LEDS_set(i);
