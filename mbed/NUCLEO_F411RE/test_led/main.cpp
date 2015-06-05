@@ -26,7 +26,8 @@
 
 DigitalOut myled(LED1);
 
-int main() {
+int main()
+{
     while(1) {
         myled = 1; // LED is ON
         wait(0.2); // 200 ms
