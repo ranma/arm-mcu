@@ -24,19 +24,20 @@
 
 #include "mbed.h"
 
-int main() {
+int main()
+{
     int i = 0;
-    
-    Serial pc(USBTX, USBRX);
-    pc.baud (115200);
-    
+
+    Serial console(USBTX, USBRX);
+    console.baud (115200);
+
     DigitalOut myled(LED1);
- 
+
     printf("\033[H\033[2JNUCLEO-F411RE Console Test\r\n\n");
     printf("Hello World !\r\n\n");
     fflush(stdout);
-    
-    while(1) { 
+
+    while(1) {
         wait(1);
         printf("This program has been running for %d seconds.\r", ++i);
         fflush(stdout);
