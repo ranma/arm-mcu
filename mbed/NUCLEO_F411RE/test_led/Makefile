@@ -36,7 +36,7 @@ PROJECTNAME	= test_led
 # Compile the program
 
 build: mbed
-	$(MAKE) -f main.mk all GCC_BIN="$(GNU_ARM_EMBEDDED_DIR)/bin/" PROJECT="$(PROJECTNAME)" OBJECTS="main.o"
+	$(MAKE) -f main.mk all GCC_BIN="$(GNU_ARM_EMBEDDED_DIR)/bin/" PROJECT="$(PROJECTNAME)"
 
 # Flash the program
 
