@@ -28,18 +28,20 @@ Other Devices
    This framework may be used for other devices in the ST STR91x family,
    provided the following files are modified:
 
-   str91xxxx.ld The RAM and/or ROM sizes must match the device.
-   str91xxxx.flashocd The parameters for the str9x flash_config command
+   str91xxxx.ld           The RAM and/or ROM sizes must match the device.
+   stm32f1xxxx.debugjlink The memory regions reported to GDB must match
+   the device.
+   str91xxxx.flashocd     The parameters for the str9x flash_config command
    must match the device.
-   str91xxxx.openocd The parameters for the flash command must match the
-   device.
+   str91xxxx.openocd      The parameters for the flash command must match
+   the device.
 
 Test Platform
 
    This framework is validated on the following STR91x development boards:
      * [4]STMicro STR910-EVAL development board.
 
-   Tested on 9 August 2013 with gcc 4.8.1.
+   Tested on 6 June 2015 with gcc 4.9.2.
 
    ARM9 devices like the STR91x are now considered legacy devices. The
    newer Cortex-M3 devices are much faster, cheaper, and easier to use. I
