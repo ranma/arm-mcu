@@ -29,6 +29,7 @@ CFLAGS		+= -I$(COMMON_DIR)
 COMMON_OBJS	=  $(COMMON_DIR)/conio.o
 COMMON_OBJS	+= $(COMMON_DIR)/device.o
 COMMON_OBJS	+= $(COMMON_DIR)/inet.o
+COMMON_OBJS	+= $(COMMON_DIR)/leds.o
 COMMON_OBJS	+= $(COMMON_DIR)/lib_crc.o
 COMMON_OBJS	+= $(COMMON_DIR)/msrand32.o
 COMMON_OBJS	+= $(COMMON_DIR)/semihosting.o
