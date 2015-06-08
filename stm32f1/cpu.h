@@ -33,7 +33,7 @@
 #include <serial.h>
 #include <spi.h>
 #include <systick.h>
-#include <stm32f10x.h>
+#include <stm32f1xx.h>
 
 #define DEFAULT_CPU_FREQ	0
 

@@ -26,8 +26,110 @@ static const char revision[] = "$Id$";
 
 #include <cpu.h>
 
+static void ConfigurePLL(void)
+{
+// Each board will require a highly specific PLL configuration
+
+#ifdef NUCLEO_F103RB
+// STM32F103RB with 8 MHz external clock
+//   CPU  clock is 72 MHz
+//   AHB  clock is 72 MHz
+//   APB1 clock is 36 MHz
+//   APB2 clock is 72 MHz
+//   ADC  clock is 12 MHz
+
+  // Configure flash latency for full speed CPU clock
+
+  do
+  {
+    FLASH->ACR = 2;		// 2 wait states, prefetch disabled
+  }
+  while (FLASH->ACR != 2);	// 2 wait states, prefetch disabled
+
+  // Start the HSE
+
+  RCC->CR |= RCC_CR_HSEON|RCC_CR_HSEBYP;
+  while (!(RCC->CR & RCC_CR_HSERDY));
+
+  // Configure bus clock dividers
+
+  RCC->CFGR = RCC_CFGR_HPRE_DIV1|RCC_CFGR_PPRE1_DIV2|RCC_CFGR_PPRE2_DIV1|RCC_CFGR_ADCPRE_DIV6;
+
+  // Configure the PLL
+
+  RCC->CFGR |= RCC_CFGR_PLLSRC|RCC_CFGR_PLLXTPRE_HSE|RCC_CFGR_PLLMULL9;
+
+  // Start the PLL
+
+  RCC->CR |= RCC_CR_PLLON;
+  while (!(RCC->CR & RCC_CR_PLLRDY));
+
+  // Switch to the PLL
+
+  RCC->CFGR |= RCC_CFGR_SW_PLL;
+  while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL);
+
+  // Enable flash prefetch
+
+  do
+  {
+    FLASH->ACR |= FLASH_ACR_PRFTBE;
+  }
+  while (!(FLASH->ACR & FLASH_ACR_PRFTBS));
+#endif
+
+#ifdef OLIMEX_STM32_P103
+// STM32F103RB with 8 MHz crystal
+//   CPU  clock is 72 MHz
+//   AHB  clock is 72 MHz
+//   APB1 clock is 36 MHz
+//   APB2 clock is 72 MHz
+//   ADC  clock is 12 MHz
+
+  // Configure flash latency for full speed CPU clock
+
+  do
+  {
+    FLASH->ACR = 2;		// 2 wait states, prefetch disabled
+  }
+  while (FLASH->ACR != 2);	// 2 wait states, prefetch disabled
+
+  // Start the HSE
+
+  RCC->CR |= RCC_CR_HSEON;
+  while (!(RCC->CR & RCC_CR_HSERDY));
+
+  // Configure bus clock dividers
+
+  RCC->CFGR = RCC_CFGR_HPRE_DIV1|RCC_CFGR_PPRE1_DIV2|RCC_CFGR_PPRE2_DIV1|RCC_CFGR_ADCPRE_DIV6;
+
+  // Configure the PLL
+
+  RCC->CFGR |= RCC_CFGR_PLLSRC|RCC_CFGR_PLLXTPRE_HSE|RCC_CFGR_PLLMULL9;
+
+  // Start the PLL
+
+  RCC->CR |= RCC_CR_PLLON;
+  while (!(RCC->CR & RCC_CR_PLLRDY));
+
+  // Switch to the PLL
+
+  RCC->CFGR |= RCC_CFGR_SW_PLL;
+  while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL);
+
+  // Enable flash prefetch
+
+  do
+  {
+    FLASH->ACR |= FLASH_ACR_PRFTBE;
+  }
+  while (!(FLASH->ACR & FLASH_ACR_PRFTBS));
+#endif
+}
+
 void cpu_init(unsigned long int frequency)
 {
   SystemInit();
+  ConfigurePLL();
   SystemCoreClockUpdate();
 }
