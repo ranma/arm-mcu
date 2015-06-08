@@ -39,12 +39,12 @@ void LEDS_initialize(void)
 #endif
 #endif
 
-#ifdef LED1_PIN
+#ifdef LED2_PIN
 #ifdef _GPIOPINS_H
-  gpiopin_configure(LED1_PIN, GPIOPIN_OUTPUT);
+  gpiopin_configure(LED2_PIN, GPIOPIN_OUTPUT);
 #endif
 #ifdef _GPIO_H
-  gpio_configure(LED1_PIN, GPIO_MODE_OUTPUT);
+  gpio_configure(LED2_PIN, GPIO_MODE_OUTPUT);
 #endif
 #endif
 
@@ -57,12 +57,12 @@ void LEDS_initialize(void)
 #endif
 #endif
 
-#ifdef LED3_PIN
+#ifdef LED4_PIN
 #ifdef _GPIOPINS_H
-  gpiopin_configure(LED3_PIN, GPIOPIN_OUTPUT);
+  gpiopin_configure(LED4_PIN, GPIOPIN_OUTPUT);
 #endif
 #ifdef _GPIO_H
-  gpio_configure(LED3_PIN, GPIO_MODE_OUTPUT);
+  gpio_configure(LED4_PIN, GPIO_MODE_OUTPUT);
 #endif
 #endif
 
@@ -102,7 +102,7 @@ void LEDS_initialize(void)
 #endif
 #endif
 
-  LEDS_set(0);						// Turn off all LEDs at startup
+  LEDS_set(0);	// Turn off all LEDs at startup
 }
 
 // Get LED states.  A 1 bit in the result indicates the LED is on.
@@ -130,20 +130,20 @@ unsigned long int LEDS_get(void)
 #endif
 #endif
 
-#ifdef LED1_PIN
-#ifdef LED1_ACTIVELOW
+#ifdef LED2_PIN
+#ifdef LED2_ACTIVELOW
 #ifdef _GPIOPINS_H
-  result += !LED1_OUTPUT << 1;
+  result += !LED2_OUTPUT << 1;
 #endif
 #ifdef _GPIO_H
-  result += !gpio_read(LED1_PIN) << 1;
+  result += !gpio_read(LED2_PIN) << 1;
 #endif
 #else
 #ifdef _GPIOPINS_H
-  result += LED1_OUTPUT << 1;
+  result += LED2_OUTPUT << 1;
 #endif
 #ifdef _GPIO_H
-  result += gpio_read(LED1_PIN) << 1;
+  result += gpio_read(LED2_PIN) << 1;
 #endif
 #endif
 #endif
@@ -166,20 +166,20 @@ unsigned long int LEDS_get(void)
 #endif
 #endif
 
-#ifdef LED3_PIN
-#ifdef LED3_ACTIVELOW
+#ifdef LED4_PIN
+#ifdef LED4_ACTIVELOW
 #ifdef _GPIOPINS_H
-  result += !LED3_OUTPUT << 3;
+  result += !LED4_OUTPUT << 3;
 #endif
 #ifdef _GPIO_H
-  result += !gpio_read(LED3_PIN) << 3;
+  result += !gpio_read(LED4_PIN) << 3;
 #endif
 #else
 #ifdef _GPIOPINS_H
-  result += LED3_OUTPUT << 3;
+  result += LED4_OUTPUT << 3;
 #endif
 #ifdef _GPIO_H
-  result += gpio_read(LED3_PIN) << 3;
+  result += gpio_read(LED4_PIN) << 3;
 #endif
 #endif
 #endif
@@ -282,20 +282,20 @@ void LEDS_set(unsigned long int mask)
 #endif
 #endif
 
-#ifdef LED1_PIN
-#ifdef LED1_ACTIVELOW
+#ifdef LED2_PIN
+#ifdef LED2_ACTIVELOW
 #ifdef _GPIOPINS_H
-  LED1_OUTPUT = ~mask >> 1;
+  LED2_OUTPUT = ~mask >> 1;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED1_PIN, ~mask >> 1);
+  gpio_write(LED2_PIN, ~mask >> 1);
 #endif
 #else
 #ifdef _GPIOPINS_H
-  LED1_OUTPUT = mask >> 1;
+  LED2_OUTPUT = mask >> 1;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED1_PIN, mask >> 1);
+  gpio_write(LED2_PIN, mask >> 1);
 #endif
 #endif
 #endif
@@ -318,20 +318,20 @@ void LEDS_set(unsigned long int mask)
 #endif
 #endif
 
-#ifdef LED3_PIN
-#ifdef LED3_ACTIVELOW
+#ifdef LED4_PIN
+#ifdef LED4_ACTIVELOW
 #ifdef _GPIOPINS_H
-  LED3_OUTPUT = ~mask >> 3;
+  LED4_OUTPUT = ~mask >> 3;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED3_PIN, ~mask >> 3);
+  gpio_write(LED4_PIN, ~mask >> 3);
 #endif
 #else
 #ifdef _GPIOPINS_H
-  LED3_OUTPUT = mask >> 3;
+  LED4_OUTPUT = mask >> 3;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED3_PIN, mask >> 3);
+  gpio_write(LED4_PIN, mask >> 3);
 #endif
 #endif
 #endif
