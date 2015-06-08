@@ -289,7 +289,7 @@ int serial_open(char *name, unsigned *subdevice)
       RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
       RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
 
-#ifdef OLIMEX_STM32_P107
+#if defined(OLIMEX_STM32_P107)
 // Configure TX pin on PB6
 
       RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
@@ -347,7 +347,7 @@ int serial_open(char *name, unsigned *subdevice)
       RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
       RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
 
-#ifdef OLIMEX_STM32_P107
+#if defined(OLIMEX_STM32_P107)
 // Configure TX pin on PD5
 
       RCC->APB2ENR |= RCC_APB2ENR_IOPDEN;
@@ -405,8 +405,25 @@ int serial_open(char *name, unsigned *subdevice)
       RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
       RCC->APB1ENR |= RCC_APB1ENR_USART3EN;
 
-#ifdef OLIMEX_STM32_P107
-      AFIO->MAPR |= AFIO_MAPR_USART3_REMAP;
+#if defined(NUCLEO_F103RB)
+      AFIO->MAPR |= AFIO_MAPR_USART3_REMAP_PARTIALREMAP;
+
+// Configure TX pin on PC10 (wire-wrap CN7 pin 1 to CN10 pin 35 for Arduino D1/TX)
+
+      RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
+
+      GPIOC->CRH &= ~(0xF << 8);
+      GPIOC->CRH |= GPIO_CONFIG_TX << 8;
+
+// Configure RX pin on PC11 (wire-wrap CN7 pin 2 to CN10 pin 37 for Arduino D0/RX)
+
+      RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
+
+      GPIOC->CRH &= ~(0xF << 12);
+      GPIOC->CRH |= GPIO_CONFIG_RX << 12;
+
+#elif defined(OLIMEX_STM32_P107)
+      AFIO->MAPR |= AFIO_MAPR_USART3_REMAP_FULLREMAP;
 
 // Configure TX pin on PD8
 
