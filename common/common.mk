@@ -26,7 +26,8 @@ CFLAGS		+= -I$(COMMON_DIR)
 
 .PHONY: common_lib common_clean
 
-COMMON_OBJS	=  $(COMMON_DIR)/conio.o
+COMMON_OBJS	=  $(COMMON_DIR)/buttons.o
+COMMON_OBJS	+= $(COMMON_DIR)/conio.o
 COMMON_OBJS	+= $(COMMON_DIR)/device.o
 COMMON_OBJS	+= $(COMMON_DIR)/inet.o
 COMMON_OBJS	+= $(COMMON_DIR)/leds.o

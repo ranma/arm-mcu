@@ -27,6 +27,7 @@
 
 #include <arm.h>
 #include <adc.h>
+#include <buttons.h>
 #include <device.h>
 #include <interrupt.h>
 #include <leds.h>

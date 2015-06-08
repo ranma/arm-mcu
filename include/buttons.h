@@ -1,6 +1,6 @@
-/* ARM microcontroller device specific definitions and header files */
+/* Abstract services for reading buttons (momentary switches) */
 
-// $Id$
+// $Id: leds.h 8475 2015-02-26 11:40:48Z svn $
 
 // Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
 //
@@ -22,25 +22,30 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef _CPU_H
-#define _CPU_H
-
-#include <arm.h>
-#include <adc.h>
-#include <buttons.h>
-#include <device.h>
-#include <gpiopins.h>
-#include <leds.h>
-#include <serial.h>
-#include <spi.h>
-#include <systick.h>
-#include <stm32f4xx.h>
-
-#define DEFAULT_CPU_FREQ	0
+#ifndef _BUTTONS_H
+#define _BUTTONS_H
 
 _BEGIN_STD_C
 
-extern void cpu_init(unsigned long int frequency);
+// Button masks (not all are necessarily implemented)
+
+#define BUTTON0_MASK	0x01
+#define BUTTON1_MASK	0x02
+#define BUTTON2_MASK	0x04
+#define BUTTON3_MASK	0x08
+#define BUTTON4_MASK	0x10
+#define BUTTON5_MASK	0x20
+#define BUTTON6_MASK	0x40
+#define BUTTON7_MASK	0x80
+
+// Configure the button input pins
+
+void buttons_initialize(void);
+
+// Get button states.  A 1 bit in the result indicates the button is pushed.
+// A 0 bit in the result indicates the button is not pushed.
+
+unsigned long int buttons_get(void);
 
 _END_STD_C
 #endif
