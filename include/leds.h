@@ -27,7 +27,7 @@
 
 _BEGIN_STD_C
 
-// LED masks (not all are implemented)
+// LED masks (not all are necessarily implemented)
 
 #define LED1	0x01
 #define LED2	0x02
