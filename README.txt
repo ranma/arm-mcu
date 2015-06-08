@@ -208,11 +208,24 @@ News
        serial port device like the [20]FT232R. Changed STM32F4 makefiles
        to always use the hardware FPU. With recent versions of newlib,
        there is no longer a code size penalty from enabling the FPU.
+     * 8 June 2015 -- Another massive overhaul: Added support for the
+       [21]STM32 M4 Clicker board. Dropped support for the [22]STM32 Value
+       Line Discovery board. (Its ST-Link/V1 is obsolete.) Dropped support
+       for the obsolete LPC23xx MCU family. Dropped support for the
+       oboslete AT91SAM7S MCU family. Dropped support for the obsolete
+       [23]Wiznet W5200. Dropped support for the [24]BlueBoard LPC1768.
+       Upgraded FreeRTOS to V8.2.1. Implemented interrupt driven serial
+       I/O for the STM32F1 MCU family. Upgraded OpenOCD to 0.9.0. Added
+       support for the [25]NUCLEO-F103RB board. Use a common LED test for
+       all targets. Implemented A/D services for the STM32F4 MCU family.
+       Use a common A/D test for all targets. Added button (momentary
+       switch) services. Stopped using the STM32F1 Standard Peripheral
+       Library. Use [26]CMSIS instead.
 
 Git Repository
 
-   The source code is hosted on [21]SourceForge at
-   [22]http://sourceforge.net/p/arm-mcu/code.
+   The source code is hosted on [27]SourceForge at
+   [28]http://sourceforge.net/p/arm-mcu/code.
 
    Use one of the following commands to clone it:
 git clone --depth 1 git://git.code.sf.net/p/arm-mcu/code  ARM
@@ -246,7 +259,7 @@ POSSIBILITY OF SUCH DAMAGE.
    respective authors.
      __________________________________________________________________
 
-   Questions or comments to Philip Munts [23]phil@munts.net
+   Questions or comments to Philip Munts [29]phil@munts.net
 
    $Id$
 
@@ -256,7 +269,7 @@ POSSIBILITY OF SUCH DAMAGE.
 References
 
    1. http://www.arm.com/
-   2. http://sourceware.org/newlib/
+   2. http://sourceware.org/newlib
    3. http://openocd.sourceforge.net/
    4. http://tech.munts.com/MCU/Frameworks/ARM/utilities
    5. http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition
@@ -275,6 +288,12 @@ References
   18. https://github.com/texane/stlink
   19. http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
   20. http://www.ftdichip.com/Products/ICs/FT232R.htm
-  21. http://sourceforge.net/
-  22. http://sourceforge.net/p/arm-mcu/code
-  23. mailto:phil@munts.net
+  21. http://www.mikroe.com/stm32/clicker
+  22. http://www.st.com/web/en/catalog/tools/FM116/SC959/SS1532/PF250863
+  23. http://www.wiznet.co.kr/product-item/w5200
+  24. http://shop.ngxtechnologies.com/product_info.php?products_id=65
+  25. http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1847/PF259875
+  26. http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
+  27. http://sourceforge.net/
+  28. http://sourceforge.net/p/arm-mcu/code
+  29. mailto:phil@munts.net
