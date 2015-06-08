@@ -64,7 +64,7 @@ void LEDTaskFunction(void *parameters)
 // Configure LED(s)
 
   LEDS_initialize();
-  LEDS_set(LED2|LED3|LED6|LED7);
+  LEDS_set(LED3|LED4|LED7|LED8);
 
   for (;;)
   {

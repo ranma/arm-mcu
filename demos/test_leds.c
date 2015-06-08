@@ -32,42 +32,20 @@ int main(void)
 
   cpu_init(DEFAULT_CPU_FREQ);
   systick_init(100);
+  buttons_initialize();
   LEDS_initialize();
-
-#ifdef BUTTON0_PIN
-  gpiopin_configure(BUTTON0_PIN, GPIOPIN_INPUT);
-#endif
-
-#ifdef BUTTON1_PIN
-  gpiopin_configure(BUTTON1_PIN, GPIOPIN_INPUT);
-#endif
 
   for (i = 0;; i++)
   {
     LEDS_set(i);
 
-#ifdef BUTTON0_INPUT
-#ifdef BUTTON0_ACTIVELOW
-    if (!BUTTON0_INPUT)
-#else
-    if (BUTTON0_INPUT)
-#endif
-      // BUTTON0 pressed; flash LED's faster
+    if (buttons_get() & BUTTON1_MASK)
+      // BUTTON1 pressed; flash LED's faster
       millisleep(250);
-    else
-#endif
-
-#ifdef BUTTON1_INPUT
-#ifdef BUTTON1_ACTIVELOW
-    if (!BUTTON1_INPUT)
-#else
-    if (BUTTON1_INPUT)
-#endif
-      // BUTTON1 pressed; flash LED's slower
+    else if (buttons_get() & BUTTON2_MASK)
+      // BUTTON2 pressed; flash LED's slower
       millisleep(1000);
     else
-#endif
-
       // Flash LED's at normal speed
       millisleep(500);
   }

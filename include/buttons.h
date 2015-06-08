@@ -29,14 +29,14 @@ _BEGIN_STD_C
 
 // Button masks (not all are necessarily implemented)
 
-#define BUTTON0_MASK	0x01
-#define BUTTON1_MASK	0x02
-#define BUTTON2_MASK	0x04
-#define BUTTON3_MASK	0x08
-#define BUTTON4_MASK	0x10
-#define BUTTON5_MASK	0x20
-#define BUTTON6_MASK	0x40
-#define BUTTON7_MASK	0x80
+#define BUTTON1_MASK	0x01
+#define BUTTON2_MASK	0x02
+#define BUTTON3_MASK	0x04
+#define BUTTON4_MASK	0x08
+#define BUTTON5_MASK	0x10
+#define BUTTON6_MASK	0x20
+#define BUTTON7_MASK	0x40
+#define BUTTON8_MASK	0x80
 
 // Configure the button input pins
 

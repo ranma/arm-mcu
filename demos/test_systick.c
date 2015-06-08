@@ -61,7 +61,7 @@ int main(void)
 // Configure LED(s)
 
   LEDS_initialize();
-  LEDS_set(LED2|LED4|LED6|LED8);
+  LEDS_set(LED1|LED3|LED5|LED7);
 
 // Initialize System Tick
 

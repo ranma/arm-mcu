@@ -30,12 +30,12 @@ static const char revision[] = "$Id$";
 
 void LEDS_initialize(void)
 {
-#ifdef LED0_PIN
+#ifdef LED1_PIN
 #ifdef _GPIOPINS_H
-  gpiopin_configure(LED0_PIN, GPIOPIN_OUTPUT);
+  gpiopin_configure(LED1_PIN, GPIOPIN_OUTPUT);
 #endif
 #ifdef _GPIO_H
-  gpio_configure(LED0_PIN, GPIO_MODE_OUTPUT);
+  gpio_configure(LED1_PIN, GPIO_MODE_OUTPUT);
 #endif
 #endif
 
@@ -48,15 +48,6 @@ void LEDS_initialize(void)
 #endif
 #endif
 
-#ifdef LED2_PIN
-#ifdef _GPIOPINS_H
-  gpiopin_configure(LED2_PIN, GPIOPIN_OUTPUT);
-#endif
-#ifdef _GPIO_H
-  gpio_configure(LED2_PIN, GPIO_MODE_OUTPUT);
-#endif
-#endif
-
 #ifdef LED3_PIN
 #ifdef _GPIOPINS_H
   gpiopin_configure(LED3_PIN, GPIOPIN_OUTPUT);
@@ -66,12 +57,12 @@ void LEDS_initialize(void)
 #endif
 #endif
 
-#ifdef LED4_PIN
+#ifdef LED3_PIN
 #ifdef _GPIOPINS_H
-  gpiopin_configure(LED4_PIN, GPIOPIN_OUTPUT);
+  gpiopin_configure(LED3_PIN, GPIOPIN_OUTPUT);
 #endif
 #ifdef _GPIO_H
-  gpio_configure(LED4_PIN, GPIO_MODE_OUTPUT);
+  gpio_configure(LED3_PIN, GPIO_MODE_OUTPUT);
 #endif
 #endif
 
@@ -102,6 +93,15 @@ void LEDS_initialize(void)
 #endif
 #endif
 
+#ifdef LED8_PIN
+#ifdef _GPIOPINS_H
+  gpiopin_configure(LED8_PIN, GPIOPIN_OUTPUT);
+#endif
+#ifdef _GPIO_H
+  gpio_configure(LED8_PIN, GPIO_MODE_OUTPUT);
+#endif
+#endif
+
   LEDS_set(0);						// Turn off all LEDs at startup
 }
 
@@ -112,20 +112,20 @@ unsigned long int LEDS_get(void)
 {
   unsigned long int result = 0;
 
-#ifdef LED0_PIN
-#ifdef LED0_ACTIVELOW
+#ifdef LED1_PIN
+#ifdef LED1_ACTIVELOW
 #ifdef _GPIOPINS_H
-  result += !LED0_OUTPUT;
+  result += !LED1_OUTPUT;
 #endif
 #ifdef _GPIO_H
-  result += !gpio_read(LED0_PIN);
+  result += !gpio_read(LED1_PIN);
 #endif
 #else
 #ifdef _GPIOPINS_H
-  result += LED0_OUTPUT;
+  result += LED1_OUTPUT;
 #endif
 #ifdef _GPIO_H
-  result += gpio_read(LED0_PIN);
+  result += gpio_read(LED1_PIN);
 #endif
 #endif
 #endif
@@ -148,20 +148,20 @@ unsigned long int LEDS_get(void)
 #endif
 #endif
 
-#ifdef LED2_PIN
-#ifdef LED2_ACTIVELOW
+#ifdef LED3_PIN
+#ifdef LED3_ACTIVELOW
 #ifdef _GPIOPINS_H
-  result += !LED2_OUTPUT << 2;
+  result += !LED3_OUTPUT << 2;
 #endif
 #ifdef _GPIO_H
-  result += !gpio_read(LED2_PIN) << 2;
+  result += !gpio_read(LED3_PIN) << 2;
 #endif
 #else
 #ifdef _GPIOPINS_H
-  result += LED2_OUTPUT << 2;
+  result += LED3_OUTPUT << 2;
 #endif
 #ifdef _GPIO_H
-  result += gpio_read(LED2_PIN) << 2;
+  result += gpio_read(LED3_PIN) << 2;
 #endif
 #endif
 #endif
@@ -184,38 +184,20 @@ unsigned long int LEDS_get(void)
 #endif
 #endif
 
-#ifdef LED4_PIN
-#ifdef LED4_ACTIVELOW
-#ifdef _GPIOPINS_H
-  result += !LED4_OUTPUT << 4;
-#endif
-#ifdef _GPIO_H
-  result += !gpio_read(LED4_PIN) << 4;
-#endif
-#else
-#ifdef _GPIOPINS_H
-  result += LED4_OUTPUT << 4;
-#endif
-#ifdef _GPIO_H
-  result += gpio_read(LED4_PIN) << 4;
-#endif
-#endif
-#endif
-
 #ifdef LED5_PIN
 #ifdef LED5_ACTIVELOW
 #ifdef _GPIOPINS_H
-  result += !LED5_OUTPUT << 5;
+  result += !LED5_OUTPUT << 4;
 #endif
 #ifdef _GPIO_H
-  result += !gpio_read(LED5_PIN) << 5;
+  result += !gpio_read(LED5_PIN) << 4;
 #endif
 #else
 #ifdef _GPIOPINS_H
-  result += LED5_OUTPUT << 5;
+  result += LED5_OUTPUT << 4;
 #endif
 #ifdef _GPIO_H
-  result += gpio_read(LED5_PIN) << 5;
+  result += gpio_read(LED5_PIN) << 4;
 #endif
 #endif
 #endif
@@ -223,17 +205,17 @@ unsigned long int LEDS_get(void)
 #ifdef LED6_PIN
 #ifdef LED6_ACTIVELOW
 #ifdef _GPIOPINS_H
-  result += !LED6_OUTPUT << 6;
+  result += !LED6_OUTPUT << 5;
 #endif
 #ifdef _GPIO_H
-  result += !gpio_read(LED6_PIN) << 6;
+  result += !gpio_read(LED6_PIN) << 5;
 #endif
 #else
 #ifdef _GPIOPINS_H
-  result += LED6_OUTPUT << 6;
+  result += LED6_OUTPUT << 5;
 #endif
 #ifdef _GPIO_H
-  result += gpio_read(LED6_PIN) << 6;
+  result += gpio_read(LED6_PIN) << 5;
 #endif
 #endif
 #endif
@@ -241,17 +223,35 @@ unsigned long int LEDS_get(void)
 #ifdef LED7_PIN
 #ifdef LED7_ACTIVELOW
 #ifdef _GPIOPINS_H
-  result += !LED7_OUTPUT << 7;
+  result += !LED7_OUTPUT << 6;
 #endif
 #ifdef _GPIO_H
-  result += !gpio_read(LED7_PIN) << 7;
+  result += !gpio_read(LED7_PIN) << 6;
 #endif
 #else
 #ifdef _GPIOPINS_H
-  result += LED7_OUTPUT << 7;
+  result += LED7_OUTPUT << 6;
 #endif
 #ifdef _GPIO_H
-  result += gpio_read(LED7_PIN) << 7;
+  result += gpio_read(LED7_PIN) << 6;
+#endif
+#endif
+#endif
+
+#ifdef LED8_PIN
+#ifdef LED8_ACTIVELOW
+#ifdef _GPIOPINS_H
+  result += !LED8_OUTPUT << 7;
+#endif
+#ifdef _GPIO_H
+  result += !gpio_read(LED8_PIN) << 7;
+#endif
+#else
+#ifdef _GPIOPINS_H
+  result += LED8_OUTPUT << 7;
+#endif
+#ifdef _GPIO_H
+  result += gpio_read(LED8_PIN) << 7;
 #endif
 #endif
 #endif
@@ -264,20 +264,20 @@ unsigned long int LEDS_get(void)
 
 void LEDS_set(unsigned long int mask)
 {
-#ifdef LED0_PIN
-#ifdef LED0_ACTIVELOW
+#ifdef LED1_PIN
+#ifdef LED1_ACTIVELOW
 #ifdef _GPIOPINS_H
-  LED0_OUTPUT = ~mask;
+  LED1_OUTPUT = ~mask;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED0_PIN, ~mask);
+  gpio_write(LED1_PIN, ~mask);
 #endif
 #else
 #ifdef _GPIOPINS_H
-  LED0_OUTPUT = mask;
+  LED1_OUTPUT = mask;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED0_PIN, mask);
+  gpio_write(LED1_PIN, mask);
 #endif
 #endif
 #endif
@@ -300,20 +300,20 @@ void LEDS_set(unsigned long int mask)
 #endif
 #endif
 
-#ifdef LED2_PIN
-#ifdef LED2_ACTIVELOW
+#ifdef LED3_PIN
+#ifdef LED3_ACTIVELOW
 #ifdef _GPIOPINS_H
-  LED2_OUTPUT = ~mask >> 2;
+  LED3_OUTPUT = ~mask >> 2;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED2_PIN, ~mask >> 2);
+  gpio_write(LED3_PIN, ~mask >> 2);
 #endif
 #else
 #ifdef _GPIOPINS_H
-  LED2_OUTPUT = mask >> 2;
+  LED3_OUTPUT = mask >> 2;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED2_PIN, mask >> 2);
+  gpio_write(LED3_PIN, mask >> 2);
 #endif
 #endif
 #endif
@@ -336,38 +336,20 @@ void LEDS_set(unsigned long int mask)
 #endif
 #endif
 
-#ifdef LED4_PIN
-#ifdef LED4_ACTIVELOW
-#ifdef _GPIOPINS_H
-  LED4_OUTPUT = ~mask >> 4;
-#endif
-#ifdef _GPIO_H
-  gpio_write(LED4_PIN, ~mask >> 4);
-#endif
-#else
-#ifdef _GPIOPINS_H
-  LED4_OUTPUT = mask >> 4;
-#endif
-#ifdef _GPIO_H
-  gpio_write(LED4_PIN, mask >> 4);
-#endif
-#endif
-#endif
-
 #ifdef LED5_PIN
 #ifdef LED5_ACTIVELOW
 #ifdef _GPIOPINS_H
-  LED5_OUTPUT = ~mask >> 5;
+  LED5_OUTPUT = ~mask >> 4;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED5_PIN, ~mask >> 5);
+  gpio_write(LED5_PIN, ~mask >> 4);
 #endif
 #else
 #ifdef _GPIOPINS_H
-  LED5_OUTPUT = mask >> 5;
+  LED5_OUTPUT = mask >> 4;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED5_PIN, mask >> 5);
+  gpio_write(LED5_PIN, mask >> 4);
 #endif
 #endif
 #endif
@@ -375,17 +357,17 @@ void LEDS_set(unsigned long int mask)
 #ifdef LED6_PIN
 #ifdef LED6_ACTIVELOW
 #ifdef _GPIOPINS_H
-  LED6_OUTPUT = ~mask >> 6;
+  LED6_OUTPUT = ~mask >> 5;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED6_PIN, ~mask >> 6);
+  gpio_write(LED6_PIN, ~mask >> 5);
 #endif
 #else
 #ifdef _GPIOPINS_H
-  LED6_OUTPUT = mask >> 6;
+  LED6_OUTPUT = mask >> 5;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED6_PIN, mask >> 6);
+  gpio_write(LED6_PIN, mask >> 5);
 #endif
 #endif
 #endif
@@ -393,17 +375,35 @@ void LEDS_set(unsigned long int mask)
 #ifdef LED7_PIN
 #ifdef LED7_ACTIVELOW
 #ifdef _GPIOPINS_H
-  LED7_OUTPUT = ~mask >> 7;
+  LED7_OUTPUT = ~mask >> 6;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED7_PIN, ~mask >> 7);
+  gpio_write(LED7_PIN, ~mask >> 6);
 #endif
 #else
 #ifdef _GPIOPINS_H
-  LED7_OUTPUT = mask >> 7;
+  LED7_OUTPUT = mask >> 6;
 #endif
 #ifdef _GPIO_H
-  gpio_write(LED7_PIN, mask >> 7;
+  gpio_write(LED7_PIN, mask >> 6);
+#endif
+#endif
+#endif
+
+#ifdef LED8_PIN
+#ifdef LED8_ACTIVELOW
+#ifdef _GPIOPINS_H
+  LED8_OUTPUT = ~mask >> 7;
+#endif
+#ifdef _GPIO_H
+  gpio_write(LED8_PIN, ~mask >> 7);
+#endif
+#else
+#ifdef _GPIOPINS_H
+  LED8_OUTPUT = mask >> 7;
+#endif
+#ifdef _GPIO_H
+  gpio_write(LED8_PIN, mask >> 7;
 #endif
 #endif
 #endif
