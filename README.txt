@@ -6,11 +6,6 @@
    Each MCU directory includes startup code, linker script, [2]newlib
    syscall bindings, and [3]OpenOCD scripts for debugging and flashing.
 
-   The ARM7 and ARM9 devices supported here must now be considered legacy
-   devices. The Cortex-Mx devices are clearly the future for ARM
-   microcontrollers. I will therefore be concentrating future efforts on
-   the Cortex-Mx microcontroller families.
-
 News
 
      * 7 June 2011 -- Massive reorganization around MCU families.
