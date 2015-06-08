@@ -211,16 +211,15 @@ News
      * 8 June 2015 -- Another massive overhaul: Added support for the
        [21]STM32 M4 Clicker board. Dropped support for the [22]STM32 Value
        Line Discovery board. (Its ST-Link/V1 is obsolete.) Dropped support
-       for the obsolete LPC23xx MCU family. Dropped support for the
-       oboslete AT91SAM7S MCU family. Dropped support for the obsolete
-       [23]Wiznet W5200. Dropped support for the [24]BlueBoard LPC1768.
-       Upgraded FreeRTOS to V8.2.1. Implemented interrupt driven serial
-       I/O for the STM32F1 MCU family. Upgraded OpenOCD to 0.9.0. Added
-       support for the [25]NUCLEO-F103RB board. Use a common LED test for
-       all targets. Implemented A/D services for the STM32F4 MCU family.
-       Use a common A/D test for all targets. Added button (momentary
-       switch) services. Stopped using the STM32F1 Standard Peripheral
-       Library. Use [26]CMSIS instead.
+       for the obsolete AT91SAM7S, LPC23xx, and STR91x MCU families.
+       Dropped support for the obsolete [23]Wiznet W5200. Dropped support
+       for the [24]BlueBoard LPC1768. Upgraded FreeRTOS to V8.2.1.
+       Implemented interrupt driven serial I/O for the STM32F1 MCU family.
+       Upgraded OpenOCD to 0.9.0. Added support for the [25]NUCLEO-F103RB
+       board. Use a common LED test for all targets. Implemented A/D
+       services for the STM32F4 MCU family. Use a common A/D test for all
+       targets. Added button (momentary switch) services. Stopped using
+       the STM32F1 Standard Peripheral Library. Use [26]CMSIS instead.
 
 Git Repository
 
