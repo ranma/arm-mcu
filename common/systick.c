@@ -56,11 +56,7 @@ int systick_init(unsigned rate)
 void millisleep(unsigned milliseconds)
 {
   SleepCounter = systick_rate*milliseconds/1000;
-#ifdef __WFI
   while (SleepCounter) __WFI();
-#else
-  while (SleepCounter);
-#endif
 }
 
 unsigned sleep(unsigned seconds)
