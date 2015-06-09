@@ -42,6 +42,7 @@
 		.extern		__ctors_start__
 		.extern		__ctors_end__
 		.extern		main
+		.extern		_exit
 
 //=============================================================================
 
@@ -173,12 +174,8 @@ ctors_loop:	ldr		r2, [r0], #4		// Load next constructor address
 call_main:	mov		r0, #0			// argc=0
 		mov		r1, #0			// argv=NULL
 
-		bl		main
-
-// main() should never return, but if it does, just do nothing forever.
-// Should probably put processor into sleep mode instead.
-
-		b		.
+		bl		main			// Call C main()
+		bl		_exit			// Call _exit() if main() returns
 
 //=============================================================================
 
