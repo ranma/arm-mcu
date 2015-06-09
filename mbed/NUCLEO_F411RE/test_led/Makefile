@@ -48,13 +48,14 @@ install: build
 debug: build
 	$(MAKE) $(PROJECTNAME).debugstlink
 
-# Create symbolic link to the mbed interface directory
+# Link to mbed SDK checkout
 
 mbed:
+	cd $(MBEDSRC) ; ./GetSDK.sh
 ifeq ($(findstring CYGWIN, $(shell uname)), CYGWIN)
-	cmd.exe /C mklink /J mbed `cygpath -a -w $(MBEDSRC)/$(BOARDNAME)/mbed`
+	cmd.exe /C mklink /J mbed `cygpath -a -w $(MBEDSRC)/mbed`
 else
-	ln -s $(MBEDSRC)/$(BOARDNAME)/mbed
+	ln -s $(MBEDSRC)/mbed
 endif
 
 # Remove working files

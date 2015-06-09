@@ -1,4 +1,6 @@
-# Makefile for NUCLEO-F411RE Console Test
+#!/bin/sh
+
+# Get mbed SDK checkout
 
 # $Id$
 
@@ -22,48 +24,13 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-GNU_ARM_EMBEDDED_DIR ?= /usr/local/gcc-arm-none-eabi-4_9-2015q1
+export MBEDSDKTAG=cbbeb26dbd92
 
-# Override the following macros to build out of tree
+if [ ! -f $TEMP/$MBEDSDKTAG.zip ]; then
+  wget -P $TEMP https://developer.mbed.org/users/mbed_official/code/mbed/archive/$MBEDSDKTAG.zip
+fi
 
-ARMSRC          ?= $(HOME)/src/ARM
-MBEDSRC  	?= $(HOME)/src/ARM/mbed
-
-MCUFAMILY       = stm32f4
-BOARDNAME       = NUCLEO_F411RE
-PROJECTNAME	= test_console
-
-# Compile the program
-
-build: mbed
-	$(MAKE) -f main.mk all GCC_BIN="$(GNU_ARM_EMBEDDED_DIR)/bin/" PROJECT="$(PROJECTNAME)"
-
-# Flash the program
-
-install: build
-	$(MAKE) $(PROJECTNAME).flashstlink
-
-# Debug the program
-
-debug: build
-	$(MAKE) $(PROJECTNAME).debugstlink
-
-# Link to mbed SDK checkout
-
-mbed:
-	cd $(MBEDSRC) ; ./GetSDK.sh
-ifeq ($(findstring CYGWIN, $(shell uname)), CYGWIN)
-	cmd.exe /C mklink /J mbed `cygpath -a -w $(MBEDSRC)/mbed`
-else
-	ln -s $(MBEDSRC)/mbed
-endif
-
-# Remove working files
-
-clean:
-	$(MAKE) -f main.mk clean GCC_BIN=$(GNU_ARM_DIR)/bin/
-	rm -f mbed *.bin *.d *.elf *.hex *.log *.map *.o
-
-# Include subordinate makefiles
-
-include $(ARMSRC)/include/ARM.mk
+if [ ! -d mbed ]; then
+  unzip $TEMP/$MBEDSDKTAG.zip
+  mv mbed-$MBEDSDKTAG mbed
+fi
