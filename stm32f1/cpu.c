@@ -125,6 +125,64 @@ static void ConfigurePLL(void)
   }
   while (!(FLASH->ACR & FLASH_ACR_PRFTBS));
 #endif
+
+
+#ifdef OLIMEX_STM32_P107
+// STM32F107RB with 25 MHz crystal
+//   CPU  clock is 72 MHz
+//   AHB  clock is 72 MHz
+//   APB1 clock is 36 MHz
+//   APB2 clock is 72 MHz
+//   ADC  clock is 12 MHz
+
+  // Configure flash latency for full speed CPU clock
+
+  do
+  {
+    FLASH->ACR = 2;		// 2 wait states, prefetch disabled
+  }
+  while (FLASH->ACR != 2);	// 2 wait states, prefetch disabled
+
+  // Start the HSE
+
+  RCC->CR |= RCC_CR_HSEON;
+  while (!(RCC->CR & RCC_CR_HSERDY));
+
+  // Configure bus clock dividers
+
+  RCC->CFGR = RCC_CFGR_HPRE_DIV1|RCC_CFGR_PPRE1_DIV2|RCC_CFGR_PPRE2_DIV1|RCC_CFGR_ADCPRE_DIV6;
+
+  // Configure PLL2
+
+  RCC->CFGR2 = RCC_CFGR2_PREDIV1SRC_PLL2|RCC_CFGR2_PLL2MUL8|RCC_CFGR2_PREDIV2_DIV5|RCC_CFGR2_PREDIV1_DIV5;
+
+  // Start PLL2
+
+  RCC->CR |= RCC_CR_PLL2ON;
+  while (!(RCC->CR & RCC_CR_PLL2RDY));
+
+  // Configure the PLL
+
+  RCC->CFGR |= RCC_CFGR_PLLMULL9|RCC_CFGR_PLLSRC;
+
+  // Start the PLL
+
+  RCC->CR |= RCC_CR_PLLON;
+  while (!(RCC->CR & RCC_CR_PLLRDY));
+
+  // Switch to the PLL
+
+  RCC->CFGR |= RCC_CFGR_SW_PLL;
+  while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL);
+
+  // Enable flash prefetch
+
+  do
+  {
+    FLASH->ACR |= FLASH_ACR_PRFTBE;
+  }
+  while (!(FLASH->ACR & FLASH_ACR_PRFTBS));
+#endif
 }
 
 void cpu_init(unsigned long int frequency)
