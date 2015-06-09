@@ -104,10 +104,7 @@ int _execve(char *name, char **argv, char **env)
 
 void _exit(int status)
 {
-  for (;;)
-  {
-    __WFI();
-  }
+  for (;;) __WFI();	// Wait for interrupt
 }
 
 int _fork(void)
