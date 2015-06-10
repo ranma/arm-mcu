@@ -44,7 +44,7 @@ Test Platform
      * [6]Olimex STM32-P103
      * [7]Olimex STM32-P107
 
-   Tested on 8 June 2015 with gcc 4.9.2.
+   Tested on 10 June 2015 with gcc 4.9.2.
      __________________________________________________________________
 
    Questions or comments to Philip Munts [8]phil@munts.net
