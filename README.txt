@@ -203,7 +203,7 @@ News
        serial port device like the [20]FT232R. Changed STM32F4 makefiles
        to always use the hardware FPU. With recent versions of newlib,
        there is no longer a code size penalty from enabling the FPU.
-     * 8 June 2015 -- Another massive overhaul: Added support for the
+     * 10 June 2015 -- Another massive overhaul: Added support for the
        [21]STM32 M4 Clicker board. Dropped support for the [22]STM32 Value
        Line Discovery board. (Its ST-Link/V1 is obsolete.) Dropped support
        for the obsolete AT91SAM7S, LPC23xx, and STR91x MCU families.
@@ -215,6 +215,8 @@ News
        services for the STM32F4 MCU family. Use a common A/D test for all
        targets. Added button (momentary switch) services. Stopped using
        the STM32F1 Standard Peripheral Library. Use [26]CMSIS instead.
+       Added code to each of the assembly language startup files to call
+       _exit() if main() returns.
 
 Git Repository
 
