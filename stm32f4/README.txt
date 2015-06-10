@@ -50,7 +50,7 @@ Test Platform
      * [9]STM32 M4 Clicker
      * [10]STM32F4 Discovery
 
-   Tested on 4 June 2015 with gcc 4.9.2.
+   Tested on 10 June 2015 with gcc 4.9.2.
      __________________________________________________________________
 
    Questions or comments to Philip Munts [11]phil@munts.net
