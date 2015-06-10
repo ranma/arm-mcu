@@ -33,7 +33,7 @@ Test Platform
      * [4]mbed LPC1768
      * [5]LPC1768-Mini-DK2
 
-   Tested on 4 June 2015 with gcc 4.9.2.
+   Tested on 10 June 2015 with gcc 4.9.2.
      __________________________________________________________________
 
    Questions or comments to Philip Munts [6]phil@munts.net
