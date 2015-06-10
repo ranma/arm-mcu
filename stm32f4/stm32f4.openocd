@@ -1,4 +1,4 @@
-# OpenOCD configuration for STM32F4xx Cortex-M4 ARM MCU Using ST-Link
+# OpenOCD configuration for STM32F4xx Cortex-M4 ARM MCU
 
 # $Id$
 
@@ -23,6 +23,10 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 source [find target/stm32f4x.cfg]
+
+# Adapter configuration
+
+reset_config trst_and_srst
 
 # TCP server configuration
 
