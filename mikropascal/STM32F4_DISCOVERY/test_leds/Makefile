@@ -30,11 +30,11 @@ MIKROPASCALSRC	?= $(HOME)/src/ARM/mikropascal
 MCUFAMILY	= stm32f4
 BOARDNAME	= STM32F4_DISCOVERY
 
-# Build the program
+# Compile the program
 
-default: test_leds.hex
+build: test_leds.hex
 
-# Write program to code flash
+# Write the program to code flash
 
 install: test_leds.flashstlink
 

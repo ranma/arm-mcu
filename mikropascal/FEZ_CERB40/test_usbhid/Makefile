@@ -30,11 +30,11 @@ MIKROPASCALSRC	?= $(HOME)/src/ARM/mikropascal
 MCUFAMILY	= stm32f4
 BOARDNAME	= FEZ_CERB40
 
-# Build the program
+# Compile the program
 
-default: test_usbhid.bin
+build: test_usbhid.bin
 
-# Write program to code flash
+# Write the program to code flash
 
 install: test_usbhid.flashdfu
 
