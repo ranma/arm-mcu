@@ -1,8 +1,8 @@
-/* ARM microcontroller device specific definitions and header files */
+/* Simple I2C driver services */
 
 // $Id$
 
-// Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
+// Copyright (C)2015, Philip Munts, President, Munts AM Corp.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -22,38 +22,16 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef _CPU_H
-#define _CPU_H
-
-#include <arm.h>
-#include <adc.h>
-#include <buttons.h>
-#include <device.h>
-#include <gpio.h>
-#include <i2c.h>
-#include <leds.h>
-#include <pwm.h>
-#include <serial.h>
-#include <spi.h>
-#include <systick.h>
-#include <timer.h>
-
-#include <LPC11xx.h>
-#include <system_LPC11xx.h>
-
-#define DEFAULT_CPU_FREQ	0
-
-// The following constants _should_ be defined in LPC11xx.h
-
-#define MR0INT			0x01
-#define MR1INT			0x02
-#define MR2INT			0x04
-#define MR3INT			0x08
-#define CR0INT			0x10
+#ifndef _I2C_H
+#define _I2C_H
 
 _BEGIN_STD_C
 
-extern void cpu_init(unsigned long int frequency);
+int i2c_init(unsigned port, uint8_t addr);
+
+ssize_t i2c_slave_receive(unsigned port, uint8_t *buf, size_t size);
+
+ssize_t i2c_slave_transmit(unsigned port, uint8_t *buf, size_t size);
 
 _END_STD_C
 #endif
