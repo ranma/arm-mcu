@@ -39,4 +39,4 @@ subordinates: $(SUBORDINATES)
 clean: astrobe_mk_clean
 
 include		$(ARMSRC)/include/mbed.mk
-include		$(ASTROBESRC)/astrobe.mk
+include		$(ASTROBESRC)/astrobe-m4.mk
