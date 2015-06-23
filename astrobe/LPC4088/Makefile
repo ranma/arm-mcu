@@ -33,8 +33,6 @@ MCU		= LPC4088
 
 build: test_leds.hex
 
-subordinates: $(SUBORDINATES)
-
 clean: astrobe_mk_clean
 
 include		$(ARMSRC)/include/mbed.mk
