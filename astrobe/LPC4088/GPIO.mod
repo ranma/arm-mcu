@@ -1,15 +1,13 @@
 MODULE GPIO;
 
-(* Abstract bitwise GPIO services *)
+(* Bitband GPIO pin definitions for the LPC4088 Cortex-M4 microcontroller *)
 
-(* $Id$ *)
-
-(* Copyright (C)2014-2015, Philip Munts, President, Munts AM Corp.             *)
+(* Copyright (C)2015, Philip Munts, President, Munts AM Corp.                  *)
 (*                                                                             *)
 (* Redistribution and use in source and binary forms, with or without          *)
 (* modification, are permitted provided that the following conditions are met: *)
 (*                                                                             *)
-(* * Redistributions of source code must retain the above copyright notice,    *)
+(**  Redistributions of source code must retain the above copyright notice,    *)
 (*   this list of conditions and the following disclaimer.                     *)
 (*                                                                             *)
 (* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" *)
@@ -24,228 +22,651 @@ MODULE GPIO;
 (* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE  *)
 (* POSSIBILITY OF SUCH DAMAGE.                                                 *)
 
-(* These services provide a simple and efficient mechanism for software to     *)
-(* control individual GPIO pins in an asynchronous fashion, where each GPIO    *)
-(* pin is independent of any other.  This API is NOT suitable for situations   *)
-(* where GPIO pins are grouped in buses.                                       *)
-(*                                                                             *)
 (* GPIO pins are numbered sequentially from the least significant bit of the   *)
-(* lowest GPIO port to the highest port and bit.  For example, if an MCU has   *)
-(* two 8-bit GPIO ports, the GPIO pins would be numbered GPIO0 to GPIO15.      *)
+(* lowest GPIO port to the highest port and bit.                               *)
 
-(* Each GPIO pin has two constants defined for it: DirN and PinN.  These map   *)
-(* to Cortex-Mx bitband registers for that particular GPIO pin.                *)
+(* Each GPIO pin has three constants defined for it: DirN, MaskN, and PinN.    *)
+(* These map to the Cortex-M4 bitband addresses for that particular GPIO pin.  *)
 
 CONST
-  Dir0*   = 23300000H;  Pin0*   = 23300280H;     (* Port 0 bit 0  *)
-  Dir1*   = 23300004H;  Pin1*   = 23300284H;     (* Port 0 bit 1  *)
-  Dir2*   = 23300008H;  Pin2*   = 23300288H;     (* Port 0 bit 2  *)
-  Dir3*   = 2330000CH;  Pin3*   = 2330028CH;     (* Port 0 bit 3  *)
-  Dir4*   = 23300010H;  Pin4*   = 23300290H;     (* Port 0 bit 4  *)
-  Dir5*   = 23300014H;  Pin5*   = 23300294H;     (* Port 0 bit 5  *)
-  Dir6*   = 23300018H;  Pin6*   = 23300298H;     (* Port 0 bit 6  *)
-  Dir7*   = 2330001CH;  Pin7*   = 2330029CH;     (* Port 0 bit 7  *)
-  Dir8*   = 23300020H;  Pin8*   = 233002A0H;     (* Port 0 bit 8  *)
-  Dir9*   = 23300024H;  Pin9*   = 233002A4H;     (* Port 0 bit 9  *)
-  Dir10*  = 23300028H;  Pin10*  = 233002A8H;     (* Port 0 bit 10 *)
-  Dir11*  = 2330002CH;  Pin11*  = 233002ACH;     (* Port 0 bit 11 *)
-  Dir12*  = 23300030H;  Pin12*  = 233002B0H;     (* Port 0 bit 12 *)
-  Dir13*  = 23300034H;  Pin13*  = 233002B4H;     (* Port 0 bit 13 *)
-  Dir14*  = 23300038H;  Pin14*  = 233002B8H;     (* Port 0 bit 14 *)
-  Dir15*  = 2330003CH;  Pin15*  = 233002BCH;     (* Port 0 bit 15 *)
-  Dir16*  = 23300040H;  Pin16*  = 233002C0H;     (* Port 0 bit 16 *)
-  Dir17*  = 23300044H;  Pin17*  = 233002C4H;     (* Port 0 bit 17 *)
-  Dir18*  = 23300048H;  Pin18*  = 233002C8H;     (* Port 0 bit 18 *)
-  Dir19*  = 2330004CH;  Pin19*  = 233002CCH;     (* Port 0 bit 19 *)
-  Dir20*  = 23300050H;  Pin20*  = 233002D0H;     (* Port 0 bit 20 *)
-  Dir21*  = 23300054H;  Pin21*  = 233002D4H;     (* Port 0 bit 21 *)
-  Dir22*  = 23300058H;  Pin22*  = 233002D8H;     (* Port 0 bit 22 *)
-  Dir23*  = 2330005CH;  Pin23*  = 233002DCH;     (* Port 0 bit 23 *)
-  Dir24*  = 23300060H;  Pin24*  = 233002E0H;     (* Port 0 bit 24 *)
-  Dir25*  = 23300064H;  Pin25*  = 233002E4H;     (* Port 0 bit 25 *)
-  Dir26*  = 23300068H;  Pin26*  = 233002E8H;     (* Port 0 bit 26 *)
-  Dir27*  = 2330006CH;  Pin27*  = 233002ECH;     (* Port 0 bit 27 *)
-  Dir28*  = 23300070H;  Pin28*  = 233002F0H;     (* Port 0 bit 28 *)
-  Dir29*  = 23300074H;  Pin29*  = 233002F4H;     (* Port 0 bit 29 *)
-  Dir30*  = 23300078H;  Pin30*  = 233002F8H;     (* Port 0 bit 30 *)
-  Dir31*  = 2330007CH;  Pin31*  = 233002FCH;     (* Port 0 bit 31 *)
+  Dir0*    = 23300000H; (* P0.0  *)
+  Mask0*   = 23300200H;
+  Pin0*    = 23300280H;
 
-  Dir32*  = 23300400H;  Pin32*  = 23300680H;     (* Port 1 bit 0  *)
-  Dir33*  = 23300404H;  Pin33*  = 23300684H;     (* Port 1 bit 1  *)
-  Dir34*  = 23300408H;  Pin34*  = 23300688H;     (* Port 1 bit 2  *)
-  Dir35*  = 2330040CH;  Pin35*  = 2330068CH;     (* Port 1 bit 3  *)
-  Dir36*  = 23300410H;  Pin36*  = 23300690H;     (* Port 1 bit 4  *)
-  Dir37*  = 23300414H;  Pin37*  = 23300694H;     (* Port 1 bit 5  *)
-  Dir38*  = 23300418H;  Pin38*  = 23300698H;     (* Port 1 bit 6  *)
-  Dir39*  = 2330041CH;  Pin39*  = 2330069CH;     (* Port 1 bit 7  *)
-  Dir40*  = 23300420H;  Pin40*  = 233006A0H;     (* Port 1 bit 8  *)
-  Dir41*  = 23300424H;  Pin41*  = 233006A4H;     (* Port 1 bit 9  *)
-  Dir42*  = 23300428H;  Pin42*  = 233006A8H;     (* Port 1 bit 10 *)
-  Dir43*  = 2330042CH;  Pin43*  = 233006ACH;     (* Port 1 bit 11 *)
-  Dir44*  = 23300430H;  Pin44*  = 233006B0H;     (* Port 1 bit 12 *)
-  Dir45*  = 23300434H;  Pin45*  = 233006B4H;     (* Port 1 bit 13 *)
-  Dir46*  = 23300438H;  Pin46*  = 233006B8H;     (* Port 1 bit 14 *)
-  Dir47*  = 2330043CH;  Pin47*  = 233006BCH;     (* Port 1 bit 15 *)
-  Dir48*  = 23300440H;  Pin48*  = 233006C0H;     (* Port 1 bit 16 *)
-  Dir49*  = 23300444H;  Pin49*  = 233006C4H;     (* Port 1 bit 17 *)
-  Dir50*  = 23300448H;  Pin50*  = 233006C8H;     (* Port 1 bit 18 *)
-  Dir51*  = 2330044CH;  Pin51*  = 233006CCH;     (* Port 1 bit 19 *)
-  Dir52*  = 23300450H;  Pin52*  = 233006D0H;     (* Port 1 bit 20 *)
-  Dir53*  = 23300454H;  Pin53*  = 233006D4H;     (* Port 1 bit 21 *)
-  Dir54*  = 23300458H;  Pin54*  = 233006D8H;     (* Port 1 bit 22 *)
-  Dir55*  = 2330045CH;  Pin55*  = 233006DCH;     (* Port 1 bit 23 *)
-  Dir56*  = 23300460H;  Pin56*  = 233006E0H;     (* Port 1 bit 24 *)
-  Dir57*  = 23300464H;  Pin57*  = 233006E4H;     (* Port 1 bit 25 *)
-  Dir58*  = 23300468H;  Pin58*  = 233006E8H;     (* Port 1 bit 26 *)
-  Dir59*  = 2330046CH;  Pin59*  = 233006ECH;     (* Port 1 bit 27 *)
-  Dir60*  = 23300470H;  Pin60*  = 233006F0H;     (* Port 1 bit 28 *)
-  Dir61*  = 23300474H;  Pin61*  = 233006F4H;     (* Port 1 bit 29 *)
-  Dir62*  = 23300478H;  Pin62*  = 233006F8H;     (* Port 1 bit 30 *)
-  Dir63*  = 2330047CH;  Pin63*  = 233006FCH;     (* Port 1 bit 31 *)
- 
-  Dir64*  = 23300800H;  Pin64*  = 23300A80H;     (* Port 2 bit 0  *)
-  Dir65*  = 23300804H;  Pin65*  = 23300A84H;     (* Port 2 bit 1  *)
-  Dir66*  = 23300808H;  Pin66*  = 23300A88H;     (* Port 2 bit 2  *)
-  Dir67*  = 2330080CH;  Pin67*  = 23300A8CH;     (* Port 2 bit 3  *)
-  Dir68*  = 23300810H;  Pin68*  = 23300A90H;     (* Port 2 bit 4  *)
-  Dir69*  = 23300814H;  Pin69*  = 23300A94H;     (* Port 2 bit 5  *)
-  Dir70*  = 23300818H;  Pin70*  = 23300A98H;     (* Port 2 bit 6  *)
-  Dir71*  = 2330081CH;  Pin71*  = 23300A9CH;     (* Port 2 bit 7  *)
-  Dir72*  = 23300820H;  Pin72*  = 23300AA0H;     (* Port 2 bit 8  *)
-  Dir73*  = 23300824H;  Pin73*  = 23300AA4H;     (* Port 2 bit 9  *)
-  Dir74*  = 23300828H;  Pin74*  = 23300AA8H;     (* Port 2 bit 10 *)
-  Dir75*  = 2330082CH;  Pin75*  = 23300AACH;     (* Port 2 bit 11 *)
-  Dir76*  = 23300830H;  Pin76*  = 23300AB0H;     (* Port 2 bit 12 *)
-  Dir77*  = 23300834H;  Pin77*  = 23300AB4H;     (* Port 2 bit 13 *)
-  Dir78*  = 23300838H;  Pin78*  = 23300AB8H;     (* Port 2 bit 14 *)
-  Dir79*  = 2330083CH;  Pin79*  = 23300ABCH;     (* Port 2 bit 15 *)
-  Dir80*  = 23300840H;  Pin80*  = 23300AC0H;     (* Port 2 bit 16 *)
-  Dir81*  = 23300844H;  Pin81*  = 23300AC4H;     (* Port 2 bit 17 *)
-  Dir82*  = 23300848H;  Pin82*  = 23300AC8H;     (* Port 2 bit 18 *)
-  Dir83*  = 2330084CH;  Pin83*  = 23300ACCH;     (* Port 2 bit 19 *)
-  Dir84*  = 23300850H;  Pin84*  = 23300AD0H;     (* Port 2 bit 20 *)
-  Dir85*  = 23300854H;  Pin85*  = 23300AD4H;     (* Port 2 bit 21 *)
-  Dir86*  = 23300858H;  Pin86*  = 23300AD8H;     (* Port 2 bit 22 *)
-  Dir87*  = 2330085CH;  Pin87*  = 23300ADCH;     (* Port 2 bit 23 *)
-  Dir88*  = 23300860H;  Pin88*  = 23300AE0H;     (* Port 2 bit 24 *)
-  Dir89*  = 23300864H;  Pin89*  = 23300AE4H;     (* Port 2 bit 25 *)
-  Dir90*  = 23300868H;  Pin90*  = 23300AE8H;     (* Port 2 bit 26 *)
-  Dir91*  = 2330086CH;  Pin91*  = 23300AECH;     (* Port 2 bit 27 *)
-  Dir92*  = 23300870H;  Pin92*  = 23300AF0H;     (* Port 2 bit 28 *)
-  Dir93*  = 23300874H;  Pin93*  = 23300AF4H;     (* Port 2 bit 29 *)
-  Dir94*  = 23300878H;  Pin94*  = 23300AF8H;     (* Port 2 bit 30 *)
-  Dir95*  = 2330087CH;  Pin95*  = 23300AFCH;     (* Port 2 bit 31 *)
+  Dir1*    = 23300004H; (* P0.1  *)
+  Mask1*   = 23300204H;
+  Pin1*    = 23300284H;
 
-  Dir96*  = 23300C00H;  Pin96*  = 23300E80H;     (* Port 3 bit 0  *)
-  Dir97*  = 23300C04H;  Pin97*  = 23300E84H;     (* Port 3 bit 1  *)
-  Dir98*  = 23300C08H;  Pin98*  = 23300E88H;     (* Port 3 bit 2  *)
-  Dir99*  = 23300C0CH;  Pin99*  = 23300E8CH;     (* Port 3 bit 3  *)
-  Dir100* = 23300C10H;  Pin100* = 23300E90H;     (* Port 3 bit 4  *)
-  Dir101* = 23300C14H;  Pin101* = 23300E94H;     (* Port 3 bit 5  *)
-  Dir102* = 23300C18H;  Pin102* = 23300E98H;     (* Port 3 bit 6  *)
-  Dir103* = 23300C1CH;  Pin103* = 23300E9CH;     (* Port 3 bit 7  *)
-  Dir104* = 23300C20H;  Pin104* = 23300EA0H;     (* Port 3 bit 8  *)
-  Dir105* = 23300C24H;  Pin105* = 23300EA4H;     (* Port 3 bit 9  *)
-  Dir106* = 23300C28H;  Pin106* = 23300EA8H;     (* Port 3 bit 10 *)
-  Dir107* = 23300C2CH;  Pin107* = 23300EACH;     (* Port 3 bit 11 *)
-  Dir108* = 23300C30H;  Pin108* = 23300EB0H;     (* Port 3 bit 12 *)
-  Dir109* = 23300C34H;  Pin109* = 23300EB4H;     (* Port 3 bit 13 *)
-  Dir110* = 23300C38H;  Pin110* = 23300EB8H;     (* Port 3 bit 14 *)
-  Dir111* = 23300C3CH;  Pin111* = 23300EBCH;     (* Port 3 bit 15 *)
-  Dir112* = 23300C40H;  Pin112* = 23300EC0H;     (* Port 3 bit 16 *)
-  Dir113* = 23300C44H;  Pin113* = 23300EC4H;     (* Port 3 bit 17 *)
-  Dir114* = 23300C48H;  Pin114* = 23300EC8H;     (* Port 3 bit 18 *)
-  Dir115* = 23300C4CH;  Pin115* = 23300ECCH;     (* Port 3 bit 19 *)
-  Dir116* = 23300C50H;  Pin116* = 23300ED0H;     (* Port 3 bit 20 *)
-  Dir117* = 23300C54H;  Pin117* = 23300ED4H;     (* Port 3 bit 21 *)
-  Dir118* = 23300C58H;  Pin118* = 23300ED8H;     (* Port 3 bit 22 *)
-  Dir119* = 23300C5CH;  Pin119* = 23300EDCH;     (* Port 3 bit 23 *)
-  Dir120* = 23300C60H;  Pin120* = 23300EE0H;     (* Port 3 bit 24 *)
-  Dir121* = 23300C64H;  Pin121* = 23300EE4H;     (* Port 3 bit 25 *)
-  Dir122* = 23300C68H;  Pin122* = 23300EE8H;     (* Port 3 bit 26 *)
-  Dir123* = 23300C6CH;  Pin123* = 23300EECH;     (* Port 3 bit 27 *)
-  Dir124* = 23300C70H;  Pin124* = 23300EF0H;     (* Port 3 bit 28 *)
-  Dir125* = 23300C74H;  Pin125* = 23300EF4H;     (* Port 3 bit 29 *)
-  Dir126* = 23300C78H;  Pin126* = 23300EF8H;     (* Port 3 bit 30 *)
-  Dir127* = 23300C7CH;  Pin127* = 23300EFCH;     (* Port 3 bit 31 *)
+  Dir2*    = 23300008H; (* P0.2  *)
+  Mask2*   = 23300208H;
+  Pin2*    = 23300288H;
 
-  Dir128* = 23301000H;  Pin128* = 23301280H;     (* Port 4 bit 0  *)
-  Dir129* = 23301004H;  Pin129* = 23301284H;     (* Port 4 bit 1  *)
-  Dir130* = 23301008H;  Pin130* = 23301288H;     (* Port 4 bit 2  *)
-  Dir131* = 2330100CH;  Pin131* = 2330128CH;     (* Port 4 bit 3  *)
-  Dir132* = 23301010H;  Pin132* = 23301290H;     (* Port 4 bit 4  *)
-  Dir133* = 23301014H;  Pin133* = 23301294H;     (* Port 4 bit 5  *)
-  Dir134* = 23301018H;  Pin134* = 23301298H;     (* Port 4 bit 6  *)
-  Dir135* = 2330101CH;  Pin135* = 2330129CH;     (* Port 4 bit 7  *)
-  Dir136* = 23301020H;  Pin136* = 233012A0H;     (* Port 4 bit 8  *)
-  Dir137* = 23301024H;  Pin137* = 233012A4H;     (* Port 4 bit 9  *)
-  Dir138* = 23301028H;  Pin138* = 233012A8H;     (* Port 4 bit 10 *)
-  Dir139* = 2330102CH;  Pin139* = 233012ACH;     (* Port 4 bit 11 *)
-  Dir140* = 23301030H;  Pin140* = 233012B0H;     (* Port 4 bit 12 *)
-  Dir141* = 23301034H;  Pin141* = 233012B4H;     (* Port 4 bit 13 *)
-  Dir142* = 23301038H;  Pin142* = 233012B8H;     (* Port 4 bit 14 *)
-  Dir143* = 2330103CH;  Pin143* = 233012BCH;     (* Port 4 bit 15 *)
-  Dir144* = 23301040H;  Pin144* = 233012C0H;     (* Port 4 bit 16 *)
-  Dir145* = 23301044H;  Pin145* = 233012C4H;     (* Port 4 bit 17 *)
-  Dir146* = 23301048H;  Pin146* = 233012C8H;     (* Port 4 bit 18 *)
-  Dir147* = 2330104CH;  Pin147* = 233012CCH;     (* Port 4 bit 19 *)
-  Dir148* = 23301050H;  Pin148* = 233012D0H;     (* Port 4 bit 20 *)
-  Dir149* = 23301054H;  Pin149* = 233012D4H;     (* Port 4 bit 21 *)
-  Dir150* = 23301058H;  Pin150* = 233012D8H;     (* Port 4 bit 22 *)
-  Dir151* = 2330105CH;  Pin151* = 233012DCH;     (* Port 4 bit 23 *)
-  Dir152* = 23301060H;  Pin152* = 233012E0H;     (* Port 4 bit 24 *)
-  Dir153* = 23301064H;  Pin153* = 233012E4H;     (* Port 4 bit 25 *)
-  Dir154* = 23301068H;  Pin154* = 233012E8H;     (* Port 4 bit 26 *)
-  Dir155* = 2330106CH;  Pin155* = 233012ECH;     (* Port 4 bit 27 *)
-  Dir156* = 23301070H;  Pin156* = 233012F0H;     (* Port 4 bit 28 *)
-  Dir157* = 23301074H;  Pin157* = 233012F4H;     (* Port 4 bit 29 *)
-  Dir158* = 23301078H;  Pin158* = 233012F8H;     (* Port 4 bit 30 *)
-  Dir159* = 2330107CH;  Pin159* = 233012FCH;     (* Port 4 bit 31 *)
+  Dir3*    = 2330000CH; (* P0.3  *)
+  Mask3*   = 2330020CH;
+  Pin3*    = 2330028CH;
 
-  Dir160* = 23301400H;  Pin160* = 23301680H;     (* Port 5 bit 0  *)
-  Dir161* = 23301404H;  Pin161* = 23301684H;     (* Port 5 bit 1  *)
-  Dir162* = 23301408H;  Pin162* = 23301688H;     (* Port 5 bit 2  *)
-  Dir163* = 2330140CH;  Pin163* = 2330168CH;     (* Port 5 bit 3  *)
-  Dir164* = 23301410H;  Pin164* = 23301690H;     (* Port 5 bit 4  *)
-  Dir165* = 23301414H;  Pin165* = 23301694H;     (* Port 5 bit 5  *)
-  Dir166* = 23301418H;  Pin166* = 23301698H;     (* Port 5 bit 6  *)
-  Dir167* = 2330141CH;  Pin167* = 2330169CH;     (* Port 5 bit 7  *)
-  Dir168* = 23301420H;  Pin168* = 233016A0H;     (* Port 5 bit 8  *)
-  Dir169* = 23301424H;  Pin169* = 233016A4H;     (* Port 5 bit 9  *)
-  Dir170* = 23301428H;  Pin170* = 233016A8H;     (* Port 5 bit 10 *)
-  Dir171* = 2330142CH;  Pin171* = 233016ACH;     (* Port 5 bit 11 *)
-  Dir172* = 23301430H;  Pin172* = 233016B0H;     (* Port 5 bit 12 *)
-  Dir173* = 23301434H;  Pin173* = 233016B4H;     (* Port 5 bit 13 *)
-  Dir174* = 23301438H;  Pin174* = 233016B8H;     (* Port 5 bit 14 *)
-  Dir175* = 2330143CH;  Pin175* = 233016BCH;     (* Port 5 bit 15 *)
-  Dir176* = 23301440H;  Pin176* = 233016C0H;     (* Port 5 bit 16 *)
-  Dir177* = 23301444H;  Pin177* = 233016C4H;     (* Port 5 bit 17 *)
-  Dir178* = 23301448H;  Pin178* = 233016C8H;     (* Port 5 bit 18 *)
-  Dir179* = 2330144CH;  Pin179* = 233016CCH;     (* Port 5 bit 19 *)
-  Dir180* = 23301450H;  Pin180* = 233016D0H;     (* Port 5 bit 20 *)
-  Dir181* = 23301454H;  Pin181* = 233016D4H;     (* Port 5 bit 21 *)
-  Dir182* = 23301458H;  Pin182* = 233016D8H;     (* Port 5 bit 22 *)
-  Dir183* = 2330145CH;  Pin183* = 233016DCH;     (* Port 5 bit 23 *)
-  Dir184* = 23301460H;  Pin184* = 233016E0H;     (* Port 5 bit 24 *)
-  Dir185* = 23301464H;  Pin185* = 233016E4H;     (* Port 5 bit 25 *)
-  Dir186* = 23301468H;  Pin186* = 233016E8H;     (* Port 5 bit 26 *)
-  Dir187* = 2330146CH;  Pin187* = 233016ECH;     (* Port 5 bit 27 *)
-  Dir188* = 23301470H;  Pin188* = 233016F0H;     (* Port 5 bit 28 *)
-  Dir189* = 23301474H;  Pin189* = 233016F4H;     (* Port 5 bit 29 *)
-  Dir190* = 23301478H;  Pin190* = 233016F8H;     (* Port 5 bit 30 *)
-  Dir191* = 2330147CH;  Pin191* = 233016FCH;     (* Port 5 bit 31 *)
+  Dir4*    = 23300010H; (* P0.4  *)
+  Mask4*   = 23300210H;
+  Pin4*    = 23300290H;
 
-(* Data direction constants *)
+  Dir5*    = 23300014H; (* P0.5  *)
+  Mask5*   = 23300214H;
+  Pin5*    = 23300294H;
 
-  INPUT*  = 0;
-  OUTPUT* = 1;
-  
-(* Logic level constants *)
+  Dir6*    = 23300018H; (* P0.6  *)
+  Mask6*   = 23300218H;
+  Pin6*    = 23300298H;
 
-  HIGH*   = 1;
-  LOW*    = 0;
-  ON*     = 1;
-  OFF*    = 0;
-  
-BEGIN
+  Dir7*    = 2330001CH; (* P0.7  *)
+  Mask7*   = 2330021CH;
+  Pin7*    = 2330029CH;
+
+  Dir8*    = 23300020H; (* P0.8  *)
+  Mask8*   = 23300220H;
+  Pin8*    = 233002A0H;
+
+  Dir9*    = 23300024H; (* P0.9  *)
+  Mask9*   = 23300224H;
+  Pin9*    = 233002A4H;
+
+  Dir10*   = 23300028H; (* P0.10 *)
+  Mask10*  = 23300228H;
+  Pin10*   = 233002A8H;
+
+  Dir11*   = 2330002CH; (* P0.11 *)
+  Mask11*  = 2330022CH;
+  Pin11*   = 233002ACH;
+
+  Dir12*   = 23300030H; (* P0.12 *)
+  Mask12*  = 23300230H;
+  Pin12*   = 233002B0H;
+
+  Dir13*   = 23300034H; (* P0.13 *)
+  Mask13*  = 23300234H;
+  Pin13*   = 233002B4H;
+
+  Dir14*   = 23300038H; (* P0.14 *)
+  Mask14*  = 23300238H;
+  Pin14*   = 233002B8H;
+
+  Dir15*   = 2330003CH; (* P0.15 *)
+  Mask15*  = 2330023CH;
+  Pin15*   = 233002BCH;
+
+  Dir16*   = 23300040H; (* P0.16 *)
+  Mask16*  = 23300240H;
+  Pin16*   = 233002C0H;
+
+  Dir17*   = 23300044H; (* P0.17 *)
+  Mask17*  = 23300244H;
+  Pin17*   = 233002C4H;
+
+  Dir18*   = 23300048H; (* P0.18 *)
+  Mask18*  = 23300248H;
+  Pin18*   = 233002C8H;
+
+  Dir19*   = 2330004CH; (* P0.19 *)
+  Mask19*  = 2330024CH;
+  Pin19*   = 233002CCH;
+
+  Dir20*   = 23300050H; (* P0.20 *)
+  Mask20*  = 23300250H;
+  Pin20*   = 233002D0H;
+
+  Dir21*   = 23300054H; (* P0.21 *)
+  Mask21*  = 23300254H;
+  Pin21*   = 233002D4H;
+
+  Dir22*   = 23300058H; (* P0.22 *)
+  Mask22*  = 23300258H;
+  Pin22*   = 233002D8H;
+
+  Dir23*   = 2330005CH; (* P0.23 *)
+  Mask23*  = 2330025CH;
+  Pin23*   = 233002DCH;
+
+  Dir24*   = 23300060H; (* P0.24 *)
+  Mask24*  = 23300260H;
+  Pin24*   = 233002E0H;
+
+  Dir25*   = 23300064H; (* P0.25 *)
+  Mask25*  = 23300264H;
+  Pin25*   = 233002E4H;
+
+  Dir26*   = 23300068H; (* P0.26 *)
+  Mask26*  = 23300268H;
+  Pin26*   = 233002E8H;
+
+  Dir27*   = 2330006CH; (* P0.27 *)
+  Mask27*  = 2330026CH;
+  Pin27*   = 233002ECH;
+
+  Dir28*   = 23300070H; (* P0.28 *)
+  Mask28*  = 23300270H;
+  Pin28*   = 233002F0H;
+
+  Dir29*   = 23300074H; (* P0.29 *)
+  Mask29*  = 23300274H;
+  Pin29*   = 233002F4H;
+
+  Dir30*   = 23300078H; (* P0.30 *)
+  Mask30*  = 23300278H;
+  Pin30*   = 233002F8H;
+
+  Dir31*   = 2330007CH; (* P0.31 *)
+  Mask31*  = 2330027CH;
+  Pin31*   = 233002FCH;
+
+  Dir32*   = 23300400H; (* P1.0  *)
+  Mask32*  = 23300600H;
+  Pin32*   = 23300680H;
+
+  Dir33*   = 23300404H; (* P1.1  *)
+  Mask33*  = 23300604H;
+  Pin33*   = 23300684H;
+
+  Dir34*   = 23300408H; (* P1.2  *)
+  Mask34*  = 23300608H;
+  Pin34*   = 23300688H;
+
+  Dir35*   = 2330040CH; (* P1.3  *)
+  Mask35*  = 2330060CH;
+  Pin35*   = 2330068CH;
+
+  Dir36*   = 23300410H; (* P1.4  *)
+  Mask36*  = 23300610H;
+  Pin36*   = 23300690H;
+
+  Dir37*   = 23300414H; (* P1.5  *)
+  Mask37*  = 23300614H;
+  Pin37*   = 23300694H;
+
+  Dir38*   = 23300418H; (* P1.6  *)
+  Mask38*  = 23300618H;
+  Pin38*   = 23300698H;
+
+  Dir39*   = 2330041CH; (* P1.7  *)
+  Mask39*  = 2330061CH;
+  Pin39*   = 2330069CH;
+
+  Dir40*   = 23300420H; (* P1.8  *)
+  Mask40*  = 23300620H;
+  Pin40*   = 233006A0H;
+
+  Dir41*   = 23300424H; (* P1.9  *)
+  Mask41*  = 23300624H;
+  Pin41*   = 233006A4H;
+
+  Dir42*   = 23300428H; (* P1.10 *)
+  Mask42*  = 23300628H;
+  Pin42*   = 233006A8H;
+
+  Dir43*   = 2330042CH; (* P1.11 *)
+  Mask43*  = 2330062CH;
+  Pin43*   = 233006ACH;
+
+  Dir44*   = 23300430H; (* P1.12 *)
+  Mask44*  = 23300630H;
+  Pin44*   = 233006B0H;
+
+  Dir45*   = 23300434H; (* P1.13 *)
+  Mask45*  = 23300634H;
+  Pin45*   = 233006B4H;
+
+  Dir46*   = 23300438H; (* P1.14 *)
+  Mask46*  = 23300638H;
+  Pin46*   = 233006B8H;
+
+  Dir47*   = 2330043CH; (* P1.15 *)
+  Mask47*  = 2330063CH;
+  Pin47*   = 233006BCH;
+
+  Dir48*   = 23300440H; (* P1.16 *)
+  Mask48*  = 23300640H;
+  Pin48*   = 233006C0H;
+
+  Dir49*   = 23300444H; (* P1.17 *)
+  Mask49*  = 23300644H;
+  Pin49*   = 233006C4H;
+
+  Dir50*   = 23300448H; (* P1.18 *)
+  Mask50*  = 23300648H;
+  Pin50*   = 233006C8H;
+
+  Dir51*   = 2330044CH; (* P1.19 *)
+  Mask51*  = 2330064CH;
+  Pin51*   = 233006CCH;
+
+  Dir52*   = 23300450H; (* P1.20 *)
+  Mask52*  = 23300650H;
+  Pin52*   = 233006D0H;
+
+  Dir53*   = 23300454H; (* P1.21 *)
+  Mask53*  = 23300654H;
+  Pin53*   = 233006D4H;
+
+  Dir54*   = 23300458H; (* P1.22 *)
+  Mask54*  = 23300658H;
+  Pin54*   = 233006D8H;
+
+  Dir55*   = 2330045CH; (* P1.23 *)
+  Mask55*  = 2330065CH;
+  Pin55*   = 233006DCH;
+
+  Dir56*   = 23300460H; (* P1.24 *)
+  Mask56*  = 23300660H;
+  Pin56*   = 233006E0H;
+
+  Dir57*   = 23300464H; (* P1.25 *)
+  Mask57*  = 23300664H;
+  Pin57*   = 233006E4H;
+
+  Dir58*   = 23300468H; (* P1.26 *)
+  Mask58*  = 23300668H;
+  Pin58*   = 233006E8H;
+
+  Dir59*   = 2330046CH; (* P1.27 *)
+  Mask59*  = 2330066CH;
+  Pin59*   = 233006ECH;
+
+  Dir60*   = 23300470H; (* P1.28 *)
+  Mask60*  = 23300670H;
+  Pin60*   = 233006F0H;
+
+  Dir61*   = 23300474H; (* P1.29 *)
+  Mask61*  = 23300674H;
+  Pin61*   = 233006F4H;
+
+  Dir62*   = 23300478H; (* P1.30 *)
+  Mask62*  = 23300678H;
+  Pin62*   = 233006F8H;
+
+  Dir63*   = 2330047CH; (* P1.31 *)
+  Mask63*  = 2330067CH;
+  Pin63*   = 233006FCH;
+
+  Dir64*   = 23300800H; (* P2.0  *)
+  Mask64*  = 23300A00H;
+  Pin64*   = 23300A80H;
+
+  Dir65*   = 23300804H; (* P2.1  *)
+  Mask65*  = 23300A04H;
+  Pin65*   = 23300A84H;
+
+  Dir66*   = 23300808H; (* P2.2  *)
+  Mask66*  = 23300A08H;
+  Pin66*   = 23300A88H;
+
+  Dir67*   = 2330080CH; (* P2.3  *)
+  Mask67*  = 23300A0CH;
+  Pin67*   = 23300A8CH;
+
+  Dir68*   = 23300810H; (* P2.4  *)
+  Mask68*  = 23300A10H;
+  Pin68*   = 23300A90H;
+
+  Dir69*   = 23300814H; (* P2.5  *)
+  Mask69*  = 23300A14H;
+  Pin69*   = 23300A94H;
+
+  Dir70*   = 23300818H; (* P2.6  *)
+  Mask70*  = 23300A18H;
+  Pin70*   = 23300A98H;
+
+  Dir71*   = 2330081CH; (* P2.7  *)
+  Mask71*  = 23300A1CH;
+  Pin71*   = 23300A9CH;
+
+  Dir72*   = 23300820H; (* P2.8  *)
+  Mask72*  = 23300A20H;
+  Pin72*   = 23300AA0H;
+
+  Dir73*   = 23300824H; (* P2.9  *)
+  Mask73*  = 23300A24H;
+  Pin73*   = 23300AA4H;
+
+  Dir74*   = 23300828H; (* P2.10 *)
+  Mask74*  = 23300A28H;
+  Pin74*   = 23300AA8H;
+
+  Dir75*   = 2330082CH; (* P2.11 *)
+  Mask75*  = 23300A2CH;
+  Pin75*   = 23300AACH;
+
+  Dir76*   = 23300830H; (* P2.12 *)
+  Mask76*  = 23300A30H;
+  Pin76*   = 23300AB0H;
+
+  Dir77*   = 23300834H; (* P2.13 *)
+  Mask77*  = 23300A34H;
+  Pin77*   = 23300AB4H;
+
+  Dir78*   = 23300838H; (* P2.14 *)
+  Mask78*  = 23300A38H;
+  Pin78*   = 23300AB8H;
+
+  Dir79*   = 2330083CH; (* P2.15 *)
+  Mask79*  = 23300A3CH;
+  Pin79*   = 23300ABCH;
+
+  Dir80*   = 23300840H; (* P2.16 *)
+  Mask80*  = 23300A40H;
+  Pin80*   = 23300AC0H;
+
+  Dir81*   = 23300844H; (* P2.17 *)
+  Mask81*  = 23300A44H;
+  Pin81*   = 23300AC4H;
+
+  Dir82*   = 23300848H; (* P2.18 *)
+  Mask82*  = 23300A48H;
+  Pin82*   = 23300AC8H;
+
+  Dir83*   = 2330084CH; (* P2.19 *)
+  Mask83*  = 23300A4CH;
+  Pin83*   = 23300ACCH;
+
+  Dir84*   = 23300850H; (* P2.20 *)
+  Mask84*  = 23300A50H;
+  Pin84*   = 23300AD0H;
+
+  Dir85*   = 23300854H; (* P2.21 *)
+  Mask85*  = 23300A54H;
+  Pin85*   = 23300AD4H;
+
+  Dir86*   = 23300858H; (* P2.22 *)
+  Mask86*  = 23300A58H;
+  Pin86*   = 23300AD8H;
+
+  Dir87*   = 2330085CH; (* P2.23 *)
+  Mask87*  = 23300A5CH;
+  Pin87*   = 23300ADCH;
+
+  Dir88*   = 23300860H; (* P2.24 *)
+  Mask88*  = 23300A60H;
+  Pin88*   = 23300AE0H;
+
+  Dir89*   = 23300864H; (* P2.25 *)
+  Mask89*  = 23300A64H;
+  Pin89*   = 23300AE4H;
+
+  Dir90*   = 23300868H; (* P2.26 *)
+  Mask90*  = 23300A68H;
+  Pin90*   = 23300AE8H;
+
+  Dir91*   = 2330086CH; (* P2.27 *)
+  Mask91*  = 23300A6CH;
+  Pin91*   = 23300AECH;
+
+  Dir92*   = 23300870H; (* P2.28 *)
+  Mask92*  = 23300A70H;
+  Pin92*   = 23300AF0H;
+
+  Dir93*   = 23300874H; (* P2.29 *)
+  Mask93*  = 23300A74H;
+  Pin93*   = 23300AF4H;
+
+  Dir94*   = 23300878H; (* P2.30 *)
+  Mask94*  = 23300A78H;
+  Pin94*   = 23300AF8H;
+
+  Dir95*   = 2330087CH; (* P2.31 *)
+  Mask95*  = 23300A7CH;
+  Pin95*   = 23300AFCH;
+
+  Dir96*   = 23300C00H; (* P3.0  *)
+  Mask96*  = 23300E00H;
+  Pin96*   = 23300E80H;
+
+  Dir97*   = 23300C04H; (* P3.1  *)
+  Mask97*  = 23300E04H;
+  Pin97*   = 23300E84H;
+
+  Dir98*   = 23300C08H; (* P3.2  *)
+  Mask98*  = 23300E08H;
+  Pin98*   = 23300E88H;
+
+  Dir99*   = 23300C0CH; (* P3.3  *)
+  Mask99*  = 23300E0CH;
+  Pin99*   = 23300E8CH;
+
+  Dir100*  = 23300C10H; (* P3.4  *)
+  Mask100* = 23300E10H;
+  Pin100*  = 23300E90H;
+
+  Dir101*  = 23300C14H; (* P3.5  *)
+  Mask101* = 23300E14H;
+  Pin101*  = 23300E94H;
+
+  Dir102*  = 23300C18H; (* P3.6  *)
+  Mask102* = 23300E18H;
+  Pin102*  = 23300E98H;
+
+  Dir103*  = 23300C1CH; (* P3.7  *)
+  Mask103* = 23300E1CH;
+  Pin103*  = 23300E9CH;
+
+  Dir104*  = 23300C20H; (* P3.8  *)
+  Mask104* = 23300E20H;
+  Pin104*  = 23300EA0H;
+
+  Dir105*  = 23300C24H; (* P3.9  *)
+  Mask105* = 23300E24H;
+  Pin105*  = 23300EA4H;
+
+  Dir106*  = 23300C28H; (* P3.10 *)
+  Mask106* = 23300E28H;
+  Pin106*  = 23300EA8H;
+
+  Dir107*  = 23300C2CH; (* P3.11 *)
+  Mask107* = 23300E2CH;
+  Pin107*  = 23300EACH;
+
+  Dir108*  = 23300C30H; (* P3.12 *)
+  Mask108* = 23300E30H;
+  Pin108*  = 23300EB0H;
+
+  Dir109*  = 23300C34H; (* P3.13 *)
+  Mask109* = 23300E34H;
+  Pin109*  = 23300EB4H;
+
+  Dir110*  = 23300C38H; (* P3.14 *)
+  Mask110* = 23300E38H;
+  Pin110*  = 23300EB8H;
+
+  Dir111*  = 23300C3CH; (* P3.15 *)
+  Mask111* = 23300E3CH;
+  Pin111*  = 23300EBCH;
+
+  Dir112*  = 23300C40H; (* P3.16 *)
+  Mask112* = 23300E40H;
+  Pin112*  = 23300EC0H;
+
+  Dir113*  = 23300C44H; (* P3.17 *)
+  Mask113* = 23300E44H;
+  Pin113*  = 23300EC4H;
+
+  Dir114*  = 23300C48H; (* P3.18 *)
+  Mask114* = 23300E48H;
+  Pin114*  = 23300EC8H;
+
+  Dir115*  = 23300C4CH; (* P3.19 *)
+  Mask115* = 23300E4CH;
+  Pin115*  = 23300ECCH;
+
+  Dir116*  = 23300C50H; (* P3.20 *)
+  Mask116* = 23300E50H;
+  Pin116*  = 23300ED0H;
+
+  Dir117*  = 23300C54H; (* P3.21 *)
+  Mask117* = 23300E54H;
+  Pin117*  = 23300ED4H;
+
+  Dir118*  = 23300C58H; (* P3.22 *)
+  Mask118* = 23300E58H;
+  Pin118*  = 23300ED8H;
+
+  Dir119*  = 23300C5CH; (* P3.23 *)
+  Mask119* = 23300E5CH;
+  Pin119*  = 23300EDCH;
+
+  Dir120*  = 23300C60H; (* P3.24 *)
+  Mask120* = 23300E60H;
+  Pin120*  = 23300EE0H;
+
+  Dir121*  = 23300C64H; (* P3.25 *)
+  Mask121* = 23300E64H;
+  Pin121*  = 23300EE4H;
+
+  Dir122*  = 23300C68H; (* P3.26 *)
+  Mask122* = 23300E68H;
+  Pin122*  = 23300EE8H;
+
+  Dir123*  = 23300C6CH; (* P3.27 *)
+  Mask123* = 23300E6CH;
+  Pin123*  = 23300EECH;
+
+  Dir124*  = 23300C70H; (* P3.28 *)
+  Mask124* = 23300E70H;
+  Pin124*  = 23300EF0H;
+
+  Dir125*  = 23300C74H; (* P3.29 *)
+  Mask125* = 23300E74H;
+  Pin125*  = 23300EF4H;
+
+  Dir126*  = 23300C78H; (* P3.30 *)
+  Mask126* = 23300E78H;
+  Pin126*  = 23300EF8H;
+
+  Dir127*  = 23300C7CH; (* P3.31 *)
+  Mask127* = 23300E7CH;
+  Pin127*  = 23300EFCH;
+
+  Dir128*  = 23301000H; (* P4.0  *)
+  Mask128* = 23301200H;
+  Pin128*  = 23301280H;
+
+  Dir129*  = 23301004H; (* P4.1  *)
+  Mask129* = 23301204H;
+  Pin129*  = 23301284H;
+
+  Dir130*  = 23301008H; (* P4.2  *)
+  Mask130* = 23301208H;
+  Pin130*  = 23301288H;
+
+  Dir131*  = 2330100CH; (* P4.3  *)
+  Mask131* = 2330120CH;
+  Pin131*  = 2330128CH;
+
+  Dir132*  = 23301010H; (* P4.4  *)
+  Mask132* = 23301210H;
+  Pin132*  = 23301290H;
+
+  Dir133*  = 23301014H; (* P4.5  *)
+  Mask133* = 23301214H;
+  Pin133*  = 23301294H;
+
+  Dir134*  = 23301018H; (* P4.6  *)
+  Mask134* = 23301218H;
+  Pin134*  = 23301298H;
+
+  Dir135*  = 2330101CH; (* P4.7  *)
+  Mask135* = 2330121CH;
+  Pin135*  = 2330129CH;
+
+  Dir136*  = 23301020H; (* P4.8  *)
+  Mask136* = 23301220H;
+  Pin136*  = 233012A0H;
+
+  Dir137*  = 23301024H; (* P4.9  *)
+  Mask137* = 23301224H;
+  Pin137*  = 233012A4H;
+
+  Dir138*  = 23301028H; (* P4.10 *)
+  Mask138* = 23301228H;
+  Pin138*  = 233012A8H;
+
+  Dir139*  = 2330102CH; (* P4.11 *)
+  Mask139* = 2330122CH;
+  Pin139*  = 233012ACH;
+
+  Dir140*  = 23301030H; (* P4.12 *)
+  Mask140* = 23301230H;
+  Pin140*  = 233012B0H;
+
+  Dir141*  = 23301034H; (* P4.13 *)
+  Mask141* = 23301234H;
+  Pin141*  = 233012B4H;
+
+  Dir142*  = 23301038H; (* P4.14 *)
+  Mask142* = 23301238H;
+  Pin142*  = 233012B8H;
+
+  Dir143*  = 2330103CH; (* P4.15 *)
+  Mask143* = 2330123CH;
+  Pin143*  = 233012BCH;
+
+  Dir144*  = 23301040H; (* P4.16 *)
+  Mask144* = 23301240H;
+  Pin144*  = 233012C0H;
+
+  Dir145*  = 23301044H; (* P4.17 *)
+  Mask145* = 23301244H;
+  Pin145*  = 233012C4H;
+
+  Dir146*  = 23301048H; (* P4.18 *)
+  Mask146* = 23301248H;
+  Pin146*  = 233012C8H;
+
+  Dir147*  = 2330104CH; (* P4.19 *)
+  Mask147* = 2330124CH;
+  Pin147*  = 233012CCH;
+
+  Dir148*  = 23301050H; (* P4.20 *)
+  Mask148* = 23301250H;
+  Pin148*  = 233012D0H;
+
+  Dir149*  = 23301054H; (* P4.21 *)
+  Mask149* = 23301254H;
+  Pin149*  = 233012D4H;
+
+  Dir150*  = 23301058H; (* P4.22 *)
+  Mask150* = 23301258H;
+  Pin150*  = 233012D8H;
+
+  Dir151*  = 2330105CH; (* P4.23 *)
+  Mask151* = 2330125CH;
+  Pin151*  = 233012DCH;
+
+  Dir152*  = 23301060H; (* P4.24 *)
+  Mask152* = 23301260H;
+  Pin152*  = 233012E0H;
+
+  Dir153*  = 23301064H; (* P4.25 *)
+  Mask153* = 23301264H;
+  Pin153*  = 233012E4H;
+
+  Dir154*  = 23301068H; (* P4.26 *)
+  Mask154* = 23301268H;
+  Pin154*  = 233012E8H;
+
+  Dir155*  = 2330106CH; (* P4.27 *)
+  Mask155* = 2330126CH;
+  Pin155*  = 233012ECH;
+
+  Dir156*  = 23301070H; (* P4.28 *)
+  Mask156* = 23301270H;
+  Pin156*  = 233012F0H;
+
+  Dir157*  = 23301074H; (* P4.29 *)
+  Mask157* = 23301274H;
+  Pin157*  = 233012F4H;
+
+  Dir158*  = 23301078H; (* P4.30 *)
+  Mask158* = 23301278H;
+  Pin158*  = 233012F8H;
+
+  Dir159*  = 2330107CH; (* P4.31 *)
+  Mask159* = 2330127CH;
+  Pin159*  = 233012FCH;
+
 END GPIO.
