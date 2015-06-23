@@ -26,7 +26,7 @@
 
 .SECONDARY:
 
-ASTROBEBINDIR	?= "C:/PROGRA~2/AstrobeM4 Professional Edition"/
+ASTROBEBINDIR	?= "C:/PROGRA~1/AstrobeM4 Professional Edition"/
 
 ASTROBECOMPILE	= $(ASTROBEBINDIR)AstrobeCompile
 ASTROBEBUILD	= $(ASTROBEBINDIR)AstrobeBuild
