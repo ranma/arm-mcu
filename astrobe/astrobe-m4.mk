@@ -31,7 +31,7 @@ ASTROBEBINDIR	?= "C:/PROGRA~2/AstrobeM4 Professional Edition"/
 ASTROBECOMPILE	= $(ASTROBEBINDIR)AstrobeCompile
 ASTROBEBUILD	= $(ASTROBEBINDIR)AstrobeBuild
 ASTROBELINK	= $(ASTROBEBINDIR)AstrobeLink
-ASTROBECONFIG	= $(ASTROBESRC)/$(MCU)/$(MCU).ini
+ASTROBECONFIG	= $(ASTROBESRC)/$(MCU)/astrobe.ini
 
 # Default make target
 
