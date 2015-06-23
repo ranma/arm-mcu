@@ -29,8 +29,9 @@
 ASTROBEBINDIR	?= "C:/PROGRA~2/AstrobeM3 Professional Edition"/
 
 ASTROBECOMPILE	= $(ASTROBEBINDIR)AstrobeCompile
+ASTROBEBUILD	= $(ASTROBEBINDIR)AstrobeBuild
 ASTROBELINK	= $(ASTROBEBINDIR)AstrobeLink
-ASTROBECONFIG	= $(ASTROBESRC)/$(MCU)/$(MCU).ini
+ASTROBECONFIG	= $(ASTROBESRC)/$(MCU)/astrobe.ini
 
 # Default make target
 
@@ -46,13 +47,13 @@ astrobe_mk_default:
 # Define a pattern rule to compile an Oberon main module source program to binary flash image
 
 %.bin: %.mod
-	$(ASTROBECOMPILE) $(ASTROBECONFIG) $<
+	$(ASTROBEBUILD) $(ASTROBECONFIG) ./$<
 	$(ASTROBELINK) $(ASTROBECONFIG) $<
 
 # Define a pattern rule to compile an Oberon main module source program to Intel hex flash image
 
 %.hex: %.mod
-	$(ASTROBECOMPILE) $(ASTROBECONFIG) $<
+	$(ASTROBEBUILD) $(ASTROBECONFIG) ./$<
 	$(ASTROBELINK) $(ASTROBECONFIG) $<
 
 # Remove working files
