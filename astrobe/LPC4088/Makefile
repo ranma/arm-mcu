@@ -29,10 +29,9 @@ ASTROBESRC	?= $(HOME)/src/ARM/astrobe
 
 MCU		= LPC4088
 
-SUBORDINATES	= GPIO.arm
-TESTPROGRAMS	= test_leds.hex
+# Build the firmware
 
-default: $(SUBORDINATES) $(TESTPROGRAMS)
+build: test_leds.hex
 
 subordinates: $(SUBORDINATES)
 
