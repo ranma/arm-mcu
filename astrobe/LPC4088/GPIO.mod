@@ -669,4 +669,16 @@ CONST
   Mask159* = 2330127CH;
   Pin159*  = 233012FCH;
 
+(* Data direction constants *)
+
+  INPUT*   = 0;
+  OUTPUT*  = 1;
+
+(* Logic level constants *)
+
+  HIGH*    = 1;
+  LOW*     = 0;
+  ON*      = 1;
+  OFF*     = 0;
+
 END GPIO.

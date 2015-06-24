@@ -79,6 +79,15 @@ int main(void)
       printf("  Pin%-3d*  = %08lXH;\n\n", pinnumber, bit_word_addr(portbase + 0x14, bit));
     }
 
+  printf("(* Data direction constants *)\n\n");
+  printf("  INPUT*   = 0;\n");
+  printf("  OUTPUT*  = 1;\n\n");
+  printf("(* Logic level constants *)\n\n");
+  printf("  HIGH*    = 1;\n");
+  printf("  LOW*     = 0;\n");
+  printf("  ON*      = 1;\n");
+  printf("  OFF*     = 0;\n\n");
   printf("END GPIO.\n");
+
   exit(0);
 }
