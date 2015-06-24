@@ -28,8 +28,11 @@ ARMSRC		?= $(HOME)/src/ARM
 ASTROBESRC	?= $(HOME)/src/ARM/astrobe
 
 MCU		= UNKNOWN
+BOARDNAME	= UNKNOWN
 
 default: astrobe_mk_default
+
+# Remove working files
 
 clean: astrobe_mk_clean
 
