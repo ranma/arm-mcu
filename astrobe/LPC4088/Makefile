@@ -28,12 +28,21 @@ ARMSRC		?= $(HOME)/src/ARM
 ASTROBESRC	?= $(HOME)/src/ARM/astrobe
 
 MCU		= LPC4088
+BOARDNAME	= LPC4088_QUICKSTART
 
 # Build the firmware
 
 build: test_leds.hex
 
+# Write the firmware to code flash
+
+install: test_leds.flashmbed
+
+# Remove working files
+
 clean: astrobe_mk_clean
 
-include		$(ARMSRC)/include/mbed.mk
+# Include subordinate makefiles
+
 include		$(ASTROBESRC)/astrobe-m4.mk
+include		$(ARMSRC)/include/mbed.mk
