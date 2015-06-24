@@ -32,7 +32,7 @@ BOARDNAME	= LPC4088_QUICKSTART
 
 # Build the firmware
 
-build: test_leds.hex
+build: test_leds.bin
 
 # Write the firmware to code flash
 
