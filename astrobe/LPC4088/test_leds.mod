@@ -25,20 +25,26 @@
 MODULE test_leds;
 
 IMPORT
-  Main, MCU, SYSTEM, Timer, GPIO;
+  Main, SYSTEM, Timer, GPIO;
 
 CONST
-  LED1_dir = GPIO.Dir50;
-  LED2_dir = GPIO.Dir13;
-  LED3_dir = GPIO.Dir45;
-  LED4_dir = GPIO.Dir83;
-  SW2_dir  = GPIO.Dir74;
+  LED1_mask = GPIO.Mask50;
+  LED2_mask = GPIO.Mask13;
+  LED3_mask = GPIO.Mask45;
+  LED4_mask = GPIO.Mask83;
+  SW2_mask  = GPIO.Mask74;
+
+  LED1_dir  = GPIO.Dir50;
+  LED2_dir  = GPIO.Dir13;
+  LED3_dir  = GPIO.Dir45;
+  LED4_dir  = GPIO.Dir83;
+  SW2_dir   = GPIO.Dir74;
   
-  LED1     = GPIO.Pin50;
-  LED2     = GPIO.Pin13;
-  LED3     = GPIO.Pin45;
-  LED4     = GPIO.Pin83;
-  SW2      = GPIO.Pin74;
+  LED1      = GPIO.Pin50;
+  LED2      = GPIO.Pin13;
+  LED3      = GPIO.Pin45;
+  LED4      = GPIO.Pin83;
+  SW2       = GPIO.Pin74;
   
 VAR
   d1 : BOOLEAN;
@@ -48,6 +54,12 @@ VAR
   s2 : BOOLEAN;
   
 BEGIN
+  SYSTEM.PUT(LED1_mask, GPIO.UNMASKED);
+  SYSTEM.PUT(LED2_mask, GPIO.UNMASKED);
+  SYSTEM.PUT(LED3_mask, GPIO.UNMASKED);
+  SYSTEM.PUT(LED4_mask, GPIO.UNMASKED);
+  SYSTEM.PUT(SW2_mask, GPIO.UNMASKED);
+  
   SYSTEM.PUT(LED1_dir, GPIO.OUTPUT);
   SYSTEM.PUT(LED2_dir, GPIO.OUTPUT);
   SYSTEM.PUT(LED3_dir, GPIO.OUTPUT);
