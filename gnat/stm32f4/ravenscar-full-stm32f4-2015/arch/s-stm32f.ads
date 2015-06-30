@@ -58,9 +58,9 @@ package System.STM32F4 is
    AHB1_Peripheral_Base : constant := Peripheral_Base + 16#0002_0000#;
    AHB2_Peripheral_Base : constant := Peripheral_Base + 16#1000_0000#;
 
-   GPIOB_Base  : constant := AHB1_Peripheral_Base + 16#0400#;
+   GPIOA_Base  : constant := AHB1_Peripheral_Base + 16#0000#;
    FLASH_Base  : constant := AHB1_Peripheral_Base + 16#3C00#;
-   USART1_Base : constant := APB2_Peripheral_Base + 16#1000#;
+   USART2_Base : constant := APB1_Peripheral_Base + 16#4400#;
    RCC_Base    : constant := AHB1_Peripheral_Base + 16#3800#;
    PWR_Base    : constant := APB1_Peripheral_Base + 16#7000#;
 
@@ -152,7 +152,7 @@ package System.STM32F4 is
 
       --  AFL constants
 
-      AF_USART1    : constant Bits_4 := 7;
+      AF_USART2    : constant Bits_4 := 7;
    end GPIO;
 
    type GPIO_Registers is record
@@ -170,9 +170,9 @@ package System.STM32F4 is
       AFRH    : Bits_8x4;
    end record;
 
-   GPIOB : GPIO_Registers with Volatile,
-                               Address => System'To_Address (GPIOB_Base);
-   pragma Import (Ada, GPIOB);
+   GPIOA : GPIO_Registers with Volatile,
+                               Address => System'To_Address (GPIOA_Base);
+   pragma Import (Ada, GPIOA);
 
    -----------
    -- USART --
@@ -247,8 +247,8 @@ package System.STM32F4 is
       Reserved_6 : Bits_16;
    end record;
 
-   USART1 : USART_Registers with Volatile,
-                                 Address => System'To_Address (USART1_Base);
+   USART2 : USART_Registers with Volatile,
+                                 Address => System'To_Address (USART2_Base);
 
    type MCU_ID_Register is record
       DEV_ID   : Bits_12;

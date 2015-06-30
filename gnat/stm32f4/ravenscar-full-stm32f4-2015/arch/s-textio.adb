@@ -29,7 +29,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Minimal version of Text_IO body for use on STM32F4xxx, using USART1
+--  Minimal version of Text_IO body for use on STM32F4xxx, using USART2
 
 with Interfaces; use Interfaces;
 
@@ -50,7 +50,7 @@ package body System.Text_IO is
    -- Get --
    ---------
 
-   function Get return Character is (Character'Val (USART1.DR and 16#FF#));
+   function Get return Character is (Character'Val (USART2.DR and 16#FF#));
 
    ----------------
    -- Initialize --
@@ -60,7 +60,7 @@ package body System.Text_IO is
       use GPIO;
       use System.BB.Parameters;
 
-      APB_Clock    : constant Positive := Positive (RCC.System_Clocks.PCLK2);
+      APB_Clock    : constant Positive := Positive (RCC.System_Clocks.PCLK1);
       Int_Divider  : constant Positive := (25 * APB_Clock) / (4 * Baudrate);
       Frac_Divider : constant Natural := Int_Divider rem 100;
       BRR          : Bits_16;
@@ -68,35 +68,35 @@ package body System.Text_IO is
    begin
       Initialized := True;
 
-      RCC.Registers.APB2ENR := RCC.Registers.APB2ENR or RCC_APB2ENR_USART1;
-      RCC.Registers.AHB1ENR := RCC.Registers.AHB1ENR or RCC_AHB1ENR_GPIOB;
+      RCC.Registers.APB1ENR := RCC.Registers.APB1ENR or RCC_APB1ENR_USART2;
+      RCC.Registers.AHB1ENR := RCC.Registers.AHB1ENR or RCC_AHB1ENR_GPIOA;
 
-      GPIOB.MODER   (6 .. 7) := (Mode_AF,     Mode_AF);
-      GPIOB.OSPEEDR (6 .. 7) := (Speed_50MHz, Speed_50MHz);
-      GPIOB.OTYPER  (6 .. 7) := (Type_PP,     Type_PP);
-      GPIOB.PUPDR   (6 .. 7) := (Pull_Up,     Pull_Up);
-      GPIOB.AFRL    (6 .. 7) := (AF_USART1,   AF_USART1);
+      GPIOA.MODER   (2 .. 3) := (Mode_AF,     Mode_AF);
+      GPIOA.OSPEEDR (2 .. 3) := (Speed_50MHz, Speed_50MHz);
+      GPIOA.OTYPER  (2 .. 3) := (Type_PP,     Type_PP);
+      GPIOA.PUPDR   (2 .. 3) := (Pull_Up,     Pull_Up);
+      GPIOA.AFRL    (2 .. 3) := (AF_USART2,   AF_USART2);
 
       BRR := (Bits_16 (Frac_Divider * 16) + 50) / 100 mod 16
                or Bits_16 (Int_Divider / 100 * 16);
 
-      USART1.BRR := BRR;
-      USART1.CR1 := USART.CR1_UE or USART.CR1_RE or USART.CR1_TE;
-      USART1.CR2 := 0;
-      USART1.CR3 := 0;
+      USART2.BRR := BRR;
+      USART2.CR1 := USART.CR1_UE or USART.CR1_RE or USART.CR1_TE;
+      USART2.CR2 := 0;
+      USART2.CR3 := 0;
    end Initialize;
 
    -----------------
    -- Is_Tx_Ready --
    -----------------
 
-   function Is_Tx_Ready return Boolean is ((USART1.SR and TX_Ready) /= 0);
+   function Is_Tx_Ready return Boolean is ((USART2.SR and TX_Ready) /= 0);
 
    -----------------
    -- Is_Rx_Ready --
    -----------------
 
-   function Is_Rx_Ready return Boolean is ((USART1.SR and RX_Ready) /= 0);
+   function Is_Rx_Ready return Boolean is ((USART2.SR and RX_Ready) /= 0);
 
    ---------
    -- Put --
@@ -104,7 +104,7 @@ package body System.Text_IO is
 
    procedure Put (C : Character) is
    begin
-      USART1.DR := Character'Pos (C);
+      USART2.DR := Character'Pos (C);
    end Put;
 
    ----------------------------

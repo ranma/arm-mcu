@@ -238,10 +238,10 @@ package System.STM32F4.RCC is
    RCC_APB1ENR_PWR    : constant Word := 16#1000_0000#;
    --  Bit definition for RCC APB1ENR register
 
-   RCC_APB2ENR_USART1 : constant Word := 16#10#;
+   RCC_APB1ENR_USART2 : constant Word := 16#20000#;
    --  Bit definition for RCC APB2ENR register
 
-   RCC_AHB1ENR_GPIOB  : constant Word := 16#02#;
+   RCC_AHB1ENR_GPIOA  : constant Word := 16#01#;
    --  Bit definition for RCC AHB1ENR register
 
 end System.STM32F4.RCC;

@@ -1,7 +1,10 @@
 Changes to the Adacore Libre GNAT GPL Ravenscar profile RTS for STM32F4
 -----------------------------------------------------------------------
 
-$Id: Changes.txt 9210 2015-06-30 14:00:48Z svn $
+$Id$
 
 1. Imported Ravenscar Full Profile RTS source files from AdaCore Libre
    GNAT GPL 2015 for STM32F4.
+
+2. Changed the console serial port from USART1 to USART2 on pins
+   PA2 and PA3, for compatibility with my C language framework.
