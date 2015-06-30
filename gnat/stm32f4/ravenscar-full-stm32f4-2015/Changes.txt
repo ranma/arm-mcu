@@ -14,3 +14,5 @@ $Id$
 
 4. Added customized s-bbpara.ads and setup_pll.adb for the
    STMicroelectronics NUCLEO-F411RE board.
+
+5. Added customized memory map linker script for the NUCLEO-F411RE.
