@@ -8,9 +8,9 @@
 
    Loader : Loaders := external ("LOADER", "ROM");
 
-   type Boards is ("STM32F4-DISCO", "STM32F429-DISCO", "STM32F7-EVAL");
+   type Boards is ("NUCLEO_F411RE");
 
-   Board : Boards := external ("BOARD", "STM32F4-DISCO");
+   Board : Boards := external ("BOARDNAME", "NUCLEO_F411RE");
 
    package Compiler is
       Common_Required_Switches := ("-mlittle-endian", "-mhard-float",

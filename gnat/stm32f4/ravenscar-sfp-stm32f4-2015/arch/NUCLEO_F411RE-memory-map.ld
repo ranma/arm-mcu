@@ -34,8 +34,10 @@
  *                                                                          *
  ****************************************************************************/
 
+/* Customized for the STMicroelectronics NUCLEO-F411RE board */
+
 MEMORY
 {
-  flash (rx) : ORIGIN = 0x08000000, LENGTH = 1024K
-  sram (rwx) : ORIGIN = 0x20000000, LENGTH = 320K
+  flash (rx) : ORIGIN = 0x08000000, LENGTH = 512K
+  sram (rwx) : ORIGIN = 0x20000000, LENGTH = 128K
 }
