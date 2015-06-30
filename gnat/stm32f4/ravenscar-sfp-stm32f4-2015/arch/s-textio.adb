@@ -60,7 +60,7 @@ package body System.Text_IO is
       use GPIO;
       use System.BB.Parameters;
 
-      APB_Clock    : constant Positive := Positive (RCC.System_Clocks.PCLK2);
+      APB_Clock    : constant Positive := Positive (RCC.System_Clocks.PCLK1);
       Int_Divider  : constant Positive := (25 * APB_Clock) / (4 * Baudrate);
       Frac_Divider : constant Natural := Int_Divider rem 100;
       BRR          : Bits_16;
