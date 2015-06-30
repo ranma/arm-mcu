@@ -16,3 +16,5 @@ $Id$
    STMicroelectronics NUCLEO-F411RE board.
 
 5. Added customized memory map linker script for the NUCLEO-F411RE.
+
+6. Removed previous memory map linker scripts for other boards.
