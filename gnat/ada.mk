@@ -37,9 +37,10 @@ GNATARCH		?= arm-eabi
 GNATRELEASE		?= 2015
 GNATDIR			?= /usr/local/gnat-gpl-$(GNATRELEASE)-$(GNATARCH)
 GNATBIN			= $(GNATDIR)/bin
-GNATRTS			= $(ADA_SRC)/$(MCUFAMILY)/ravenscar-full-stm32f4-$(GNATRELEASE)
+GNATRTS			?= ravenscar-full-stm32f4-$(GNATRELEASE)
+GNATRTSDIR		= $(ADA_SRC)/$(MCUFAMILY)/$(GNATRTS)
 GPRBUILD		= env PATH=$(GNATBIN)':'$(PATH) ADA_SRC=$(ADA_SRC) ADA_OBJ=$(ADA_OBJ) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME) gprbuild
-GPRBUILDFLAGS		= -p --RTS=$(GNATRTS) --target=$(GNATARCH)
+GPRBUILDFLAGS		= -p --RTS=$(GNATRTSDIR) --target=$(GNATARCH)
 GPRBUILDCFLAGS		= -cargs:Ada $(ADA_VERSION) $(ADA_CFLAGS)
 GPRBUILDLDFLAGS		= -largs -Wl,-Map=test_console.map,--cref
 
@@ -53,7 +54,7 @@ STLINKDEBUG		= $(ADA_SRC)/ada.gdb
 # Build program from project file
 
 %.elf: %.gpr
-	$(MAKE) -C $(GNATRTS) ADA_SRC=$(ADA_SRC) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME)
+	$(MAKE) -C $(GNATRTSDIR) ADA_SRC=$(ADA_SRC) MCUFAMILY=$(MCUFAMILY) BOARDNAME=$(BOARDNAME)
 	$(GPRBUILD) $< $(GPRBUILDFLAGS) $(GPRBUILDCFLAGS) $(GPRBUILDLDFLAGS)
 
 # Default make target
@@ -68,6 +69,6 @@ ada_mk_clean:
 	-rm -rf *.asm *.bin *.elf *.hex *.log *.map *.o *.stackdump obj
 
 ada_mk_reallyclean: ada_mk_clean
-	$(MAKE) -C $(GNATRTS) clean
+	$(MAKE) -C $(GNATRTSDIR) clean
 
 ada_mk_distclean: ada_mk_reallyclean
