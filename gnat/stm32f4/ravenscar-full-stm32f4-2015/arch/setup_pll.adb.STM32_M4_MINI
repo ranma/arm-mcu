@@ -192,7 +192,7 @@ procedure Setup_Pll is
       --  PWR initialization
       --  Select higher supply power for stable operation at max. freq.
 
-      PWR.CR := PWR_CR_VOS_HIGH_407; 
+      PWR.CR := PWR_CR_VOS_HIGH_407;
 
       --  Setup internal clock and wait for HSI stabilisation.
       --  The internal high speed clock is always enabled, because it is the
