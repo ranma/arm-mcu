@@ -11,3 +11,6 @@ $Id$
 
 3. Renamed s-bbpara.ads to s-bbpara.ads.original, and setup_pll.adb to
    setup_pll.adb.original.
+
+4. Added customized s-bbpara.ads and setup_pll.adb for the
+   STMicroelectronics NUCLEO-F411RE board.
