@@ -33,8 +33,8 @@ ADA_INCLUDES		?= -I. -I$(ADA_SRC)
 ADA_OBJ			?= obj
 ADA_VERSION		?= -gnat2012
 
-GNATARCH		= arm-eabi
-GNATRELEASE		= 2015
+GNATARCH		?= arm-eabi
+GNATRELEASE		?= 2015
 GNATDIR			?= /usr/local/gnat-gpl-$(GNATRELEASE)-$(GNATARCH)
 GNATBIN			= $(GNATDIR)/bin
 GNATRTS			= $(ADA_SRC)/$(MCUFAMILY)/ravenscar-sfp-stm32f4-$(GNATRELEASE)
