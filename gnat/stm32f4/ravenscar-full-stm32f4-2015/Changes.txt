@@ -8,3 +8,6 @@ $Id$
 
 2. Changed the console serial port from USART1 to USART2 on pins
    PA2 and PA3, for compatibility with my C language framework.
+
+3. Renamed s-bbpara.ads to s-bbpara.ads.original, and setup_pll.adb to
+   setup_pll.adb.original.
