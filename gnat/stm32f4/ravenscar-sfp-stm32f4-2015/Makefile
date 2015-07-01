@@ -33,6 +33,7 @@ ADA_SRC		?= $(ARMSRC)/gnat
 adalib/libgnat.a:
 	cp gnarl-arch/s-bbpara.ads.$(BOARDNAME) gnarl-arch/s-bbpara.ads
 	cp arch/setup_pll.adb.$(BOARDNAME) arch/setup_pll.adb
+#TODO: a-intnam.ads also needs to be customized for each MCU
 	$(GPRBUILD) ravenscar_build.gpr -p --target=$(GNATARCH)
 	$(GPRBUILD) runtime_build.gpr -p --target=$(GNATARCH)
 
