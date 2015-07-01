@@ -1,4 +1,4 @@
-# Makefile for building the GNAT Ada serial console test
+# Definitions for the GHI Electronics FEZ Cerb40 board
 
 # $Id$
 
@@ -22,38 +22,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Override the following macros to build out of tree
+MCUFAMILY	= stm32f4
 
-ARMSRC		?= $(HOME)/src/ARM
-ADA_SRC		?= $(ARMSRC)/gnat
+# Define pattern rule to write program to code flash
 
-# Select the target board
-
-#BOARDNAME	?= FEZ_CERB40
-#BOARDNAME	?= NETDUINOPLUS2
-BOARDNAME	?= NUCLEO_F411RE
-#BOARDNAME	?= STM32F4_DISCOVERY
-#BOARDNAME	?= STM32_M4_MINI
-
-# Build the program
-
-build: test_console.elf
-
-# Write the program to code flash
-
-install: test_console.flash
-
-# Remove working files
-
-clean: ada_mk_clean
-
-reallyclean: ada_mk_reallyclean
-
-distclean: ada_mk_distclean
-
-# Include subordinate makefiles
-
-include $(ADA_SRC)/boards/$(BOARDNAME)/bsp.mk
-include $(ADA_SRC)/ada.mk
-include $(ARMSRC)/include/ARM.mk
-sinclude $(HOME)/src/include/subversion.mk
+%.flash: %.bin
+	$(MAKE) $*.flashstlink

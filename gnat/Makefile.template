@@ -1,5 +1,5 @@
-# Makefile template for building GNAT Ada application programs for the
-# STM32F4 microcontroller family
+# Makefile template for building GNAT GPL Ada application programs for
+# ARM microcontrollers
 
 # $Id$
 
@@ -28,7 +28,6 @@
 ARMSRC		?= $(HOME)/src/ARM
 ADA_SRC		?= $(ARMSRC)/gnat
 
-MCUFAMILY	?= UNKNOWN
 BOARDNAME	?= UNKNOWN
 
 # Default target placeholder
@@ -45,5 +44,6 @@ distclean: ada_mk_distclean
 
 # Include subordinate makefiles
 
-include $(ARMSRC)/include/ARM.mk
+include $(ADA_SRC)/boards/$(BOARDNAME)/bsp.mk
 include $(ADA_SRC)/ada.mk
+include $(ARMSRC)/include/ARM.mk
