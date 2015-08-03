@@ -41,7 +41,7 @@ BINUTILURL	= $(BINUTILSERVER)/`basename $(BINUTILDIST)`
 BINUTILSRC	= binutils-$(BINUTILVER)
 BINUTILBLD	= build/binutils-$(BINUTILVER)
 
-GCCVER		= 4.9.2
+GCCVER		= 4.9.3
 GCCSERVER	= http://ftp.gnu.org/pub/gnu/gcc/gcc-$(GCCVER)
 GCCDIST		= $(TEMP)/gcc-$(GCCVER).tar.bz2
 GCCURL		= $(GCCSERVER)/`basename $(GCCDIST)`
@@ -64,7 +64,7 @@ LIBMPDFURL	= $(NEWLIBSERVER)/libm.pdf
 LIBCPDF		= $(TEMP)/libc.pdf
 LIBMPDF		= $(TEMP)/libm.pdf
 
-GDBVER		= 7.8.2
+GDBVER		= 7.9.1
 GDBSERVER	= http://ftp.gnu.org/gnu/gdb
 GDBDIST		= $(TEMP)/gdb-$(GDBVER).tar.gz
 GDBURL		= $(GDBSERVER)/`basename $(GDBDIST)`
