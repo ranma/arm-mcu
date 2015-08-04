@@ -214,7 +214,6 @@ int timer_configure_capture(unsigned id, unsigned edge, bool intr)
 {
   CHECK_PARAMETER(id, TIMER_ID_SENTINEL);
   CHECK_PARAMETER(edge, TIMER_CAPTURE_EDGE_SENTINEL);
-  CHECK_PARAMETER(intr, 2);
 
   // Only allow the interrupt if an edge is enabled
 
@@ -245,9 +244,6 @@ int timer_configure_match(unsigned id, unsigned m, unsigned action,
   CHECK_PARAMETER(id, TIMER_ID_SENTINEL);
   CHECK_PARAMETER(m, TIMER_MATCH_OUTPUTS);
   CHECK_PARAMETER(action, TIMER_MATCH_OUTPUT_SENTINEL);
-  CHECK_PARAMETER(intr, 2);
-  CHECK_PARAMETER(reset, 2);
-  CHECK_PARAMETER(stop, 2);
 
   if (action > TIMER_MATCH_OUTPUT_DISABLED)
   {
