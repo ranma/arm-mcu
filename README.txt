@@ -70,7 +70,7 @@ News
        the STM32F1 Standard Peripheral Library. Use [16]CMSIS instead.
        Added code to each of the assembly language startup files to call
        _exit() if main() returns.
-     * 8 August 2015 -- Upgraded GCC to 5.2.0. Upgraded GDB to 7.9.1.
+     * 6 August 2015 -- Upgraded GCC to 5.2.0. Upgraded GDB to 7.9.1.
 
 Git Repository
 
