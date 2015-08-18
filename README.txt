@@ -71,6 +71,7 @@ News
        Added code to each of the assembly language startup files to call
        _exit() if main() returns.
      * 6 August 2015 -- Upgraded GCC to 5.2.0. Upgraded GDB to 7.9.1.
+     * 18 August 2015 -- Added support for systick callback function.
 
 Git Repository
 
