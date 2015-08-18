@@ -24,16 +24,21 @@
 
 #include <cpu.h>
 
+static unsigned systick_rate;
+
+static void (*systick_callback)(void);
+
 static volatile unsigned SleepCounter = 0;
 
 void SysTick_Handler(void)
 {
   if (SleepCounter) SleepCounter--;
+
+  if (systick_callback)
+    (*systick_callback)();
 }
 
-static unsigned systick_rate;
-
-int systick_init(unsigned rate)
+int systick_init(unsigned rate, void (*callback)(void))
 {
   errno_r = 0;
 
@@ -48,6 +53,10 @@ int systick_init(unsigned rate)
   // Save the systick rate
 
   systick_rate = rate;
+
+  // Save the callback function
+
+  systick_callback = callback;
 
   SysTick_Config(SystemCoreClock / systick_rate);
   return 0;

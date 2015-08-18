@@ -27,7 +27,7 @@
 
 _BEGIN_STD_C
 
-int systick_init(unsigned rate);
+int systick_init(unsigned rate, void (*callback)(void));
 
 void millisleep(unsigned milliseconds);
 

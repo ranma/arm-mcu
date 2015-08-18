@@ -38,7 +38,7 @@ int main(void)
   unsigned channel;
 
   cpu_init(DEFAULT_CPU_FREQ);
-  systick_init(100);
+  systick_init(100, NULL);
   serial_stdio(CONSOLE_PORT);
 
   printf("\033[H\033[2J%s A/D Converter Test (" __DATE__ " " __TIME__ ")\n\n", MCUFAMILYNAME);

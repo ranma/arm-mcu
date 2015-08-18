@@ -31,7 +31,7 @@ int main(void)
   unsigned i;
 
   cpu_init(DEFAULT_CPU_FREQ);
-  systick_init(100);
+  systick_init(100, NULL);
   buttons_initialize();
   LEDS_initialize();
 
