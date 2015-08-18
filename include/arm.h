@@ -29,7 +29,6 @@
 
 #include <_ansi.h>
 #include <errno.h>
-#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
