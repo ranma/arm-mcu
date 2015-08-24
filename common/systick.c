@@ -29,10 +29,16 @@ static unsigned systick_rate;
 static void (*systick_callback)(void);
 
 static volatile unsigned SleepCounter = 0;
+static volatile unsigned long long UptimeCounter = 0;
 
 void SysTick_Handler(void)
 {
-  if (SleepCounter) SleepCounter--;
+  UptimeCounter++;
+
+  if (SleepCounter)
+  {
+    SleepCounter--;
+  }
 
   if (systick_callback)
     (*systick_callback)();
@@ -72,4 +78,9 @@ unsigned sleep(unsigned seconds)
 {
   millisleep(seconds*1000);
   return 0;
+}
+
+unsigned uptime(void)
+{
+  return UptimeCounter/systick_rate;
 }

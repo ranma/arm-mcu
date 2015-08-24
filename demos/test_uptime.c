@@ -1,8 +1,8 @@
-/* Abstract services for controlling and using the system tick timer */
+/* Simple Up Time Test program */
 
 // $Id$
 
-// Copyright (C)2015, Philip Munts, President, Munts AM Corp.
+// Copyright (C)2013-2015, Philip Munts, President, Munts AM Corp.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -22,19 +22,28 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef _SYSTICK_H
-#define _SYSTICK_H
+static const char revision[] = "$Id$";
 
-_BEGIN_STD_C
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int systick_init(unsigned rate, void (*callback)(void));
+#include <cpu.h>
 
-void millisleep(unsigned milliseconds);
+int main(void)
+{
+  cpu_init(DEFAULT_CPU_FREQ);
+  systick_init(100, NULL);
+  serial_stdio(CONSOLE_PORT);
 
-unsigned sleep(unsigned seconds);
+  printf("\033[H\033[2J%s Up Time Test (" __DATE__ " " __TIME__ ")\n\n", MCUFAMILYNAME);
+  puts(revision);
+  printf("\nCPU Freq:%u Hz  Compiler:%s %s %s\n\n", (unsigned int) SystemCoreClock,
+    __COMPILER__, __VERSION__, __ABI__);
 
-unsigned uptime(void);
-
-_END_STD_C
-
-#endif
+  for (;;)
+  {
+    printf("System up time is %d seconds\n", uptime());
+    sleep(5);
+  }
+}
