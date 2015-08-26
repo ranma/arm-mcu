@@ -23,5 +23,5 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 ACTION!="add", SUBSYSTEM!=="usb_device", GOTO="kcontrol_rules_end"
-ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0afa", MODE="660", GROUP="wheel"
+ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0afa", MODE="660", GROUP="plugdev"
 LABEL="kcontrol_rules_end"

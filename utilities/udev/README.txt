@@ -3,7 +3,7 @@
 
    These udev rules configure various flash programming and/or debug
    interfaces for ARM microcontrollers. In general, these rules to allow
-   users in the wheel group to access the particular flash programming
+   users in the plugdev group to access the particular flash programming
    and/or debug interface. This allows installing JLink or OpenOCD, for
    example, without the setuid flag set.
      __________________________________________________________________
